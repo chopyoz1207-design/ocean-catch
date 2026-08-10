@@ -20,7 +20,7 @@ function miss(){state='idle';cancelAnimationFrame(needleTimer);game.combo=0;rese
 function resolve(p){cancelAnimationFrame(needleTimer);let perfect=p>=43&&p<=61;let good=p>=35&&p<=69;if(!good){miss();return}let caught=pick(),item=caught.items[Math.floor(Math.random()*caught.items.length)],bonus=perfect?Math.min(game.combo*2,30):0,earned=caught.p+bonus;game.score+=earned;game.coins+=Math.max(1,Math.floor(earned/2));game.combo++;if(!game.found.includes(item[1])){game.found.push(item[1]);toast(`✨ 새 도감 발견: ${item[1]}!`)}game.logs.unshift({emoji:item[0],name:item[1],r:caught.r,cls:caught.cls,points:earned});game.logs=game.logs.slice(0,12);state='idle';resetSea();el.status.textContent=perfect?'PERFECT CAST! 보너스가 적용됐어요.':'좋은 타이밍이에요!';el.message.textContent=`${item[0]} ${item[1]}을(를) 낚았습니다! +${earned}점`;el.button.disabled=false;el.button.innerHTML='🎣 한 번 더 낚시하기';render();save();sound(perfect?900:580,.16)}
 function resetSea(){clearTimeout(biteTimer);document.querySelector('.ocean-card').classList.remove('casting','biting');el.timing.hidden=true}
 el.button.addEventListener('click',cast);$('resetButton').addEventListener('click',()=>{if(confirm('점수와 도감까지 모두 초기화할까요?')){game={score:0,coins:0,combo:0,found:[],logs:[]};save();render();toast('새로운 항해를 시작합니다!')}});$('soundButton').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊':'🔇'});render();
-// --- 실시간 랭킹 시스템 (리스트 레이아웃 최종 완성 버전) ---
+// --- 실시간 랭킹 시스템 (커스텀 모달 적용 버전) ---
 (function() {
     const firebaseConfig = {
         apiKey: "AlzaSyAWawldJPCfQDjgyfkJcgGoPQxzzdDxjZ8",
@@ -40,6 +40,13 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
         const listEl = document.getElementById("leaderboardList");
         if (!listEl) return;
         
+        const rankHeader = listEl.previousElementSibling;
+        if (rankHeader) {
+            rankHeader.style.color = "#ffffff";
+            rankHeader.style.fontWeight = "bold";
+            rankHeader.style.textShadow = "0 2px 4px rgba(0,0,0,0.8)";
+        }
+
         listEl.style.padding = "0";
         listEl.style.listStyle = "none";
         listEl.style.width = "100%";
@@ -53,7 +60,7 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
             .then((snapshot) => {
                 listEl.innerHTML = "";
                 if (snapshot.empty) {
-                    listEl.innerHTML = "<li style='color: #ffffff; font-weight: bold; background: rgba(0, 0, 0, 0.6); padding: 12px 20px; margin: 8px 0; border-radius: 8px; text-align: center;'>등록된 랭킹이 없습니다. 첫 주인공이 되어보세요!</li>";
+                    listEl.innerHTML = "<li style='color: #ffffff; font-weight: bold; background: rgba(0, 0, 0, 0.7); padding: 12px 20px; margin: 8px 0; border-radius: 8px; text-align: center; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);'>등록된 랭킹이 없습니다. 첫 주인공이 되어보세요!</li>";
                     return;
                 }
                 let rank = 1;
@@ -63,7 +70,7 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
                     li.style.color = "#ffffff";
                     li.style.fontWeight = "bold";
                     li.style.fontSize = "15px";
-                    li.style.background = "rgba(15, 30, 50, 0.9)";
+                    li.style.background = "rgba(15, 30, 50, 0.95)";
                     li.style.padding = "12px 20px";
                     li.style.margin = "8px 0";
                     li.style.borderRadius = "8px";
@@ -72,14 +79,14 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
                     li.style.alignItems = "center";
                     li.style.width = "100%";
                     li.style.boxSizing = "border-box";
-                    li.style.boxShadow = "0 4px 6px rgba(0,0,0,0.3)";
+                    li.style.boxShadow = "0 4px 6px rgba(0,0,0,0.4)";
 
                     let medal = rank + "위";
                     if (rank === 1) medal = "🥇 1위";
                     else if (rank === 2) medal = "🥈 2위";
                     else if (rank === 3) medal = "🥉 3위";
 
-                    li.innerHTML = '<span style="color: #61dafb;">' + medal + ' &nbsp; ' + data.nickname + '</span> <span style="color: #ffd700; font-size: 16px;">' + data.score + '점</span>';
+                    li.innerHTML = '<span style="color: #61dafb; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">' + medal + ' &nbsp; ' + data.nickname + '</span> <span style="color: #ffd700; font-size: 16px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">' + data.score + '점</span>';
                     listEl.appendChild(li);
                     rank++;
                 });
@@ -89,6 +96,7 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
             });
     };
 
+    // 랭킹 등록 버튼 클릭 시 모달 열기
     window.submitScore = function() {
         let currentScore = 0;
         if (typeof game !== "undefined" && typeof game.score === "number") {
@@ -105,17 +113,49 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
             return;
         }
 
-        const nickname = prompt("랭킹에 등록할 닉네임을 입력하세요 (2자 이상):");
-        if (!nickname || nickname.trim().length < 2) {
+        const modal = document.getElementById("nicknameModal");
+        const input = document.getElementById("nicknameInput");
+        if (modal && input) {
+            input.value = "";
+            modal.style.display = "flex";
+            input.focus();
+        }
+    };
+
+    // 모달 닫기
+    window.closeNicknameModal = function() {
+        const modal = document.getElementById("nicknameModal");
+        if (modal) modal.style.display = "none";
+    };
+
+    // 모달에서 등록 확인 시 데이터베이스 전송
+    window.confirmSubmitScore = function() {
+        const input = document.getElementById("nicknameInput");
+        if (!input) return;
+
+        const nickname = input.value.trim();
+        if (nickname.length < 2) {
             alert("닉네임을 2글자 이상 입력해 주세요.");
+            input.focus();
             return;
         }
 
+        let currentScore = 0;
+        if (typeof game !== "undefined" && typeof game.score === "number") {
+            currentScore = game.score;
+        } else {
+            const scoreEl = document.getElementById("score");
+            if (scoreEl) {
+                currentScore = parseInt(scoreEl.textContent.replace(/[^0-9]/g, "")) || 0;
+            }
+        }
+
         db.collection("leaderboard").add({
-            nickname: nickname.trim(),
+            nickname: nickname,
             score: currentScore,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
+            window.closeNicknameModal();
             alert("🎉 랭킹 등록 완료!");
             window.loadLeaderboard();
         }).catch((err) => {
