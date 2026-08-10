@@ -1,3 +1,19 @@
+// 1. 아까 파이어베이스 사이트에서 복사했던 본인의 firebaseConfig 코드를 넣으세요!
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAWawldJPcFQDjgyfkJcgGoPQxzzdDxjZ8",
+  authDomain: "ocean-catch-ranking.firebaseapp.com",
+  projectId: "ocean-catch-ranking",
+  storageBucket: "ocean-catch-ranking.firebasestorage.app",
+  messagingSenderId: "63317267112",
+  appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
+};
+
+// 2. 파이어베이스 실행
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const fishData=[
  {r:'쓰레기',p:0,c:30,cls:'trash',items:[['🥫','찌그러진 깡통'],['🥾','해적의 장화'],['🛞','낡은 타이어'],['🪥','바다 칫솔']]},
  {r:'흔한 물고기',p:10,c:40,cls:'common',items:[['🐟','은빛 멸치'],['🦑','통통한 오징어'],['🐡','복어'],['🐠','산호돔']]},
@@ -17,3 +33,51 @@ function miss(){state='idle';cancelAnimationFrame(needleTimer);game.combo=0;rese
 function resolve(p){cancelAnimationFrame(needleTimer);let perfect=p>=43&&p<=61;let good=p>=35&&p<=69;if(!good){miss();return}let caught=pick(),item=caught.items[Math.floor(Math.random()*caught.items.length)],bonus=perfect?Math.min(game.combo*2,30):0,earned=caught.p+bonus;game.score+=earned;game.coins+=Math.max(1,Math.floor(earned/2));game.combo++;if(!game.found.includes(item[1])){game.found.push(item[1]);toast(`✨ 새 도감 발견: ${item[1]}!`)}game.logs.unshift({emoji:item[0],name:item[1],r:caught.r,cls:caught.cls,points:earned});game.logs=game.logs.slice(0,12);state='idle';resetSea();el.status.textContent=perfect?'PERFECT CAST! 보너스가 적용됐어요.':'좋은 타이밍이에요!';el.message.textContent=`${item[0]} ${item[1]}을(를) 낚았습니다! +${earned}점`;el.button.disabled=false;el.button.innerHTML='🎣 한 번 더 낚시하기';render();save();sound(perfect?900:580,.16)}
 function resetSea(){clearTimeout(biteTimer);document.querySelector('.ocean-card').classList.remove('casting','biting');el.timing.hidden=true}
 el.button.addEventListener('click',cast);$('resetButton').addEventListener('click',()=>{if(confirm('점수와 도감까지 모두 초기화할까요?')){game={score:0,coins:0,combo:0,found:[],logs:[]};save();render();toast('새로운 항해를 시작합니다!')}});$('soundButton').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊':'🔇'});render();
+// --- 실시간 랭킹 시스템 ---
+function loadLeaderboard() {
+  const listEl = document.getElementById("leaderboardList");
+  if (!listEl) return;
+  db.collection("leaderboard")
+    .orderBy("score", "desc")
+    .limit(10)
+    .get()
+    .then((snapshot) => {
+      listEl.innerHTML = "";
+      if (snapshot.empty) {
+        listEl.innerHTML = "<li>등록된 랭킹이 없습니다. 첫 주인공이 되어보세요!</li>";
+        return;
+      }
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.textContent = `${data.nickname} : ${data.score}점`;
+        li.appendChild(li); // 수정: listEl.appendChild(li)
+      });
+    })
+    .catch((err) => console.error("랭킹 로드 실패:", err));
+}
+
+function submitScore() {
+  const currentScore = (typeof game !== "undefined" && game.score) ? game.score : 0;
+  if (currentScore === 0) {
+    alert("점수가 0점입니다! 낚시를 해서 점수를 올린 후 등록해 주세요.");
+    return;
+  }
+  const nickname = prompt("랭킹에 등록할 닉네임을 입력하세요 (2자 이상):");
+  if (!nickname || nickname.trim().length < 2) {
+    alert("닉네임을 2글자 이상 입력해 주세요.");
+    return;
+  }
+  db.collection("leaderboard").add({
+    nickname: nickname.trim(),
+    score: currentScore,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    alert("🎉 랭킹 등록 완료!");
+    loadLeaderboard();
+  }).catch((err) => {
+    alert("등록 실패: " + err.message);
+  });
+}
+
+window.addEventListener("DOMContentLoaded", loadLeaderboard);
