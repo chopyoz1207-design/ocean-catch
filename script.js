@@ -146,3 +146,82 @@ function submitScore() {
 }
 
 window.addEventListener("DOMContentLoaded", loadLeaderboard);
+// --- 실시간 랭킹 시스템 최종 수정 및 가인시성 개선 ---
+(function() {
+    const firebaseConfig = {
+        apiKey: "AlzaSyAWawldJPCfQDjgyfkJcgGoPQxzzdDxjZ8",
+        authDomain: "ocean-catch-ranking.firebaseapp.com",
+        projectId: "ocean-catch-ranking",
+        storageBucket: "ocean-catch-ranking.appspot.com",
+        messagingSenderId: "63317267112",
+        appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
+    };
+
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+
+    window.loadLeaderboard = function() {
+        const listEl = document.getElementById("leaderboardList");
+        if (!listEl) return;
+        db.collection("leaderboard")
+            .orderBy("score", "desc")
+            .limit(10)
+            .get()
+            .then((snapshot) => {
+                listEl.innerHTML = "";
+                if (snapshot.empty) {
+                    listEl.innerHTML = "<li style='color: white; padding: 4px;'>등록된 랭킹이 없습니다. 첫 주인공이 되어보세요!</li>";
+                    return;
+                }
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const li = document.createElement("li");
+                    li.style.color = "white";
+                    li.style.padding = "4px 0";
+                    li.textContent = `${data.nickname} : ${data.score}점`;
+                    listEl.appendChild(li);
+                });
+            })
+            .catch((err) => {
+                console.error("랭킹 로드 실패:", err);
+            });
+    };
+
+    window.submitScore = function() {
+        let currentScore = 0;
+        if (typeof game !== "undefined" && typeof game.score === "number") {
+            currentScore = game.score;
+        } else {
+            const scoreEl = document.getElementById("score");
+            if (scoreEl) {
+                currentScore = parseInt(scoreEl.textContent.replace(/[^0-9]/g, "")) || 0;
+            }
+        }
+
+        if (currentScore <= 0) {
+            alert("점수가 0점입니다! 낚시를 해서 점수를 올린 후 등록해 주세요.");
+            return;
+        }
+
+        const nickname = prompt("랭킹에 등록할 닉네임을 입력하세요 (2자 이상):");
+        if (!nickname || nickname.trim().length < 2) {
+            alert("닉네임을 2글자 이상 입력해 주세요.");
+            return;
+        }
+
+        db.collection("leaderboard").add({
+            nickname: nickname.trim(),
+            score: currentScore,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            alert("🎉 랭킹 등록 완료!");
+            window.loadLeaderboard();
+        }).catch((err) => {
+            alert("등록 실패: " + err.message);
+        });
+    };
+
+    window.addEventListener("DOMContentLoaded", window.loadLeaderboard);
+})();
