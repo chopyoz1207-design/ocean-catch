@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#06233c">
+  <title>Ocean Catch | 심해의 낚시꾼</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky-glow"></div>
+  <main class="game-shell">
+    <header class="topbar">
+      <div class="brand"><span>🎣</span><div><small>OCEAN CATCH</small><h1>심해의 낚시꾼</h1></div></div>
+      <div class="top-stats"><div><span>LV.</span><b id="level">1</b></div><div><span>COINS</span><b id="coins">0</b></div><button class="icon-button" id="soundButton" aria-label="효과음 켜기 또는 끄기">🔊</button></div>
+    </header>
+
+    <section class="ocean-card" aria-label="낚시 바다">
+      <div class="moon"></div><div class="stars">✦　·　✧　　·　✦　　·　✧</div>
+      <div class="island">🌴</div><div class="boat">🛶</div>
+      <div class="fish fish-one">🐟</div><div class="fish fish-two">🐠</div><div class="fish fish-three">🦑</div>
+      <div class="line" id="line"></div><div class="bobber" id="bobber">🔴</div>
+      <div class="water water-back"></div><div class="water water-front"></div>
+      <div class="ocean-copy"><p id="statusLabel">잔잔한 바다에 낚싯대를 드리워 보세요.</p><strong id="catchMessage">오늘의 대어는 무엇일까요?</strong></div>
+      <div class="combo" id="comboBadge" hidden>🔥 <span id="combo">0</span> COMBO</div>
+    </section>
+
+    <section class="control-panel">
+      <div id="timingArea" class="timing-area" hidden>
+        <div class="timing-title">입질이다! <b>황금 구간</b>에서 멈추세요</div>
+        <div class="meter"><div class="sweet-spot"></div><div id="meterNeedle" class="needle"></div></div>
+      </div>
+      <button id="fishButton" class="fish-button"><span>🎣</span> 낚싯줄 던지기</button>
+      <p class="hint" id="hint">탭 한 번으로 낚싯대를 던집니다</p>
+    </section>
+
+    <section class="dashboard">
+      <article class="score-card"><span>총 점수</span><strong id="score">0</strong><div class="xp-track"><i id="xpBar"></i></div><small id="xpText">다음 레벨까지 100 XP</small></article>
+      <article class="collection-card"><div><span>도감 수집</span><strong><b id="discovered">0</b> / 16</strong></div><div class="collection-grid" id="collectionGrid"></div></article>
+      <article class="log-card"><div class="section-heading"><span>최근 낚시 기록</span><button id="resetButton">기록 초기화</button></div><ol id="logList"><li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li></ol></article>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
