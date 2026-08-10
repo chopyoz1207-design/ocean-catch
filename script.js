@@ -1,18 +1,5 @@
-// 1. 아까 파이어베이스 사이트에서 복사했던 본인의 firebaseConfig 코드를 넣으세요!
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAWawldJPcFQDjgyfkJcgGoPQxzzdDxjZ8",
-  authDomain: "ocean-catch-ranking.firebaseapp.com",
-  projectId: "ocean-catch-ranking",
-  storageBucket: "ocean-catch-ranking.firebasestorage.app",
-  messagingSenderId: "63317267112",
-  appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
-};
 
-// 2. 파이어베이스 실행
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
 const fishData=[
  {r:'쓰레기',p:0,c:30,cls:'trash',items:[['🥫','찌그러진 깡통'],['🥾','해적의 장화'],['🛞','낡은 타이어'],['🪥','바다 칫솔']]},
@@ -80,76 +67,4 @@ function submitScore() {
   });
 }
 
-window.addEventListener("DOMContentLoaded", loadLeaderboard);
-// --- 파이어베이스 연결 및 실시간 랭킹 시스템 ---
-const firebaseConfig = {
-  apiKey: "AlzaSyAWawldJPCfQDjgyfkJcgGoPQxzzdDxjZ8",
-  authDomain: "ocean-catch-ranking.firebaseapp.com",
-  projectId: "ocean-catch-ranking",
-  storageBucket: "ocean-catch-ranking.appspot.com",
-  messagingSenderId: "63317267112",
-  appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
-};
-
-// 파이어베이스 초기화 (중복 방지)
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.firestore();
-
-// 랭킹 불러오기 함수
-function loadLeaderboard() {
-  const listEl = document.getElementById("leaderboardList");
-  if (!listEl) return;
-  
-  db.collection("leaderboard")
-    .orderBy("score", "desc")
-    .limit(10)
-    .get()
-    .then((snapshot) => {
-      listEl.innerHTML = "";
-      if (snapshot.empty) {
-        listEl.innerHTML = "<li>등록된 랭킹이 없습니다. 첫 주인공이 되어보세요!</li>";
-        return;
-      }
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const li = document.createElement("li");
-        li.textContent = `${data.nickname} : ${data.score}점`;
-        listEl.appendChild(li);
-      });
-    })
-    .catch((err) => {
-      console.error("랭킹 로드 실패:", err);
-      listEl.innerHTML = "<li>랭킹을 불러오지 못했습니다.</li>";
-    });
-}
-
-// 점수 랭킹 등록하기 함수
-function submitScore() {
-  const currentScore = (typeof game !== "undefined" && game.score) ? game.score : 0;
-  if (currentScore === 0) {
-    alert("점수가 0점입니다! 낚시를 해서 점수를 올린 후 등록해 주세요.");
-    return;
-  }
-  
-  const nickname = prompt("랭킹에 등록할 닉네임을 입력하세요 (2자 이상):");
-  if (!nickname || nickname.trim().length < 2) {
-    alert("닉네임을 2글자 이상 입력해 주세요.");
-    return;
-  }
-  
-  db.collection("leaderboard").add({
-    nickname: nickname.trim(),
-    score: currentScore,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    alert("🎉 랭킹 등록 완료!");
-    loadLeaderboard();
-  }).catch((err) => {
-    alert("등록 실패: " + err.message);
-  });
-}
-
-// 페이지가 열릴 때 랭킹 자동 로드
 window.addEventListener("DOMContentLoaded", loadLeaderboard);
