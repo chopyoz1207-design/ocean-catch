@@ -41,17 +41,18 @@ function getFishIcon(emoji, name) {
 }
 function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';
 fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{
-    let s=document.createElement('span');
-    
-    s.textContent = emoji;
+    let s = document.createElement('span');
     s.title = name;
     
     if(game.found.includes(name)) {
         s.classList.add('found');
-        // 잡았을 때만 푸른 가재에 파란색 필터를 적용합니다.
         if(name === '푸른 가재') {
             s.innerHTML = `<span class="blue-lobster">${emoji}</span>`;
+        } else {
+            s.textContent = emoji;
         }
+    } else {
+        s.textContent = emoji;
     }
     
     el.grid.append(s);
