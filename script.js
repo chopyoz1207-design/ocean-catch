@@ -234,3 +234,56 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
 
     window.addEventListener("DOMContentLoaded", window.loadLeaderboard);
 })();
+// --- 구글 로그인 및 클라우드 세이브 시스템 ---
+(function() {
+    // 1. 인증 모듈 불러오기
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userInfo = document.getElementById('userInfo');
+
+    // 2. 로그인 버튼 클릭 이벤트
+    if(loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            auth.signInWithPopup(provider).catch(error => {
+                console.error("로그인 에러:", error);
+                alert("로그인에 실패했습니다.");
+            });
+        });
+    }
+
+    // 3. 로그아웃 버튼 클릭 이벤트
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                alert("안전하게 로그아웃 되었습니다. (임시 로컬 데이터로 전환됩니다)");
+                // 로그아웃 시 로컬 데이터 초기화(선택사항) 및 화면 갱신
+                game = {score:0, coins:0, combo:0, found:[], logs:[]};
+                save();
+                render();
+            });
+        });
+    }
+
+    // 4. 로그인 상태 실시간 감지기
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            // 로그인 성공 시 UI 변경
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
+            userInfo.style.display = 'inline-block';
+            userInfo.textContent = `👋 ${user.displayName} 낚시꾼님 환영합니다!`;
+            
+            toast("구글 계정으로 로그인되었습니다!");
+            
+            // TODO: (다음 단계) 클라우드에서 유저의 세이브 파일을 불러와서 덮어쓰는 기능 추가 예정
+        } else {
+            // 로그아웃 상태 시 UI 변경
+            loginBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
+            userInfo.style.display = 'none';
+        }
+    });
+})();
