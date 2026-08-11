@@ -15,7 +15,28 @@ function render(){el.score.textContent=game.score.toLocaleString();el.coins.text
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
 function cast(){if(state==='idle'){state='waiting';el.button.disabled=true;el.button.innerHTML='🌊 기다리는 중…';el.status.textContent='미끼가 물속으로 가라앉고 있습니다…';document.querySelector('.ocean-card').classList.add('casting');sound(310);biteTimer=setTimeout(bite,900+Math.random()*1700)}else if(state==='bite'){resolve(Number(el.needle.dataset.pos))}}
-function bite(){state='bite';document.querySelector('.ocean-card').classList.add('biting');el.timing.hidden=false;el.button.disabled=false;el.button.innerHTML='⚡ 지금 당기기!';el.status.textContent='입질이다! 황금 구간을 노려보세요!';let start=performance.now();function move(now){if(state!=='bite')return;let p=((now-start)%1250)/1250*100;el.needle.style.left=p+'%';el.needle.dataset.pos=p;needleTimer=requestAnimationFrame(move)}needleTimer=requestAnimationFrame(move);setTimeout(()=>{if(state==='bite')miss()},3000);sound(720,.12)}
+function bite(){
+    state='bite';
+    document.querySelector('.ocean-card').classList.add('biting');
+    el.timing.hidden=false;
+    el.button.disabled=false;
+    el.button.innerHTML='⚡ 지금 당기기!';
+    el.status.textContent='입질이다! 황금 구간을 노려보세요!';
+    let start=performance.now();
+    function move(now){
+        if(state!=='bite')return;
+        let p=((now-start)%1250)/1250*100;
+        el.needle.style.left=p+'%';
+        el.needle.dataset.pos=p;
+        needleTimer=requestAnimationFrame(move)
+    }
+    needleTimer=requestAnimationFrame(move);
+    
+    // 버그 수정: 3초 뒤 도망가는 타이머에 'window.missTimer'라는 이름표를 붙여 저장합니다.
+    window.missTimer = setTimeout(()=>{if(state==='bite')miss()}, 3000);
+    
+    sound(720,.12);
+}
 function miss(){state='idle';cancelAnimationFrame(needleTimer);game.combo=0;resetSea();el.status.textContent='앗, 물고기가 도망갔어요!';el.message.textContent='다음엔 더 정확하게 낚아 보세요.';el.button.disabled=false;el.button.innerHTML='🎣 다시 던지기';render();save();sound(180,.15)}
 function resolve(p){
     cancelAnimationFrame(needleTimer);
@@ -59,7 +80,14 @@ function resolve(p){
     sound(perfect?900:580,.16);
 }
 
-function resetSea(){clearTimeout(biteTimer);document.querySelector('.ocean-card').classList.remove('casting','biting');el.timing.hidden=true}
+function resetSea(){
+    clearTimeout(biteTimer);
+    // 버그 수정: 바다를 초기화할 때, 도망가는 유령 타이머도 확실하게 꺼줍니다!
+    clearTimeout(window.missTimer); 
+    
+    document.querySelector('.ocean-card').classList.remove('casting','biting');
+    el.timing.hidden=true;
+}
 el.button.addEventListener('click',cast);$('resetButton').addEventListener('click',()=>{if(confirm('점수와 도감까지 모두 초기화할까요?')){game={score:0,coins:0,combo:0,found:[],logs:[]};save();render();toast('새로운 항해를 시작합니다!')}});$('soundButton').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'🔊':'🔇'});render();
 // --- 실시간 랭킹 시스템 (커스텀 모달 적용 버전) ---
 (function() {
