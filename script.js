@@ -11744,6 +11744,8 @@ if (closeButton) {
   modal.hidden =
     false;
 
+modal.style.display =
+  "flex";
 
   modal.setAttribute(
     "aria-hidden",
