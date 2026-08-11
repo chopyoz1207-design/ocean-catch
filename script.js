@@ -6668,3 +6668,794 @@ initializeGame();
    🎣 OCEAN CATCH 2.0
    STEP 1 - COMPLETE
    ========================================================= */
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 2 - 1/5
+   골드 상점 / 낚싯대 구매 / 레벨 보상
+   ========================================================= */
+
+
+/* =========================================================
+   1. STEP 2 상점 데이터
+   ---------------------------------------------------------
+   기존 ROD_DATA를 실제 구매 시스템으로 활성화합니다.
+   ========================================================= */
+
+const SHOP_RODS = [
+  {
+    id: "starter_rod",
+    name: "낡은 낚싯대",
+    price: 0,
+    emoji: "🎣",
+    description:
+      "처음부터 사용할 수 있는 기본 낚싯대입니다.",
+    rarityBonus: 0,
+    difficultyBonus: 0
+  },
+
+  {
+    id: "sturdy_rod",
+    name: "튼튼한 낚싯대",
+    price: 500,
+    emoji: "🪵",
+    description:
+      "조작이 조금 더 안정적입니다. 희귀 물고기 보정 +3%.",
+    rarityBonus: 0.03,
+    difficultyBonus: -0.05
+  },
+
+  {
+    id: "silver_rod",
+    name: "은빛 낚싯대",
+    price: 2000,
+    emoji: "🥈",
+    description:
+      "좋은 장비의 시작입니다. 희귀 물고기 보정 +6%.",
+    rarityBonus: 0.06,
+    difficultyBonus: -0.10
+  },
+
+  {
+    id: "golden_rod",
+    name: "황금 낚싯대",
+    price: 10000,
+    emoji: "👑",
+    description:
+      "전설을 노리는 낚시꾼을 위한 고급 장비입니다. 희귀 보정 +10%.",
+    rarityBonus: 0.10,
+    difficultyBonus: -0.15
+  },
+
+  {
+    id: "abyss_rod",
+    name: "심해의 낚싯대",
+    price: 50000,
+    emoji: "🌊",
+    description:
+      "깊은 바다의 괴물을 노리는 최상급 낚싯대입니다. 희귀 보정 +16%.",
+    rarityBonus: 0.16,
+    difficultyBonus: -0.20
+  }
+];
+
+
+/* =========================================================
+   2. 게임 데이터 보정
+   ---------------------------------------------------------
+   예전 저장 데이터에 ownedRods가 없어도 자동 생성합니다.
+   ========================================================= */
+
+function ensureStep2GameData() {
+
+  if (!game) {
+    return;
+  }
+
+
+  if (!Array.isArray(game.ownedRods)) {
+
+    game.ownedRods = [
+      "starter_rod"
+    ];
+
+  }
+
+
+  if (
+    !game.ownedRods.includes(
+      "starter_rod"
+    )
+  ) {
+
+    game.ownedRods.unshift(
+      "starter_rod"
+    );
+
+  }
+
+
+  if (
+    !Array.isArray(
+      game.levelRewardsClaimed
+    )
+  ) {
+
+    game.levelRewardsClaimed = [];
+
+  }
+
+
+  if (!game.rod) {
+
+    game.rod =
+      "starter_rod";
+
+  }
+
+}
+
+
+ensureStep2GameData();
+
+
+/* =========================================================
+   3. 현재 낚싯대 데이터
+   ========================================================= */
+
+function getCurrentRod() {
+
+  ensureStep2GameData();
+
+  return (
+    SHOP_RODS.find(
+      (rod) =>
+        rod.id === game.rod
+    ) ||
+    SHOP_RODS[0]
+  );
+
+}
+
+
+/* =========================================================
+   4. 낚싯대 보유 여부
+   ========================================================= */
+
+function ownsRod(
+  rodId
+) {
+
+  ensureStep2GameData();
+
+  return game.ownedRods.includes(
+    rodId
+  );
+
+}
+
+
+/* =========================================================
+   5. 레벨 보상 계산
+   ---------------------------------------------------------
+   5레벨마다 골드를 지급합니다.
+
+   LV 5  → 500G
+   LV 10 → 750G
+   LV 15 → 1,000G
+   ...
+   ========================================================= */
+
+function getLevelReward(
+  level
+) {
+
+  return (
+    250 +
+    level * 50
+  );
+
+}
+
+
+/* =========================================================
+   6. 레벨 보상 검사
+   ---------------------------------------------------------
+   현재 레벨까지의 5단위 보상을 확인하고
+   아직 받지 않은 보상만 지급합니다.
+   ========================================================= */
+
+function claimLevelRewards() {
+
+  ensureStep2GameData();
+
+
+  const currentLevel =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  const rewards = [];
+
+
+  for (
+    let level = 5;
+    level <= currentLevel;
+    level += 5
+  ) {
+
+    if (
+      game.levelRewardsClaimed
+        .includes(level)
+    ) {
+
+      continue;
+
+    }
+
+
+    const gold =
+      getLevelReward(
+        level
+      );
+
+
+    game.coins +=
+      gold;
+
+
+    game.levelRewardsClaimed.push(
+      level
+    );
+
+
+    rewards.push({
+      level,
+      gold
+    });
+
+  }
+
+
+  if (!rewards.length) {
+
+    return false;
+
+  }
+
+
+  /*
+    가장 최근 보상만 화면에 보여주고,
+    여러 개가 쌓였다면 한 번에 합산 안내합니다.
+  */
+
+  const totalGold =
+    rewards.reduce(
+      (
+        total,
+        reward
+      ) =>
+        total +
+        reward.gold,
+      0
+    );
+
+
+  if (
+    rewards.length === 1
+  ) {
+
+    toast(
+      `🎁 LV.${rewards[0].level} 달성 보상 +${formatNumber(rewards[0].gold)} G`
+    );
+
+  } else {
+
+    toast(
+      `🎁 레벨 보상 ${rewards.length}개 획득! +${formatNumber(totalGold)} G`
+    );
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   7. 상점 렌더링
+   ========================================================= */
+
+function renderShop() {
+
+  const content =
+    $("shopContent");
+
+  if (!content) {
+
+    return;
+
+  }
+
+
+  ensureStep2GameData();
+
+
+  content.innerHTML =
+    "";
+
+
+  SHOP_RODS.forEach(
+    (rod) => {
+
+      const owned =
+        ownsRod(
+          rod.id
+        );
+
+
+      const equipped =
+        game.rod ===
+        rod.id;
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "shop-item";
+
+
+      const priceText =
+        rod.price <= 0
+          ? "무료"
+          : `${formatNumber(rod.price)} G`;
+
+
+      let buttonText =
+        "구매";
+
+
+      if (equipped) {
+
+        buttonText =
+          "현재 장착";
+
+      } else if (owned) {
+
+        buttonText =
+          "장착";
+
+      }
+
+
+      item.innerHTML = `
+        <div class="shop-item-icon">
+          ${rod.emoji}
+        </div>
+
+        <div>
+          <div class="shop-item-title">
+            ${escapeHtml(rod.name)}
+          </div>
+
+          <div class="shop-item-description">
+            ${escapeHtml(rod.description)}
+          </div>
+
+          <div class="shop-item-price">
+            ${priceText}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="shop-buy-button"
+          data-rod-id="${rod.id}"
+          ${equipped ? "disabled" : ""}
+        >
+          ${buttonText}
+        </button>
+      `;
+
+
+      const button =
+        item.querySelector(
+          ".shop-buy-button"
+        );
+
+
+      if (button) {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            buyOrEquipRod(
+              rod.id
+            );
+
+          }
+        );
+
+      }
+
+
+      content.appendChild(
+        item
+      );
+
+    }
+  );
+
+
+  /*
+    현재 골드 안내
+  */
+
+  const wallet =
+    document.createElement(
+      "div"
+    );
+
+
+  wallet.className =
+    "shop-empty";
+
+
+  wallet.style.marginBottom =
+    "2px";
+
+
+  wallet.innerHTML = `
+    🪙 현재 보유 골드
+    <strong style="color: var(--gold); margin-left: 6px;">
+      ${formatNumber(game.coins)} G
+    </strong>
+  `;
+
+
+  content.prepend(
+    wallet
+  );
+
+}
+
+
+/* =========================================================
+   8. 낚싯대 구매 / 장착
+   ========================================================= */
+
+function buyOrEquipRod(
+  rodId
+) {
+
+  ensureStep2GameData();
+
+
+  const rod =
+    SHOP_RODS.find(
+      (item) =>
+        item.id === rodId
+    );
+
+
+  if (!rod) {
+
+    toast(
+      "존재하지 않는 낚싯대입니다."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    이미 보유했다면 장착
+  */
+
+  if (
+    ownsRod(
+      rodId
+    )
+  ) {
+
+    game.rod =
+      rodId;
+
+
+    save();
+
+
+    renderMain();
+
+    renderShop();
+
+
+    toast(
+      `🎣 ${rod.name} 장착!`
+    );
+
+    return;
+
+  }
+
+
+  /*
+    골드 부족
+  */
+
+  if (
+    game.coins <
+    rod.price
+  ) {
+
+    const shortage =
+      rod.price -
+      game.coins;
+
+
+    toast(
+      `🪙 골드가 ${formatNumber(shortage)} G 부족합니다.`
+    );
+
+    return;
+
+  }
+
+
+  /*
+    구매
+  */
+
+  game.coins -=
+    rod.price;
+
+
+  game.ownedRods.push(
+    rodId
+  );
+
+
+  game.rod =
+    rodId;
+
+
+  save();
+
+
+  renderMain();
+
+  renderShop();
+
+
+  toast(
+    `🎣 ${rod.name} 구매 및 장착 완료!`
+  );
+
+}
+
+
+/* =========================================================
+   9. 상점 탭
+   ---------------------------------------------------------
+   현재는 낚싯대부터 구현합니다.
+   미끼 시스템은 STEP 2 후반에 확장합니다.
+   ========================================================= */
+
+let step2ShopTab =
+  "rod";
+
+
+function renderBaitShopPlaceholder() {
+
+  const content =
+    $("shopContent");
+
+  if (!content) {
+
+    return;
+
+  }
+
+
+  ensureStep2GameData();
+
+
+  content.innerHTML = `
+    <div class="shop-empty">
+      <strong style="color: var(--cyan);">
+        🪱 미끼 시스템 준비 중
+      </strong>
+
+      <br><br>
+
+      다음 업데이트에서
+      <br>
+      일반 / 희귀 / 전설 / 신화 미끼가 추가됩니다.
+    </div>
+  `;
+
+}
+
+
+$("rodShopTab")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      step2ShopTab =
+        "rod";
+
+
+      $("rodShopTab")
+        ?.classList.add(
+          "active"
+        );
+
+
+      $("baitShopTab")
+        ?.classList.remove(
+          "active"
+        );
+
+
+      $("rodShopTab")
+        ?.setAttribute(
+          "aria-selected",
+          "true"
+        );
+
+
+      $("baitShopTab")
+        ?.setAttribute(
+          "aria-selected",
+          "false"
+        );
+
+
+      renderShop();
+
+    }
+  );
+
+
+$("baitShopTab")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      step2ShopTab =
+        "bait";
+
+
+      $("baitShopTab")
+        ?.classList.add(
+          "active"
+        );
+
+
+      $("rodShopTab")
+        ?.classList.remove(
+          "active"
+        );
+
+
+      $("baitShopTab")
+        ?.setAttribute(
+          "aria-selected",
+          "true"
+        );
+
+
+      $("rodShopTab")
+        ?.setAttribute(
+          "aria-selected",
+          "false"
+        );
+
+
+      renderBaitShopPlaceholder();
+
+    }
+  );
+
+
+/* =========================================================
+   10. 기존 상점 버튼에 렌더링 연결
+   ========================================================= */
+
+$("shopButton")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      step2ShopTab =
+        "rod";
+
+
+      $("rodShopTab")
+        ?.classList.add(
+          "active"
+        );
+
+
+      $("baitShopTab")
+        ?.classList.remove(
+          "active"
+        );
+
+
+      renderShop();
+
+    }
+  );
+
+
+/* =========================================================
+   11. 레벨 보상 연결
+   ---------------------------------------------------------
+   기존 낚시 로직을 건드리지 않고,
+   renderMain 호출 때마다 보상 여부를 확인합니다.
+   ========================================================= */
+
+const step2OriginalRenderMain =
+  renderMain;
+
+
+renderMain =
+  function () {
+
+    ensureStep2GameData();
+
+
+    /*
+      먼저 기존 화면 렌더링
+    */
+
+    step2OriginalRenderMain();
+
+
+    /*
+      레벨 보상 지급
+    */
+
+    const rewardClaimed =
+      claimLevelRewards();
+
+
+    /*
+      보상이 실제로 지급됐다면
+      다시 골드 화면을 업데이트합니다.
+    */
+
+    if (
+      rewardClaimed
+    ) {
+
+      step2OriginalRenderMain();
+
+      save();
+
+    }
+
+  };
+
+
+/* =========================================================
+   12. 최초 STEP 2 데이터 저장
+   ========================================================= */
+
+ensureStep2GameData();
+
+save();
+
+
+console.log(
+  "Ocean Catch STEP 2 - 1/5 loaded"
+);
