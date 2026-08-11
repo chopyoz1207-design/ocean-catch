@@ -33,6 +33,12 @@ function save() {
     }
 }
 function level(){return Math.floor(game.score/100)+1}function toast(t){el.toast.textContent=t;el.toast.classList.add('show');setTimeout(()=>el.toast.classList.remove('show'),2200)}
+function getFishIcon(emoji, name) {
+    if (name === '푸른 가재') {
+        return '<span class="blue-lobster">🦞</span>';
+    }
+    return emoji;
+}
 function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{let s=document.createElement('span');
 if(name === '푸른 가재') {
     s.innerHTML = '<span class="blue-lobster">🦞</span>';
@@ -43,7 +49,7 @@ s.title=name;
 if(game.found.includes(name))s.className='found';
         el.grid.append(s);
     });
-el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
+el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${getFishIcon(x.emoji, x.name)} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
 function cast(){if(state==='idle'){state='waiting';el.button.disabled=true;el.button.innerHTML='🌊 기다리는 중…';el.status.textContent='미끼가 물속으로 가라앉고 있습니다…';document.querySelector('.ocean-card').classList.add('casting');sound(310);biteTimer=setTimeout(bite,900+Math.random()*1700)}else if(state==='bite'){resolve(Number(el.needle.dataset.pos))}}
