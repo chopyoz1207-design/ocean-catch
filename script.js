@@ -1,9 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
+// 파이어베이스 설정 및 초기화 (compat 방식)
 const firebaseConfig = {
   apiKey: "AIzaSyAWawldJPcFQDjgyfkJcgGoPQxzzdDxjZ8",
   authDomain: "ocean-catch-ranking.firebaseapp.com",
@@ -13,9 +8,10 @@ const firebaseConfig = {
   appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
+// 파이어베이스 초기화
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 const fishData=[
  {r:'쓰레기',p:0,c:30,cls:'trash',items:[['🥫','찌그러진 깡통'],['🥾','해적의 장화'],['🛞','낡은 타이어'],['🪥','바다 칫솔']]},
