@@ -1,4 +1,20 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAWawldJPcFQDjgyfkJcgGoPQxzzdDxjZ8",
+  authDomain: "ocean-catch-ranking.firebaseapp.com",
+  projectId: "ocean-catch-ranking",
+  storageBucket: "ocean-catch-ranking.firebasestorage.app",
+  messagingSenderId: "63317267112",
+  appId: "1:63317267112:web:1beed3f77fdfd1d285289d"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 
 const fishData=[
