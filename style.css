@@ -34,6 +34,6 @@ input[type="text"]:focus {
     animation: rare-flash 1s ease-in-out;
 }
 .blue-lobster {
-    display: inline; /* 박스 영역을 없애고 주변 텍스트와 똑같이 어우러지게 설정 */
+    display: contents; /* 사각형 박스 영역을 완전히 없애고 부모 칸 안에서 이모지만 쏙 들어오게 함 */
     filter: hue-rotate(195deg) saturate(3) brightness(1.1);
 }
