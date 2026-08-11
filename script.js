@@ -7459,3 +7459,451 @@ save();
 console.log(
   "Ocean Catch STEP 2 - 1/5 loaded"
 );
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 2 - 2/5
+   낚싯대 능력치 실제 적용
+   ========================================================= */
+
+
+/* =========================================================
+   1. 희귀도별 행운 보정 배율
+   ---------------------------------------------------------
+   좋은 낚싯대일수록 높은 등급에 더 큰 보정이 들어갑니다.
+   ========================================================= */
+
+const ROD_RARITY_MULTIPLIER = {
+  trash: 0,
+  common: 0.35,
+  uncommon: 0.75,
+  rare: 1.5,
+  legendary: 2.5,
+  mythic: 4
+};
+
+
+/* =========================================================
+   2. 낚싯대 적용 확률 계산
+   ========================================================= */
+
+function getRodAdjustedWeight(fish) {
+
+  if (!fish) {
+    return 0;
+  }
+
+
+  const rod =
+    getCurrentRod();
+
+
+  const base =
+    Number(
+      fish.probability
+    ) || 0;
+
+
+  const rarityMultiplier =
+    ROD_RARITY_MULTIPLIER[
+      fish.rarity
+    ] ?? 1;
+
+
+  /*
+    rarityBonus가 0.10이면
+    전설에는 25%의 가중치 증가,
+    신화에는 40%의 가중치 증가가 적용됩니다.
+
+    이것은 기존 확률을 완전히 뒤집지 않으면서
+    좋은 장비의 차이를 체감시키기 위한 방식입니다.
+  */
+
+  const bonus =
+    Number(
+      rod.rarityBonus
+    ) *
+    rarityMultiplier;
+
+
+  return (
+    base *
+    (1 + bonus)
+  );
+
+}
+
+
+/* =========================================================
+   3. 낚싯대 적용 물고기 선택
+   ---------------------------------------------------------
+   기존 pickFish()를 교체합니다.
+   ========================================================= */
+
+const step2OriginalPickFish =
+  pickFish;
+
+
+pickFish =
+  function () {
+
+    ensureStep2GameData();
+
+
+    /*
+      사용할 물고기 목록
+    */
+
+    if (
+      !FISH_DATA ||
+      !FISH_DATA.length
+    ) {
+
+      return null;
+
+    }
+
+
+    /*
+      낚싯대 보정 확률이 적용된
+      임시 목록 생성
+    */
+
+    const adjustedFish =
+      FISH_DATA.map(
+        (fish) => ({
+          fish,
+          probability:
+            getRodAdjustedWeight(
+              fish
+            )
+        })
+      );
+
+
+    /*
+      기존 weightedRandom()을
+      그대로 활용합니다.
+    */
+
+    const picked =
+      weightedRandom(
+        adjustedFish,
+        "probability"
+      );
+
+
+    return (
+      picked?.fish ||
+      step2OriginalPickFish()
+    );
+
+  };
+
+
+/* =========================================================
+   4. 낚시 난이도 / 황금 구간 보정
+   ---------------------------------------------------------
+   좋은 낚싯대를 사용할수록 황금 구간이 넓어집니다.
+   ========================================================= */
+
+const step2OriginalSetTimingArea =
+  setTimingArea;
+
+
+setTimingArea =
+  function (fish) {
+
+    if (
+      !fish ||
+      !el.sweetSpot
+    ) {
+
+      return;
+
+    }
+
+
+    const rod =
+      getCurrentRod();
+
+
+    /*
+      기존 물고기 난이도를 기준으로
+      기본 황금 구간을 계산합니다.
+    */
+
+    const widths = {
+      1: 28,
+      2: 23,
+      3: 18,
+      4: 14,
+      5: 10
+    };
+
+
+    const baseWidth =
+      widths[
+        fish.difficulty
+      ] || 18;
+
+
+    /*
+      -0.05 → 약 5% 넓어짐
+      -0.10 → 약 10% 넓어짐
+      -0.15 → 약 15% 넓어짐
+      -0.20 → 약 20% 넓어짐
+    */
+
+    const multiplier =
+      1 -
+      Number(
+        rod.difficultyBonus || 0
+      );
+
+
+    /*
+      지나치게 쉬워지지 않도록 제한
+    */
+
+    const finalWidth =
+      Math.min(
+        38,
+        Math.max(
+          8,
+          baseWidth *
+          multiplier
+        )
+      );
+
+
+    const left =
+      50 -
+      finalWidth / 2;
+
+
+    el.sweetSpot.style.left =
+      `${left}%`;
+
+
+    el.sweetSpot.style.width =
+      `${finalWidth}%`;
+
+  };
+
+
+/* =========================================================
+   5. 확률표도 낚싯대 적용 확률을 사용
+   ========================================================= */
+
+const step2OriginalGetRarityProbability =
+  getRarityProbability;
+
+
+getRarityProbability =
+  function () {
+
+    ensureStep2GameData();
+
+
+    const result = {};
+
+    let totalWeight =
+      0;
+
+
+    /*
+      현재 낚싯대가 적용된
+      실제 가중치 계산
+    */
+
+    FISH_DATA.forEach(
+      (fish) => {
+
+        const weight =
+          getRodAdjustedWeight(
+            fish
+          );
+
+
+        totalWeight +=
+          weight;
+
+
+        if (
+          !result[
+            fish.rarity
+          ]
+        ) {
+
+          result[
+            fish.rarity
+          ] = {
+
+            rarity:
+              fish.rarity,
+
+            rarityName:
+              fish.rarityName,
+
+            weight: 0,
+
+            count: 0
+
+          };
+
+        }
+
+
+        result[
+          fish.rarity
+        ].weight +=
+          weight;
+
+
+        result[
+          fish.rarity
+        ].count +=
+          1;
+
+      }
+    );
+
+
+    /*
+      퍼센트 계산
+    */
+
+    Object.values(
+      result
+    ).forEach(
+      (group) => {
+
+        group.percent =
+          totalWeight > 0
+            ? (
+                group.weight /
+                totalWeight
+              ) *
+              100
+            : 0;
+
+      }
+    );
+
+
+    return result;
+
+  };
+
+
+/* =========================================================
+   6. 확률표 상단에 현재 낚싯대 표시
+   ========================================================= */
+
+const step2OriginalRenderProbabilityTable =
+  renderProbabilityTable;
+
+
+renderProbabilityTable =
+  function () {
+
+    step2OriginalRenderProbabilityTable();
+
+
+    if (
+      !el.probabilityTable
+    ) {
+
+      return;
+
+    }
+
+
+    const rod =
+      getCurrentRod();
+
+
+    const note =
+      document.createElement(
+        "div"
+      );
+
+
+    note.className =
+      "shop-empty";
+
+
+    note.style.marginBottom =
+      "10px";
+
+
+    note.innerHTML = `
+      🎣 현재 장비:
+      <strong style="color: var(--cyan);">
+        ${escapeHtml(rod.name)}
+      </strong>
+      <br>
+      희귀 보정 +${Math.round(
+        rod.rarityBonus * 100
+      )}%
+    `;
+
+
+    el.probabilityTable.prepend(
+      note
+    );
+
+  };
+
+
+/* =========================================================
+   7. 낚싯대 변경 후 화면 전체 즉시 갱신
+   ========================================================= */
+
+const step2OriginalBuyOrEquipRod =
+  buyOrEquipRod;
+
+
+buyOrEquipRod =
+  function (rodId) {
+
+    step2OriginalBuyOrEquipRod(
+      rodId
+    );
+
+
+    /*
+      장비 변경 직후
+      확률표와 메인 UI까지 갱신합니다.
+    */
+
+    renderMain();
+
+
+    renderProbabilityTable();
+
+  };
+
+
+/* =========================================================
+   8. 콘솔 확인용
+   ========================================================= */
+
+console.log(
+  "STEP 2 - 2/5: 낚싯대 능력치 적용 완료"
+);
+
+console.log(
+  "현재 낚싯대:",
+  getCurrentRod().name
+);
+
+console.log(
+  "희귀 보정:",
+  getCurrentRod().rarityBonus
+);
+
+console.log(
+  "난이도 보정:",
+  getCurrentRod().difficultyBonus
+);
