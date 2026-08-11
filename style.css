@@ -33,3 +33,7 @@ input[type="text"]:focus {
 .rare-flash {
     animation: rare-flash 1s ease-in-out;
 }
+.blue-lobster {
+    display: inline-block;
+    filter: hue-rotate(180deg) saturate(2); /* 빨간색을 파란색 계열로 회전 */
+}
