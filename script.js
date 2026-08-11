@@ -8912,3 +8912,907 @@ console.log(
   "현재 미끼:",
   getCurrentBait().name
 );
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 2 - 4/5
+   레벨 보상 UI / 레벨업 팝업 / 다음 보상 표시
+   ========================================================= */
+
+
+/* =========================================================
+   1. 레벨 보상 팝업 생성
+   ---------------------------------------------------------
+   index.html을 수정하지 않고 JavaScript로 생성합니다.
+   ========================================================= */
+
+function ensureLevelRewardModal() {
+
+  let modal =
+    document.getElementById(
+      "levelRewardModal"
+    );
+
+
+  if (modal) {
+    return modal;
+  }
+
+
+  modal =
+    document.createElement(
+      "div"
+    );
+
+
+  modal.id =
+    "levelRewardModal";
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  modal.innerHTML = `
+    <div class="level-reward-backdrop">
+      <div
+        class="level-reward-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="levelRewardTitle"
+      >
+
+        <button
+          type="button"
+          id="levelRewardClose"
+          aria-label="닫기"
+          class="level-reward-close"
+        >
+          ×
+        </button>
+
+
+        <div class="level-reward-stars">
+          ✦ ✦ ✦
+        </div>
+
+
+        <div class="level-reward-icon">
+          🎁
+        </div>
+
+
+        <div class="level-reward-kicker">
+          LEVEL REWARD
+        </div>
+
+
+        <h2 id="levelRewardTitle">
+          레벨 달성 보상!
+        </h2>
+
+
+        <div
+          id="levelRewardContent"
+          class="level-reward-content"
+        ></div>
+
+
+        <button
+          type="button"
+          id="levelRewardConfirm"
+          class="level-reward-confirm"
+        >
+          확인
+        </button>
+
+      </div>
+    </div>
+  `;
+
+
+  /*
+    기본 스타일을 JS로 넣습니다.
+  */
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "levelRewardStyles";
+
+
+  style.textContent = `
+
+    #levelRewardModal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+    }
+
+    #levelRewardModal.show {
+      display: grid;
+      place-items: center;
+      animation: levelRewardFadeIn .2s ease;
+    }
+
+    .level-reward-backdrop {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0, 10, 22, .78);
+      backdrop-filter: blur(8px);
+    }
+
+    .level-reward-panel {
+      position: relative;
+      width: min(390px, 92vw);
+      padding: 30px 24px 24px;
+      border-radius: 26px;
+      text-align: center;
+      color: var(--ink, #e9f8ff);
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(255, 215, 104, .16),
+          transparent 42%
+        ),
+        linear-gradient(
+          160deg,
+          #0b3f61,
+          #06243b 78%
+        );
+      border: 1px solid rgba(255, 215, 104, .35);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.55),
+        0 0 45px rgba(255,215,104,.12);
+      transform-origin: center;
+      animation: levelRewardPop .26s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .level-reward-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      color: #dff8ff;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .level-reward-stars {
+      color: #ffd768;
+      letter-spacing: 7px;
+      font-size: 12px;
+      opacity: .9;
+    }
+
+    .level-reward-icon {
+      margin-top: 8px;
+      font-size: 52px;
+      filter: drop-shadow(0 8px 15px rgba(0,0,0,.35));
+      animation: levelRewardBounce 1.2s ease infinite;
+    }
+
+    .level-reward-kicker {
+      margin-top: 8px;
+      color: #62e7ff;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    #levelRewardTitle {
+      margin: 5px 0 18px;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .level-reward-content {
+      display: grid;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+
+    .level-reward-item {
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .level-reward-level {
+      color: #9fcfe2;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .level-reward-gold {
+      margin-top: 4px;
+      color: #ffd768;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .level-reward-more {
+      margin-top: 3px;
+      color: #91bed4;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .level-reward-confirm {
+      width: 100%;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 13px;
+      color: #062033;
+      background:
+        linear-gradient(
+          135deg,
+          #ffd768,
+          #fff0a2
+        );
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow:
+        0 7px 0 #b99330,
+        0 12px 22px rgba(0,0,0,.28);
+    }
+
+    .level-reward-confirm:active {
+      transform: translateY(4px);
+      box-shadow:
+        0 3px 0 #b99330,
+        0 7px 14px rgba(0,0,0,.24);
+    }
+
+    .level-reward-preview {
+      margin-top: 12px;
+      padding: 9px 11px;
+      border-radius: 10px;
+      background: rgba(255,215,104,.07);
+      border: 1px solid rgba(255,215,104,.12);
+      color: #91bed4;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .level-reward-preview strong {
+      color: #ffd768;
+    }
+
+    @keyframes levelRewardFadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes levelRewardPop {
+      from {
+        opacity: 0;
+        transform: scale(.88) translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes levelRewardBounce {
+      0%, 100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+
+      50% {
+        transform: translateY(-7px) rotate(2deg);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .level-reward-panel {
+        padding: 25px 18px 18px;
+      }
+
+      #levelRewardTitle {
+        font-size: 22px;
+      }
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+
+  document.body.appendChild(
+    modal
+  );
+
+
+  /*
+    닫기 이벤트
+  */
+
+  const close =
+    () => {
+
+      modal.classList.remove(
+        "show"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    };
+
+
+  document
+    .getElementById(
+      "levelRewardClose"
+    )
+    ?.addEventListener(
+      "click",
+      close
+    );
+
+
+  document
+    .getElementById(
+      "levelRewardConfirm"
+    )
+    ?.addEventListener(
+      "click",
+      close
+    );
+
+
+  const backdrop =
+    modal.querySelector(
+      ".level-reward-backdrop"
+    );
+
+
+  backdrop?.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target ===
+        backdrop
+      ) {
+
+        close();
+
+      }
+
+    }
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Escape" &&
+        modal.classList.contains(
+          "show"
+        )
+      ) {
+
+        close();
+
+      }
+
+    }
+  );
+
+
+  return modal;
+
+}
+
+
+/* =========================================================
+   2. 레벨 보상 팝업 표시
+   ========================================================= */
+
+function showLevelRewardPopup(
+  rewards
+) {
+
+  if (
+    !rewards ||
+    !rewards.length
+  ) {
+
+    return;
+
+  }
+
+
+  const modal =
+    ensureLevelRewardModal();
+
+
+  const content =
+    document.getElementById(
+      "levelRewardContent"
+    );
+
+
+  if (!content) {
+
+    return;
+
+  }
+
+
+  /*
+    모든 보상을 보여주되,
+    너무 많으면 처음 8개만 표시합니다.
+  */
+
+  const visibleRewards =
+    rewards.slice(
+      0,
+      8
+    );
+
+
+  content.innerHTML =
+    visibleRewards
+      .map(
+        (reward) => {
+
+          return `
+            <div class="level-reward-item">
+
+              <div class="level-reward-level">
+                LEVEL ${reward.level}
+              </div>
+
+              <div class="level-reward-gold">
+                🪙 +${formatNumber(
+                  reward.gold
+                )} G
+              </div>
+
+            </div>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  if (
+    rewards.length > 8
+  ) {
+
+    content.innerHTML += `
+      <div class="level-reward-more">
+        외 ${rewards.length - 8}개의 레벨 보상도 획득했습니다.
+      </div>
+    `;
+
+  }
+
+
+  const totalGold =
+    rewards.reduce(
+      (
+        total,
+        reward
+      ) =>
+        total +
+        reward.gold,
+      0
+    );
+
+
+  const title =
+    document.getElementById(
+      "levelRewardTitle"
+    );
+
+
+  if (title) {
+
+    if (
+      rewards.length === 1
+    ) {
+
+      title.textContent =
+        `LV.${rewards[0].level} 달성!`;
+
+    } else {
+
+      title.textContent =
+        `${rewards.length}개 레벨 보상 획득!`;
+
+    }
+
+  }
+
+
+  /*
+    총 획득량 표시
+  */
+
+  content.innerHTML += `
+    <div class="level-reward-item"
+         style="border-color: rgba(255,215,104,.25);">
+
+      <div class="level-reward-level">
+        TOTAL REWARD
+      </div>
+
+      <div class="level-reward-gold">
+        🪙 +${formatNumber(totalGold)} G
+      </div>
+
+    </div>
+  `;
+
+
+  modal.classList.add(
+    "show"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  /*
+    보상음
+  */
+
+  try {
+
+    sound(
+      980,
+      0.18,
+      "sine",
+      0.08
+    );
+
+  } catch (
+    error
+  ) {
+
+    console.debug(
+      "레벨 보상 효과음 생략:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   3. 기존 레벨 보상 함수와 연결
+   ---------------------------------------------------------
+   기존 함수는 실제로 골드를 지급하고
+   levelRewardsClaimed에 기록합니다.
+
+   여기서는 "어떤 레벨 보상을 새로 받았는지"
+   감지해서 팝업만 추가합니다.
+   ========================================================= */
+
+const step4OldClaimLevelRewards =
+  claimLevelRewards;
+
+
+claimLevelRewards =
+  function () {
+
+    ensureStep2GameData();
+
+
+    const before =
+      Array.isArray(
+        game.levelRewardsClaimed
+      )
+        ? [
+            ...game.levelRewardsClaimed
+          ]
+        : [];
+
+
+    const result =
+      step4OldClaimLevelRewards();
+
+
+    const after =
+      Array.isArray(
+        game.levelRewardsClaimed
+      )
+        ? game.levelRewardsClaimed
+        : [];
+
+
+    /*
+      새로 지급된 레벨만 골라냅니다.
+    */
+
+    const newlyClaimed =
+      after
+        .filter(
+          (level) =>
+            !before.includes(
+              level
+            )
+        )
+        .sort(
+          (a, b) =>
+            a - b
+        )
+        .map(
+          (level) => ({
+            level,
+            gold:
+              getLevelReward(
+                level
+              )
+          })
+        );
+
+
+    if (
+      newlyClaimed.length
+    ) {
+
+      /*
+        팝업 표시를 다음 렌더 사이클로 넘겨
+        화면 갱신과 충돌하지 않도록 합니다.
+      */
+
+      setTimeout(
+        () => {
+
+          showLevelRewardPopup(
+            newlyClaimed
+          );
+
+        },
+        120
+      );
+
+    }
+
+
+    return result;
+
+  };
+
+
+/* =========================================================
+   4. 다음 레벨 보상 표시
+   ========================================================= */
+
+function getNextLevelRewardInfo() {
+
+  ensureStep2GameData();
+
+
+  const currentLevel =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  /*
+    다음 5의 배수 레벨
+  */
+
+  let nextRewardLevel =
+    Math.ceil(
+      currentLevel / 5
+    ) * 5;
+
+
+  /*
+    현재 레벨이 이미 보상 레벨이면
+    다음 보상으로 이동
+  */
+
+  if (
+    nextRewardLevel <=
+    currentLevel
+  ) {
+
+    nextRewardLevel +=
+      5;
+
+  }
+
+
+  /*
+    게임 상한 없이 계속 계산
+  */
+
+  const reward =
+    getLevelReward(
+      nextRewardLevel
+    );
+
+
+  const xpNeeded =
+    Math.max(
+      0,
+      (
+        (
+          nextRewardLevel - 1
+        ) * 100
+      ) -
+      game.score
+    );
+
+
+  return {
+    level:
+      nextRewardLevel,
+
+    gold:
+      reward,
+
+    xpNeeded
+  };
+
+}
+
+
+/* =========================================================
+   5. 메인 점수 카드에 다음 보상 표시
+   ========================================================= */
+
+function updateNextLevelRewardPreview() {
+
+  if (!el.score) {
+
+    return;
+
+  }
+
+
+  const scoreCard =
+    el.score.closest(
+      ".score-card"
+    );
+
+
+  if (!scoreCard) {
+
+    return;
+
+  }
+
+
+  let preview =
+    scoreCard.querySelector(
+      ".level-reward-preview"
+    );
+
+
+  if (!preview) {
+
+    preview =
+      document.createElement(
+        "div"
+      );
+
+    preview.className =
+      "level-reward-preview";
+
+
+    const xpSmall =
+      scoreCard.querySelector(
+        "small"
+      );
+
+
+    if (xpSmall) {
+
+      xpSmall.after(
+        preview
+      );
+
+    } else {
+
+      scoreCard.appendChild(
+        preview
+      );
+
+    }
+
+  }
+
+
+  const next =
+    getNextLevelRewardInfo();
+
+
+  preview.innerHTML = `
+    🎁 다음 보상:
+    <strong>
+      LV.${next.level}
+    </strong>
+    · 🪙
+    <strong>
+      +${formatNumber(next.gold)} G
+    </strong>
+  `;
+
+}
+
+
+/* =========================================================
+   6. 기존 renderMain 이후에 보상 표시 갱신
+   ========================================================= */
+
+const step4OldRenderMain =
+  renderMain;
+
+
+renderMain =
+  function () {
+
+    step4OldRenderMain();
+
+
+    updateNextLevelRewardPreview();
+
+  };
+
+
+/* =========================================================
+   7. 레벨업 즉시 감지
+   ---------------------------------------------------------
+   게임 실행 중 레벨이 오르면 보상이 자연스럽게
+   renderMain()을 통해 처리됩니다.
+   ========================================================= */
+
+
+/* =========================================================
+   8. 시작 시 초기화
+   ========================================================= */
+
+ensureStep2GameData();
+
+ensureLevelRewardModal();
+
+updateNextLevelRewardPreview();
+
+
+console.log(
+  "STEP 2 - 4/5: 레벨 보상 UI 적용 완료"
+);
