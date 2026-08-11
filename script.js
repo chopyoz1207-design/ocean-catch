@@ -22,7 +22,17 @@ const fishData=[
 const $=id=>document.getElementById(id);
 const el={score:$('score'),coins:$('coins'),level:$('level'),xp:$('xpBar'),xpText:$('xpText'),button:$('fishButton'),status:$('statusLabel'),message:$('catchMessage'),line:$('line'),bobber:$('bobber'),timing:$('timingArea'),needle:$('meterNeedle'),logs:$('logList'),grid:$('collectionGrid'),combo:$('combo'),badge:$('comboBadge'),toast:$('toast')};
 let game=JSON.parse(localStorage.getItem('oceanCatchSave'))||{score:0,coins:0,combo:0,found:[],logs:[]},state='idle',needleTimer,biteTimer,soundOn=true;
-function save(){localStorage.setItem('oceanCatchSave',JSON.stringify(game))}function level(){return Math.floor(game.score/100)+1}function toast(t){el.toast.textContent=t;el.toast.classList.add('show');setTimeout(()=>el.toast.classList.remove('show'),2200)}
+function save() {
+    // 1. 내 기기 저장
+    localStorage.setItem('oceanCatchSave', JSON.stringify(game));
+    
+    // 2. 파이어베이스 클라우드 저장
+    const user = firebase.auth().currentUser;
+    if (user) {
+        db.collection('users').doc(user.uid).set(game);
+    }
+}
+function level(){return Math.floor(game.score/100)+1}function toast(t){el.toast.textContent=t;el.toast.classList.add('show');setTimeout(()=>el.toast.classList.remove('show'),2200)}
 function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{let s=document.createElement('span');s.textContent=emoji;s.title=name;if(game.found.includes(name))s.className='found';el.grid.append(s)});el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
@@ -116,7 +126,18 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
         firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.firestore();
-
+// 로그인 성공 시 Firestore에서 데이터 불러오기
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    db.collection('users').doc(user.uid).get().then((doc) => {
+      if (doc.exists) {
+        game = doc.data();
+        render(); // 게임 화면 갱신
+        console.log("데이터를 불러왔습니다!");
+      }
+    });
+  }
+});
     window.loadLeaderboard = function() {
         const listEl = document.getElementById("leaderboardList");
         if (!listEl) return;
