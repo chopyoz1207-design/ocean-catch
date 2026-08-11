@@ -11779,6 +11779,8 @@ function closeRegionModal() {
   modal.hidden =
     true;
 
+  modal.style.display =
+  "none";
 
   modal.setAttribute(
     "aria-hidden",
