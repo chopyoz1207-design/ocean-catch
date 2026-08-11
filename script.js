@@ -7907,3 +7907,1008 @@ console.log(
   "난이도 보정:",
   getCurrentRod().difficultyBonus
 );
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 2 - 3/5
+   미끼 상점 / 미끼 선택 / 미끼 효과
+   ========================================================= */
+
+
+/* =========================================================
+   1. 미끼 데이터
+   ========================================================= */
+
+const SHOP_BAITS = [
+  {
+    id: "normal",
+    name: "일반 미끼",
+    emoji: "🪱",
+    price: 0,
+    description:
+      "기본 미끼입니다. 소모되지 않습니다.",
+    weightBonus: {
+      trash: 1,
+      common: 1,
+      uncommon: 1,
+      rare: 1,
+      legendary: 1,
+      mythic: 1
+    },
+    infinite: true
+  },
+
+  {
+    id: "rare",
+    name: "희귀 미끼",
+    emoji: "💜",
+    price: 300,
+    description:
+      "희귀 이상의 물고기를 노릴 때 사용하는 특별한 미끼입니다.",
+    weightBonus: {
+      trash: 0.15,
+      common: 0.45,
+      uncommon: 0.9,
+      rare: 3.5,
+      legendary: 2.0,
+      mythic: 1.5
+    },
+    infinite: false
+  },
+
+  {
+    id: "legendary",
+    name: "전설 미끼",
+    emoji: "👑",
+    price: 1500,
+    description:
+      "전설급 물고기를 노리는 강력한 미끼입니다.",
+    weightBonus: {
+      trash: 0.05,
+      common: 0.20,
+      uncommon: 0.50,
+      rare: 1.25,
+      legendary: 6.0,
+      mythic: 3.0
+    },
+    infinite: false
+  },
+
+  {
+    id: "mythic",
+    name: "신화 미끼",
+    emoji: "🔱",
+    price: 10000,
+    description:
+      "심해의 전설을 넘어선 존재를 부르는 미끼입니다.",
+    weightBonus: {
+      trash: 0.01,
+      common: 0.08,
+      uncommon: 0.15,
+      rare: 0.50,
+      legendary: 2.0,
+      mythic: 12.0
+    },
+    infinite: false
+  }
+];
+
+
+/* =========================================================
+   2. STEP 3 데이터 보정
+   ========================================================= */
+
+function ensureStep3GameData() {
+
+  ensureStep2GameData();
+
+
+  if (!game.baits) {
+
+    game.baits = {
+      normal: 9999,
+      rare: 0,
+      legendary: 0,
+      mythic: 0
+    };
+
+  }
+
+
+  if (
+    game.baits.normal === undefined ||
+    game.baits.normal === null
+  ) {
+
+    game.baits.normal =
+      9999;
+
+  }
+
+
+  if (
+    game.baits.rare === undefined ||
+    game.baits.rare === null
+  ) {
+
+    game.baits.rare =
+      0;
+
+  }
+
+
+  if (
+    game.baits.legendary === undefined ||
+    game.baits.legendary === null
+  ) {
+
+    game.baits.legendary =
+      0;
+
+  }
+
+
+  if (
+    game.baits.mythic === undefined ||
+    game.baits.mythic === null
+  ) {
+
+    game.baits.mythic =
+      0;
+
+  }
+
+
+  /*
+    현재 선택한 미끼
+  */
+
+  if (
+    !game.selectedBait
+  ) {
+
+    game.selectedBait =
+      "normal";
+
+  }
+
+
+  /*
+    존재하지 않는 미끼가 선택되어 있으면
+    일반 미끼로 복구
+  */
+
+  const validBait =
+    SHOP_BAITS.some(
+      (bait) =>
+        bait.id ===
+        game.selectedBait
+    );
+
+
+  if (!validBait) {
+
+    game.selectedBait =
+      "normal";
+
+  }
+
+}
+
+
+/* =========================================================
+   3. 현재 미끼
+   ========================================================= */
+
+function getCurrentBait() {
+
+  ensureStep3GameData();
+
+
+  return (
+    SHOP_BAITS.find(
+      (bait) =>
+        bait.id ===
+        game.selectedBait
+    ) ||
+    SHOP_BAITS[0]
+  );
+
+}
+
+
+/* =========================================================
+   4. 미끼 보유량
+   ========================================================= */
+
+function getBaitAmount(
+  baitId
+) {
+
+  ensureStep3GameData();
+
+
+  if (
+    baitId ===
+    "normal"
+  ) {
+
+    return Infinity;
+
+  }
+
+
+  return Number(
+    game.baits?.[
+      baitId
+    ] || 0
+  );
+
+}
+
+
+/* =========================================================
+   5. 미끼 표시 교체
+   ========================================================= */
+
+const step3OldGetBaitDisplay =
+  getBaitDisplay;
+
+
+getBaitDisplay =
+  function () {
+
+    ensureStep3GameData();
+
+
+    const bait =
+      getCurrentBait();
+
+
+    if (
+      bait.infinite
+    ) {
+
+      return (
+        `${bait.emoji} ${bait.name} ×∞`
+      );
+
+    }
+
+
+    const amount =
+      getBaitAmount(
+        bait.id
+      );
+
+
+    return (
+      `${bait.emoji} ${bait.name} ×${formatNumber(amount)}`
+    );
+
+  };
+
+
+/* =========================================================
+   6. 미끼의 등급별 보정
+   ========================================================= */
+
+function getBaitRarityMultiplier(
+  fish
+) {
+
+  if (!fish) {
+
+    return 1;
+
+  }
+
+
+  const bait =
+    getCurrentBait();
+
+
+  return (
+    bait.weightBonus?.[
+      fish.rarity
+    ] ??
+    1
+  );
+
+}
+
+
+/* =========================================================
+   7. 낚싯대 + 미끼 확률 계산
+   ---------------------------------------------------------
+   STEP 2-2에서 만든 낚싯대 보정에
+   미끼 보정을 한 번 더 적용합니다.
+   ========================================================= */
+
+const step3OldGetRodAdjustedWeight =
+  getRodAdjustedWeight;
+
+
+getRodAdjustedWeight =
+  function (fish) {
+
+    const rodWeight =
+      step3OldGetRodAdjustedWeight(
+        fish
+      );
+
+
+    const baitMultiplier =
+      getBaitRarityMultiplier(
+        fish
+      );
+
+
+    return (
+      rodWeight *
+      baitMultiplier
+    );
+
+  };
+
+
+/* =========================================================
+   8. 미끼 소비
+   ========================================================= */
+
+function consumeCurrentBait() {
+
+  ensureStep3GameData();
+
+
+  const bait =
+    getCurrentBait();
+
+
+  /*
+    일반 미끼는 무한
+  */
+
+  if (
+    bait.infinite
+  ) {
+
+    return true;
+
+  }
+
+
+  const amount =
+    getBaitAmount(
+      bait.id
+    );
+
+
+  if (
+    amount <= 0
+  ) {
+
+    return false;
+
+  }
+
+
+  game.baits[
+    bait.id
+  ] =
+    amount - 1;
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   9. 낚시 시작 전에 미끼 확인 / 소비
+   ========================================================= */
+
+const step3OldBeginCast =
+  beginCast;
+
+
+beginCast =
+  function () {
+
+    ensureStep3GameData();
+
+
+    const bait =
+      getCurrentBait();
+
+
+    const amount =
+      getBaitAmount(
+        bait.id
+      );
+
+
+    /*
+      미끼가 없다면 낚시 시작을 막습니다.
+    */
+
+    if (
+      !bait.infinite &&
+      amount <= 0
+    ) {
+
+      toast(
+        `🪱 ${bait.name}이 없습니다. 상점에서 구매하세요.`
+      );
+
+
+      /*
+        일반 미끼로 자동 전환
+      */
+
+      game.selectedBait =
+        "normal";
+
+
+      renderMain();
+
+
+      return;
+
+    }
+
+
+    /*
+      낚시 1회 시작 시 미끼 1개 소비
+    */
+
+    const consumed =
+      consumeCurrentBait();
+
+
+    if (!consumed) {
+
+      game.selectedBait =
+        "normal";
+
+
+      renderMain();
+
+
+      return;
+
+    }
+
+
+    /*
+      저장
+    */
+
+    save();
+
+
+    /*
+      기존 낚시 시작
+    */
+
+    step3OldBeginCast();
+
+
+    /*
+      화면에 현재 미끼 표시
+    */
+
+    renderMain();
+
+  };
+
+
+/* =========================================================
+   10. 미끼 구매
+   ========================================================= */
+
+function buyBait(
+  baitId
+) {
+
+  ensureStep3GameData();
+
+
+  const bait =
+    SHOP_BAITS.find(
+      (item) =>
+        item.id ===
+        baitId
+    );
+
+
+  if (!bait) {
+
+    toast(
+      "존재하지 않는 미끼입니다."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    일반 미끼는 구매할 필요 없음
+  */
+
+  if (
+    bait.infinite
+  ) {
+
+    game.selectedBait =
+      "normal";
+
+
+    renderMain();
+
+    renderBaitShop();
+
+
+    toast(
+      "🪱 일반 미끼를 선택했습니다."
+    );
+
+    return;
+
+  }
+
+
+  /*
+    골드 부족
+  */
+
+  if (
+    game.coins <
+    bait.price
+  ) {
+
+    const shortage =
+      bait.price -
+      game.coins;
+
+
+    toast(
+      `🪙 골드가 ${formatNumber(shortage)} G 부족합니다.`
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+    구매
+  */
+
+  game.coins -=
+    bait.price;
+
+
+  game.baits[
+    bait.id
+  ] =
+    getBaitAmount(
+      bait.id
+    ) + 1;
+
+
+  /*
+    구매한 미끼를 즉시 선택
+  */
+
+  game.selectedBait =
+    bait.id;
+
+
+  save();
+
+
+  renderMain();
+
+  renderBaitShop();
+
+
+  toast(
+    `${bait.emoji} ${bait.name} 구매! 바로 장착했습니다.`
+  );
+
+}
+
+
+/* =========================================================
+   11. 미끼 장착
+   ========================================================= */
+
+function equipBait(
+  baitId
+) {
+
+  ensureStep3GameData();
+
+
+  const bait =
+    SHOP_BAITS.find(
+      (item) =>
+        item.id ===
+        baitId
+    );
+
+
+  if (!bait) {
+
+    return;
+
+  }
+
+
+  if (
+    !bait.infinite &&
+    getBaitAmount(
+      bait.id
+    ) <= 0
+  ) {
+
+    toast(
+      "🪱 이 미끼를 가지고 있지 않습니다."
+    );
+
+    return;
+
+  }
+
+
+  game.selectedBait =
+    bait.id;
+
+
+  save();
+
+
+  renderMain();
+
+  renderBaitShop();
+
+
+  toast(
+    `${bait.emoji} ${bait.name} 장착!`
+  );
+
+}
+
+
+/* =========================================================
+   12. 미끼 상점 렌더링
+   ========================================================= */
+
+function renderBaitShop() {
+
+  const content =
+    $("shopContent");
+
+
+  if (!content) {
+
+    return;
+
+  }
+
+
+  ensureStep3GameData();
+
+
+  content.innerHTML =
+    "";
+
+
+  /*
+    현재 보유 골드
+  */
+
+  const wallet =
+    document.createElement(
+      "div"
+    );
+
+
+  wallet.className =
+    "shop-empty";
+
+
+  wallet.style.marginBottom =
+    "10px";
+
+
+  wallet.innerHTML = `
+    🪙 현재 보유 골드
+    <strong style="color: var(--gold); margin-left: 6px;">
+      ${formatNumber(game.coins)} G
+    </strong>
+  `;
+
+
+  content.appendChild(
+    wallet
+  );
+
+
+  /*
+    미끼 목록
+  */
+
+  SHOP_BAITS.forEach(
+    (bait) => {
+
+      const amount =
+        getBaitAmount(
+          bait.id
+        );
+
+
+      const selected =
+        game.selectedBait ===
+        bait.id;
+
+
+      const owned =
+        bait.infinite ||
+        amount > 0;
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "shop-item";
+
+
+      const priceText =
+        bait.infinite
+          ? "무료"
+          : `${formatNumber(bait.price)} G`;
+
+
+      const countText =
+        bait.infinite
+          ? "∞"
+          : formatNumber(
+              amount
+            );
+
+
+      let buttonText =
+        "구매";
+
+
+      if (selected) {
+
+        buttonText =
+          "현재 사용 중";
+
+      } else if (owned) {
+
+        buttonText =
+          "사용";
+
+      }
+
+
+      item.innerHTML = `
+        <div class="shop-item-icon">
+          ${bait.emoji}
+        </div>
+
+        <div>
+          <div class="shop-item-title">
+            ${escapeHtml(bait.name)}
+          </div>
+
+          <div class="shop-item-description">
+            ${escapeHtml(bait.description)}
+          </div>
+
+          <div class="shop-item-price">
+            ${priceText}
+            · 보유 ${countText}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="shop-buy-button"
+          data-bait-id="${bait.id}"
+          ${selected ? "disabled" : ""}
+        >
+          ${buttonText}
+        </button>
+      `;
+
+
+      const button =
+        item.querySelector(
+          ".shop-buy-button"
+        );
+
+
+      if (button) {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            /*
+              이미 가지고 있다면 장착,
+              가지고 있지 않다면 구매
+            */
+
+            if (
+              bait.infinite ||
+              getBaitAmount(
+                bait.id
+              ) > 0
+            ) {
+
+              equipBait(
+                bait.id
+              );
+
+            } else {
+
+              buyBait(
+                bait.id
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      content.appendChild(
+        item
+      );
+
+    }
+  );
+
+
+  /*
+    사용 중인 미끼 설명
+  */
+
+  const current =
+    getCurrentBait();
+
+
+  const info =
+    document.createElement(
+      "div"
+    );
+
+
+  info.className =
+    "shop-empty";
+
+
+  info.style.marginTop =
+    "10px";
+
+
+  info.innerHTML = `
+    현재 사용 중:
+    <strong style="color: var(--cyan);">
+      ${current.emoji} ${escapeHtml(current.name)}
+    </strong>
+  `;
+
+
+  content.appendChild(
+    info
+  );
+
+}
+
+
+/* =========================================================
+   13. 미끼 탭을 실제 상점으로 교체
+   ========================================================= */
+
+$("baitShopTab")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      renderBaitShop();
+
+    }
+  );
+
+
+/* =========================================================
+   14. 상점 열릴 때 미끼 상태 최신화
+   ========================================================= */
+
+const step3OldRenderShop =
+  renderShop;
+
+
+renderShop =
+  function () {
+
+    step3OldRenderShop();
+
+  };
+
+
+/* =========================================================
+   15. 낚시대 상점 클릭 시
+   미끼 데이터도 안전하게 준비
+   ========================================================= */
+
+$("shopButton")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      ensureStep3GameData();
+
+    }
+  );
+
+
+/* =========================================================
+   16. 메인 UI의 미끼 표시를 항상 최신화
+   ========================================================= */
+
+const step3OldRenderMain =
+  renderMain;
+
+
+renderMain =
+  function () {
+
+    ensureStep3GameData();
+
+
+    step3OldRenderMain();
+
+
+    if (
+      el.baitName
+    ) {
+
+      el.baitName.textContent =
+        getBaitDisplay();
+
+    }
+
+  };
+
+
+/* =========================================================
+   17. 시작 시 데이터 보정
+   ========================================================= */
+
+ensureStep3GameData();
+
+save();
+
+
+console.log(
+  "STEP 2 - 3/5: 미끼 시스템 적용 완료"
+);
+
+console.log(
+  "현재 미끼:",
+  getCurrentBait().name
+);
