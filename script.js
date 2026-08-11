@@ -115,7 +115,7 @@ function resolve(p){
     state='idle';
     resetSea();
     el.status.textContent=perfect?'PERFECT CAST! 보너스가 적용됐어요.':'좋은 타이밍이에요!';
-    messageElement.innerHTML = `${getFishIcon(emoji, name)} ${name}을(를) 낚았습니다!`;
+    el.message.innerHTML = `${getFishIcon(emoji, name)} ${name}을(를) 낚았습니다!`;
     el.button.disabled=false;
     el.button.innerHTML='🎣 한 번 더 낚시하기';
     render();
