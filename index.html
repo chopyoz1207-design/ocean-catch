@@ -4,79 +4,825 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#06233c">
+  <meta
+    name="description"
+    content="Ocean Catch - 심해의 낚시꾼. 물고기를 수집하고 기록하며 최고의 낚시꾼을 목표로 하는 무료 웹 낚시 게임."
+  >
+  <meta name="color-scheme" content="dark">
   <title>Ocean Catch | 심해의 낚시꾼</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nunito:wght@500;700;800;900&display=swap"
+  >
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<!-- 구글 로그인 UI 영역 -->
-<div id="authContainer" style="text-align: right; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px;">
-    <span id="userInfo" style="color: #61dafb; font-weight: bold; display: none;"></span>
-    <button id="loginBtn" style="padding: 8px 15px; background: #4285F4; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">Google 로그인</button>
-    <button id="logoutBtn" style="padding: 8px 15px; background: #627d98; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; display: none;">로그아웃</button>
-</div>
 
-  <div class="sky-glow"></div>
+<body>
+  <!--
+    ============================================================
+    OCEAN CATCH 2.0 - STEP 1
+    "세계 제일의 낚시 게임"을 위한 HTML 기반 구조
+    ------------------------------------------------------------
+    기존 게임 기능을 유지하면서 다음 확장을 위한 자리도 함께 마련합니다.
+
+    - 35종 물고기 데이터
+    - 일반/희귀/전설/신화 도감
+    - 물고기 상세 정보
+    - 길이 / 무게 / 최고 기록
+    - 낚싯대 상점
+    - 미끼 인벤토리
+    - 확률표
+    - 인트로
+    - 낚시꾼 애니메이션
+    - 희귀도별 캐치 연출
+    ============================================================
+  -->
+
+  <!-- =========================
+       INTRO / START SCREEN
+       ========================= -->
+  <div id="introScreen" class="intro-screen" aria-hidden="true">
+    <div class="intro-overlay"></div>
+
+    <div class="intro-panel">
+      <div class="intro-logo" aria-hidden="true">🎣</div>
+
+      <p class="intro-kicker">OCEAN CATCH</p>
+      <h1>심해의 낚시꾼</h1>
+
+      <p class="intro-story">
+        아무도 발견하지 못한 물고기가<br>
+        이 바다 어딘가에 숨어 있다는 소문이 있습니다.
+      </p>
+
+      <p class="intro-story secondary">
+        당신의 목표는 단 하나.<br>
+        <strong>세계 최고의 낚시꾼</strong>이 되는 것.
+      </p>
+
+      <button id="startGameButton" class="intro-start-button" type="button">
+        🌊 낚시 시작
+      </button>
+
+      <small class="intro-note">
+        저장 데이터는 사용 중인 브라우저에 보관됩니다.
+      </small>
+    </div>
+  </div>
+
+  <!-- =========================
+       AUTH
+       ========================= -->
+  <div
+    id="authContainer"
+    class="auth-bar"
+    aria-label="계정 영역"
+  >
+    <span id="userInfo" class="user-info" hidden></span>
+
+    <button id="loginBtn" class="auth-button login-button" type="button">
+      Google 로그인
+    </button>
+
+    <button id="logoutBtn" class="auth-button logout-button" type="button" hidden>
+      로그아웃
+    </button>
+  </div>
+
+  <div class="sky-glow" aria-hidden="true"></div>
+
   <main class="game-shell">
+    <!-- =========================
+         TOP BAR
+         ========================= -->
     <header class="topbar">
-      <div class="brand"><span>🎣</span><div><small>OCEAN CATCH</small><h1 style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">심해의 낚시꾼</h1></div></div>
-      <div class="top-stats"><div><span>LV.</span><b id="level">1</b></div><div><span>COINS</span><b id="coins">0</b></div><button class="icon-button" id="soundButton" aria-label="효과음 켜기 또는 끄기">🔊</button></div>
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">🎣</span>
+
+        <div>
+          <small>OCEAN CATCH</small>
+          <h1>심해의 낚시꾼</h1>
+        </div>
+      </div>
+
+      <div class="top-stats">
+        <div class="stat-chip" aria-label="현재 레벨">
+          <span>LV.</span>
+          <b id="level">1</b>
+        </div>
+
+        <div class="stat-chip" aria-label="보유 골드">
+          <span>COINS</span>
+          <b id="coins">0</b>
+        </div>
+
+        <button
+          class="icon-button"
+          id="soundButton"
+          type="button"
+          aria-label="효과음 켜기 또는 끄기"
+          title="소리 켜기/끄기"
+        >
+          🔊
+        </button>
+      </div>
     </header>
 
-    <section class="ocean-card" aria-label="낚시 바다">
-      <div class="moon"></div><div class="stars">✦　·　✧　　·　✦　　·　✧</div>
-      <div class="island">🌴</div><div class="boat">🛶</div>
-      <div class="fish fish-one">🐟</div><div class="fish fish-two">🐠</div><div class="fish fish-three">🦑</div>
-      <div class="line" id="line"></div><div class="bobber" id="bobber">🔴</div>
-      <div class="water water-back"></div><div class="water water-front"></div>
-      <div class="ocean-copy"><p id="statusLabel">잔잔한 바다에 낚싯대를 드리워 보세요.</p><strong id="catchMessage">오늘의 대어는 무엇일까요?</strong></div>
-      <div class="combo" id="comboBadge" hidden>🔥 <span id="combo">0</span> COMBO</div>
-    </section>
+    <!-- =========================
+         MAIN OCEAN
+         ========================= -->
+    <section class="ocean-card" id="oceanCard" aria-label="낚시 바다">
+      <!-- Sky -->
+      <div class="moon" aria-hidden="true"></div>
+      <div class="stars" aria-hidden="true">✦　·　✧　　·　✦　　·　✧</div>
+      <div id="cloudLayer" class="cloud-layer" aria-hidden="true"></div>
 
-    <section class="control-panel">
-      <div id="timingArea" class="timing-area" hidden>
-        <div class="timing-title">입질이다! <b>황금 구간</b>에서 멈추세요</div>
-        <div class="meter"><div class="sweet-spot"></div><div id="meterNeedle" class="needle"></div></div>
+      <!-- Island / background world -->
+      <div class="island" id="island" aria-label="작은 섬">
+        <span class="island-rock">🪨</span>
+        <span class="island-tree tree-1">🌴</span>
+        <span class="island-tree tree-2">🌴</span>
       </div>
-      <button id="fishButton" class="fish-button"><span>🎣</span> 낚싯줄 던지기</button>
-      <p class="hint" id="hint">탭 한 번으로 낚싯대를 던집니다</p>
+
+      <!-- Ambient fish layer
+           향후 script.js가 물고기들을 동적으로 생성합니다. -->
+      <div id="ambientFishLayer" class="ambient-fish-layer" aria-hidden="true"></div>
+
+      <!-- Default fish fallback
+           기존 script.js와의 호환을 위해 유지합니다. -->
+      <div class="fish fish-one" aria-hidden="true">🐟</div>
+      <div class="fish fish-two" aria-hidden="true">🐠</div>
+      <div class="fish fish-three" aria-hidden="true">🦑</div>
+
+      <!-- Boat + angler -->
+      <div class="boat-scene" id="boatScene" aria-label="낚시 중인 배">
+        <div class="angler" id="angler" aria-hidden="true">
+          <span class="angler-shadow">🧑</span>
+        </div>
+        <div class="boat" id="boat" aria-hidden="true">🛶</div>
+      </div>
+
+      <!-- Fishing line -->
+      <div class="line" id="line" aria-hidden="true"></div>
+      <div class="bobber" id="bobber" aria-hidden="true">🔴</div>
+
+      <!-- Water -->
+      <div class="water water-back" aria-hidden="true"></div>
+      <div class="water water-front" aria-hidden="true"></div>
+
+      <div id="bubbleLayer" class="bubble-layer" aria-hidden="true"></div>
+
+      <!-- Center message -->
+      <div class="ocean-copy">
+        <p id="statusLabel">잔잔한 바다에 낚싯대를 드리워 보세요.</p>
+        <strong id="catchMessage">오늘의 대어는 무엇일까요?</strong>
+      </div>
+
+      <!-- Combo -->
+      <div class="combo" id="comboBadge" hidden>
+        🔥 <span id="combo">0</span> COMBO
+      </div>
+
+      <!-- Rare catch overlay -->
+      <div
+        id="catchCelebration"
+        class="catch-celebration"
+        aria-live="polite"
+        aria-hidden="true"
+      >
+        <div class="catch-rarity-label" id="catchRarityLabel">RARE</div>
+        <div class="catch-title" id="catchTitle">새로운 물고기!</div>
+        <div class="catch-spec" id="catchSpec"></div>
+      </div>
     </section>
 
+    <!-- =========================
+         FISHING CONTROL
+         ========================= -->
+    <section class="control-panel" aria-label="낚시 조작">
+      <div id="timingArea" class="timing-area" hidden>
+        <div class="timing-title">
+          입질이다! <b>황금 구간</b>에서 멈추세요
+        </div>
+
+        <div class="meter" id="timingMeter">
+          <div class="meter-danger meter-danger-left"></div>
+          <div class="sweet-spot" id="sweetSpot"></div>
+          <div class="meter-danger meter-danger-right"></div>
+          <div id="meterNeedle" class="needle"></div>
+        </div>
+
+        <div class="timing-hint" id="timingHint">
+          물고기가 도망가기 전에 낚아 올리세요!
+        </div>
+      </div>
+
+      <button id="fishButton" class="fish-button" type="button">
+        <span>🎣</span> 낚싯줄 던지기
+      </button>
+
+      <p class="hint" id="hint">
+        탭 한 번으로 낚싯대를 던집니다
+      </p>
+    </section>
+
+    <!-- =========================
+         QUICK RESOURCE BAR
+         ========================= -->
+    <section class="resource-bar" aria-label="낚시 자원">
+      <div class="resource-card">
+        <span class="resource-icon">🎣</span>
+        <div>
+          <small>낚싯대</small>
+          <strong id="rodName">낡은 낚싯대</strong>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-icon">🪱</span>
+        <div>
+          <small>현재 미끼</small>
+          <strong id="baitName">일반 미끼 ×∞</strong>
+        </div>
+      </div>
+
+      <button id="shopButton" class="secondary-action" type="button">
+        🛒 상점
+      </button>
+
+      <button id="probabilityButton" class="secondary-action" type="button">
+        📊 확률표
+      </button>
+    </section>
+
+    <!-- =========================
+         DASHBOARD
+         ========================= -->
     <section class="dashboard">
-      <article class="score-card"><span>총 점수</span><strong id="score">0</strong><div class="xp-track"><i id="xpBar"></i></div><small id="xpText">다음 레벨까지 100 XP</small></article>
-      <article class="collection-card"><div><span>도감 수집</span><strong><b id="discovered">0</b> / 16</strong></div><div class="collection-grid" id="collectionGrid"></div></article>
-      <article class="log-card"><div class="section-heading"><span>최근 낚시 기록</span><button id="resetButton">기록 초기화</button></div><ol id="logList"><li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li></ol></article>
-    </section>
-  </main>
-  <div id="toast" class="toast" role="status"></div>
-    <div id="toast" class="toast" role="status"></div>
+      <!-- Score -->
+      <article class="score-card">
+        <span>총 점수</span>
 
-    <!-- 랭킹을 보여줄 상자 -->
-    <section class="leaderboard-box" style="margin: 20px auto; text-align: center;">
-      <h2 style="color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">실시간 TOP 10 랭킹</h2>
-      <button onclick="submitScore()" style="margin-bottom: 15px; padding: 12px 24px; cursor: pointer; background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; border: none; border-radius: 30px; font-weight: bold; font-size: 15px; box-shadow: 0 4px 15px rgba(238, 82, 83, 0.4); transition: all 0.2s ease;">🏆 내 점수 랭킹 등록하기</button>
-      <ol id="leaderboardList" style="display: inline-block; text-align: left;">
+        <strong id="score">0</strong>
+
+        <div class="xp-header">
+          <span>경험치</span>
+          <b id="xpValue">0 / 100 XP</b>
+        </div>
+
+        <div class="xp-track">
+          <i id="xpBar"></i>
+        </div>
+
+        <small id="xpText">다음 레벨까지 100 XP</small>
+      </article>
+
+      <!-- Collection -->
+      <article class="collection-card">
+        <div class="collection-heading">
+          <div>
+            <span>도감 수집</span>
+            <strong>
+              <b id="discovered">0</b>
+              /
+              <span id="totalSpecies">35</span>
+            </strong>
+          </div>
+
+          <button
+            id="openCollectionButton"
+            class="text-button"
+            type="button"
+          >
+            도감 크게 보기
+          </button>
+        </div>
+
+        <div
+          class="collection-progress"
+          aria-label="도감 수집 진행도"
+        >
+          <i id="collectionProgressBar"></i>
+        </div>
+
+        <div
+          class="collection-grid"
+          id="collectionGrid"
+          aria-label="물고기 도감"
+        ></div>
+      </article>
+
+      <!-- Fishing log -->
+      <article class="log-card">
+        <div class="section-heading">
+          <span>최근 낚시 기록</span>
+
+          <button id="resetButton" type="button">
+            기록 초기화
+          </button>
+        </div>
+
+        <ol id="logList">
+          <li class="empty-log">
+            첫 번째 낚시를 기다리고 있어요…
+          </li>
+        </ol>
+      </article>
+    </section>
+
+    <!-- =========================
+         LEADERBOARD
+         ========================= -->
+    <section
+      class="leaderboard-box"
+      aria-labelledby="leaderboardTitle"
+    >
+      <div class="section-heading leaderboard-heading">
+        <div>
+          <small>WORLD RECORD</small>
+          <h2 id="leaderboardTitle">실시간 TOP 10 랭킹</h2>
+        </div>
+
+        <span class="leaderboard-badge">🏆 TOP 10</span>
+      </div>
+
+      <button
+        id="submitScoreButton"
+        type="button"
+        class="leaderboard-submit"
+        onclick="submitScore()"
+      >
+        🏆 내 점수 랭킹 등록하기
+      </button>
+
+      <!-- TOP 10은 모바일에서도 한 화면에 보이도록
+           이후 CSS/JS에서 높이를 제한하고 압축합니다. -->
+      <ol id="leaderboardList" class="leaderboard-list">
         <li>불러오는 중...</li>
       </ol>
     </section>
+  </main>
 
-    <!-- 1. 파이어베이스 도구(SDK)를 먼저 불러오기 -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <!-- =========================
+       GLOBAL TOAST
+       ========================= -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <!-- 2. 그 다음에 내 게임 스크립트 실행하기 -->
-    <script src="script.js"></script>
-<!-- 커스텀 닉네임 입력 모달 -->
-<div id="nicknameModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: #102a43; padding: 25px; border-radius: 15px; text-align: center; width: 90%; max-width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid #334e68;">
-        <h3 style="color: #ffffff; margin-bottom: 15px; font-size: 18px;">🏆 랭킹 등록</h3>
-        <p style="color: #829ab1; font-size: 13px; margin-bottom: 15px;">랭킹에 등록할 닉네임을 입력해주세요 (2자 이상)</p>
-        <input type="text" id="nicknameInput" maxlength="10" placeholder="닉네임 입력" style="width: 100%; padding: 10px; box-sizing: border-box; border-radius: 8px; border: 1px solid #486581; background: #243b53; color: white; font-size: 15px; margin-bottom: 15px; text-align: center; outline: none;">
-        <div style="display: flex; gap: 10px;">
-            <button onclick="closeNicknameModal()" style="flex: 1; padding: 10px; background: #486581; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">취소</button>
-            <button onclick="confirmSubmitScore()" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #ff6b6b, #ee5253); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">등록</button>
+  <!-- =========================
+       CATCH RESULT MODAL
+       ========================= -->
+  <div
+    id="catchResultModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card catch-result-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="catchResultTitle"
+    >
+      <button
+        class="modal-close"
+        id="closeCatchResult"
+        type="button"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+
+      <div class="modal-rarity" id="resultRarity">RARE</div>
+      <div class="modal-fish-icon" id="resultFishIcon">🐟</div>
+      <h2 id="catchResultTitle">은빛 멸치</h2>
+
+      <div class="catch-stat-grid">
+        <div>
+          <span>길이</span>
+          <strong id="resultLength">0.0 cm</strong>
         </div>
+
+        <div>
+          <span>무게</span>
+          <strong id="resultWeight">0.00 kg</strong>
+        </div>
+
+        <div>
+          <span>경험치</span>
+          <strong id="resultXp">+0 XP</strong>
+        </div>
+
+        <div>
+          <span>골드</span>
+          <strong id="resultGold">+0 G</strong>
+        </div>
+      </div>
+
+      <p id="resultMessage" class="modal-description"></p>
+
+      <button id="closeCatchResultButton" class="primary-action" type="button">
+        계속 낚시하기
+      </button>
     </div>
-</div>
-  </body>
+  </div>
+
+  <!-- =========================
+       FISH DETAIL MODAL
+       ========================= -->
+  <div
+    id="fishDetailModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card fish-detail-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="fishDetailTitle"
+    >
+      <button
+        class="modal-close"
+        id="closeFishDetail"
+        type="button"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+
+      <div id="fishDetailIcon" class="modal-fish-icon">🐟</div>
+
+      <div class="detail-rarity" id="fishDetailRarity">
+        ★☆☆☆☆ 일반
+      </div>
+
+      <h2 id="fishDetailTitle">은빛 멸치</h2>
+
+      <p id="fishDetailDescription" class="modal-description">
+        작은 무리를 지어 빠르게 이동하는 물고기입니다.
+      </p>
+
+      <div class="detail-info-grid">
+        <div>
+          <span>서식지</span>
+          <strong id="fishDetailHabitat">얕은 바다</strong>
+        </div>
+
+        <div>
+          <span>난이도</span>
+          <strong id="fishDetailDifficulty">★☆☆☆☆</strong>
+        </div>
+
+        <div>
+          <span>발견 횟수</span>
+          <strong id="fishDetailCount">0회</strong>
+        </div>
+
+        <div>
+          <span>최고 길이</span>
+          <strong id="fishDetailBestLength">기록 없음</strong>
+        </div>
+
+        <div>
+          <span>최고 무게</span>
+          <strong id="fishDetailBestWeight">기록 없음</strong>
+        </div>
+
+        <div>
+          <span>도감 번호</span>
+          <strong id="fishDetailId">#001</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       FULL COLLECTION MODAL
+       ========================= -->
+  <div
+    id="collectionModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card collection-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="collectionModalTitle"
+    >
+      <button
+        class="modal-close"
+        id="closeCollection"
+        type="button"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+
+      <div class="modal-kicker">AQUARIUM ARCHIVE</div>
+      <h2 id="collectionModalTitle">물고기 도감</h2>
+
+      <div class="collection-modal-status">
+        <strong>
+          <span id="modalDiscovered">0</span>
+          /
+          <span id="modalTotalSpecies">35</span>
+        </strong>
+        <span id="collectionPercent">0% 발견</span>
+      </div>
+
+      <div
+        id="collectionModalGrid"
+        class="collection-modal-grid"
+        aria-label="전체 물고기 도감"
+      ></div>
+    </div>
+  </div>
+
+  <!-- =========================
+       SHOP MODAL
+       ========================= -->
+  <div
+    id="shopModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card shop-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="shopTitle"
+    >
+      <button
+        class="modal-close"
+        id="closeShop"
+        type="button"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+
+      <div class="modal-kicker">FISHING GEAR</div>
+      <h2 id="shopTitle">🎣 낚시 상점</h2>
+
+      <div class="shop-tabs" role="tablist" aria-label="상점 종류">
+        <button
+          id="rodShopTab"
+          class="shop-tab active"
+          type="button"
+          role="tab"
+          aria-selected="true"
+        >
+          낚싯대
+        </button>
+
+        <button
+          id="baitShopTab"
+          class="shop-tab"
+          type="button"
+          role="tab"
+          aria-selected="false"
+        >
+          미끼
+        </button>
+      </div>
+
+      <div id="shopContent" class="shop-content">
+        <!-- STEP 2의 script.js가 상품을 채웁니다. -->
+        <div class="shop-empty">
+          상점 데이터를 준비하고 있어요.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       PROBABILITY MODAL
+       ========================= -->
+  <div
+    id="probabilityModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card probability-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="probabilityTitle"
+    >
+      <button
+        class="modal-close"
+        id="closeProbability"
+        type="button"
+        aria-label="닫기"
+      >
+        ✕
+      </button>
+
+      <div class="modal-kicker">TRANSPARENCY</div>
+      <h2 id="probabilityTitle">📊 낚시 확률표</h2>
+
+      <p class="modal-description">
+        현재 장비와 미끼가 적용된 실제 출현 확률입니다.
+      </p>
+
+      <div id="probabilityTable" class="probability-table">
+        <!-- STEP 2의 script.js가 실제 확률을 채웁니다. -->
+        <div class="probability-empty">
+          확률 데이터를 불러오는 중…
+        </div>
+      </div>
+
+      <div class="probability-note">
+        ※ 확률은 게임 내 랜덤 낚시 결과에 사용되는 값이며,
+        장비 및 미끼 효과에 따라 변할 수 있습니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       NICKNAME MODAL
+       기존 랭킹 시스템과 호환
+       ========================= -->
+  <div
+    id="nicknameModal"
+    class="modal-backdrop"
+    hidden
+    aria-hidden="true"
+  >
+    <div
+      class="modal-card nickname-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="nicknameTitle"
+    >
+      <button
+        class="modal-close"
+        type="button"
+        aria-label="닫기"
+        onclick="closeNicknameModal()"
+      >
+        ✕
+      </button>
+
+      <div class="modal-kicker">WORLD RANKING</div>
+      <h2 id="nicknameTitle">🏆 랭킹 등록</h2>
+
+      <p class="modal-description">
+        랭킹에 등록할 닉네임을 입력해주세요. (2자 이상)
+      </p>
+
+      <label class="sr-only" for="nicknameInput">
+        랭킹 닉네임
+      </label>
+
+      <input
+        type="text"
+        id="nicknameInput"
+        maxlength="10"
+        placeholder="닉네임 입력"
+        autocomplete="nickname"
+        spellcheck="false"
+      >
+
+      <div class="modal-actions">
+        <button
+          onclick="closeNicknameModal()"
+          type="button"
+          class="secondary-action"
+        >
+          취소
+        </button>
+
+        <button
+          onclick="confirmSubmitScore()"
+          type="button"
+          class="primary-action"
+        >
+          등록
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       Firebase SDK
+       ========================= -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+  <!-- =========================
+       GAME SCRIPT
+       ========================= -->
+  <script src="script.js"></script>
+
+  <!-- =========================
+       BASIC MODAL FALLBACK
+       STEP 2에서 script.js와 통합/확장
+       ========================= -->
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+
+      const modalPairs = [
+        ['shopButton', 'shopModal', 'closeShop'],
+        ['probabilityButton', 'probabilityModal', 'closeProbability'],
+        ['openCollectionButton', 'collectionModal', 'closeCollection'],
+        ['closeFishDetail', 'fishDetailModal', null],
+        ['closeCatchResult', 'catchResultModal', null],
+        ['closeCatchResultButton', 'catchResultModal', null]
+      ];
+
+      function openModal(id) {
+        const modal = $(id);
+        if (!modal) return;
+
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+
+        requestAnimationFrame(() => {
+          modal.classList.add('show');
+        });
+      }
+
+      function closeModal(id) {
+        const modal = $(id);
+        if (!modal) return;
+
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+
+        setTimeout(() => {
+          modal.hidden = true;
+        }, 180);
+      }
+
+      modalPairs.forEach(([openId, modalId, closeId]) => {
+        const openButton = $(openId);
+        const closeButton = closeId ? $(closeId) : null;
+
+        if (openButton && modalId) {
+          openButton.addEventListener('click', () => openModal(modalId));
+        }
+
+        if (closeButton) {
+          closeButton.addEventListener('click', () => closeModal(modalId));
+        }
+      });
+
+      document.querySelectorAll('.modal-backdrop').forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            closeModal(modal.id);
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+
+        document
+          .querySelectorAll('.modal-backdrop.show')
+          .forEach((modal) => closeModal(modal.id));
+      });
+
+      window.oceanCatchUI = {
+        openModal,
+        closeModal
+      };
+
+      const intro = $('introScreen');
+      const startButton = $('startGameButton');
+
+      // 새 버전에서도 기존 게임을 바로 플레이할 수 있도록
+      // 첫 진입 시 인트로를 보여주는 기반만 마련합니다.
+      if (intro && startButton) {
+        const introSeen = localStorage.getItem('oceanCatchIntroSeen');
+
+        if (!introSeen) {
+          intro.setAttribute('aria-hidden', 'false');
+          intro.classList.add('show');
+        }
+
+        startButton.addEventListener('click', () => {
+          localStorage.setItem('oceanCatchIntroSeen', '1');
+
+          intro.classList.remove('show');
+          intro.setAttribute('aria-hidden', 'true');
+
+          setTimeout(() => {
+            intro.hidden = true;
+          }, 450);
+        });
+      }
+    })();
+  </script>
+</body>
 </html>
