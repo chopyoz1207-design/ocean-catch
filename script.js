@@ -16,7 +16,7 @@ const db = firebase.firestore();
 const fishData=[
  {r:'쓰레기',p:0,c:30,cls:'trash',items:[['🥫','찌그러진 깡통'],['🥾','해적의 장화'],['🛞','낡은 타이어'],['🪥','바다 칫솔']]},
  {r:'흔한 물고기',p:10,c:40,cls:'common',items:[['🐟','은빛 멸치'],['🦑','통통한 오징어'],['🐡','복어'],['🐠','산호돔']]},
- {r:'희귀 물고기',p:50,c:20,cls:'rare',items:[['🦑','별빛 문어'],['<span class="blue-lobster">🦞</span>','푸른 가재'],['🌈','무지개 고등어'],['🐙','달빛 복어']]},
+ {r:'희귀 물고기',p:50,c:20,cls:'rare',items:[['🦑','별빛 문어'],['🦞','푸른 가재'],['🌈','무지개 고등어'],['🐙','달빛 복어']]},
  {r:'전설의 물고기',p:100,c:10,cls:'legendary',items:[['🦈','심해 상어'],['🐳','고래의 노래'],['🐉','바다의 용'],['🦄','유니콘 피쉬']]}
 ];
 const $=id=>document.getElementById(id);
@@ -33,7 +33,15 @@ function save() {
     }
 }
 function level(){return Math.floor(game.score/100)+1}function toast(t){el.toast.textContent=t;el.toast.classList.add('show');setTimeout(()=>el.toast.classList.remove('show'),2200)}
-function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{let s=document.createElement('span');s.textContent=emoji;s.title=name;if(game.found.includes(name))s.className='found';el.grid.append(s)});el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
+function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{let s=document.createElement('span');
+if(name === '푸른 가재') {
+    s.innerHTML = '<span class="blue-lobster">🦞</span>';
+} else {
+    s.textContent = emoji;
+}
+s.title=name;
+if(game.found.includes(name))s.className='found';
+el.grid.append(s);el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
 function cast(){if(state==='idle'){state='waiting';el.button.disabled=true;el.button.innerHTML='🌊 기다리는 중…';el.status.textContent='미끼가 물속으로 가라앉고 있습니다…';document.querySelector('.ocean-card').classList.add('casting');sound(310);biteTimer=setTimeout(bite,900+Math.random()*1700)}else if(state==='bite'){resolve(Number(el.needle.dataset.pos))}}
