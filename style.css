@@ -35,5 +35,5 @@ input[type="text"]:focus {
 }
 .blue-lobster {
     display: inline-block;
-    filter: hue-rotate(180deg) saturate(2); /* 빨간색을 파란색 계열로 회전 */
+    filter: hue-rotate(195deg) saturate(3) brightness(1.1); /* 파란빛을 더 자연스럽고 선명하게 조정 */
 }
