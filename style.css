@@ -34,6 +34,6 @@ input[type="text"]:focus {
     animation: rare-flash 1s ease-in-out;
 }
 .blue-lobster {
-    display: inline-block;
-    filter: hue-rotate(195deg) saturate(3) brightness(1.1); /* 파란빛을 더 자연스럽고 선명하게 조정 */
+    display: inline; /* 박스 영역을 없애고 주변 텍스트와 똑같이 어우러지게 설정 */
+    filter: hue-rotate(195deg) saturate(3) brightness(1.1);
 }
