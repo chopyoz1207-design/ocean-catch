@@ -43,16 +43,18 @@ function render(){el.score.textContent=game.score.toLocaleString();el.coins.text
 fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{
     let s=document.createElement('span');
     
-    s.textContent = emoji;
-if(name === '푸른 가재') {
-    s.classList.add('blue-lobster');
-}
+    // 이모지만 따로 안쪽 span으로 감싸서 배경 색상이 변하는 것을 방지합니다.
+    if(name === '푸른 가재') {
+        s.innerHTML = `<span class="blue-lobster">${emoji}</span>`;
+    } else {
+        s.textContent = emoji;
+    }
     
     s.title=name;
-if(game.found.includes(name)) {
-    s.classList.add('found'); // 기존 클래스를 지우지 않고 'found'를 추가합니다.
-}
-el.grid.append(s);
+    if(game.found.includes(name)) {
+        s.classList.add('found');
+    }
+    el.grid.append(s);
 });
 el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${getFishIcon(x.emoji, x.name)} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}

@@ -34,5 +34,5 @@ input[type="text"]:focus {
     animation: rare-flash 1s ease-in-out;
 }
 .blue-lobster {
-    filter: hue-rotate(195deg) saturate(3) brightness(1.1) !important;
+    filter: hue-rotate(195deg) saturate(3) brightness(1.1);
 }
