@@ -5522,16 +5522,14 @@ async function loadLeaderboard() {
 
 
     snapshot.forEach(
-      (document) => {
+  (doc) => {
+    const data =
+      doc.data();
 
-        const data =
-          document.data();
-
-
-        const item =
-          document.createElement(
-            "li"
-          );
+    const item =
+      document.createElement(
+        "li"
+      );
 
 
         let rankLabel =
