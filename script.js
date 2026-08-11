@@ -41,7 +41,9 @@ if(name === '푸른 가재') {
 }
 s.title=name;
 if(game.found.includes(name))s.className='found';
-el.grid.append(s);el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
+        el.grid.append(s);
+    });
+el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${x.emoji} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
 function cast(){if(state==='idle'){state='waiting';el.button.disabled=true;el.button.innerHTML='🌊 기다리는 중…';el.status.textContent='미끼가 물속으로 가라앉고 있습니다…';document.querySelector('.ocean-card').classList.add('casting');sound(310);biteTimer=setTimeout(bite,900+Math.random()*1700)}else if(state==='bite'){resolve(Number(el.needle.dataset.pos))}}
