@@ -12340,3 +12340,45 @@ console.log(
   "현재 지역:",
   getCurrentRegion().name
 );
+/* ============================================================
+   지역 선택 모달 X 버튼 닫기
+============================================================ */
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+
+  if (!button) {
+    return;
+  }
+
+  const text = button.textContent.trim();
+
+  // X / × / ✕ 버튼인지 확인
+  if (text !== "X" && text !== "×" && text !== "✕") {
+    return;
+  }
+
+  // 현재 버튼이 들어 있는 모달 찾기
+  const modal = button.closest(".modal, .modal-backdrop");
+
+  if (!modal) {
+    return;
+  }
+
+  // 지역 선택 모달이면 닫기
+  if (
+    modal.id === "regionModal" ||
+    modal.querySelector("#regionButton")
+  ) {
+    if (
+      window.oceanCatchUI &&
+      window.oceanCatchUI.closeModal
+    ) {
+      window.oceanCatchUI.closeModal("regionModal");
+      return;
+    }
+
+    modal.classList.remove("show");
+    modal.style.display = "none";
+  }
+});
