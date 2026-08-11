@@ -92,7 +92,7 @@ el.button.addEventListener('click',cast);$('resetButton').addEventListener('clic
 // --- 실시간 랭킹 시스템 (커스텀 모달 적용 버전) ---
 (function() {
     const firebaseConfig = {
-        apiKey: "AlzaSyAWawldJPCfQDjgyfkJcgGoPQxzzdDxjZ8",
+        apiKey: "AIzaSyAWawldJPCfQDjgyfkJcgGoPQxzzdDxjZ8",
         authDomain: "ocean-catch-ranking.firebaseapp.com",
         projectId: "ocean-catch-ranking",
         storageBucket: "ocean-catch-ranking.appspot.com",
