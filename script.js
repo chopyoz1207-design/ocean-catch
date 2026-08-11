@@ -43,12 +43,10 @@ function render(){el.score.textContent=game.score.toLocaleString();el.coins.text
 fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{
     let s=document.createElement('span');
     
-    // 도감 안에서는 텍스트가 아니라 HTML 구조로 안전하게 주입
-    if(name === '푸른 가재') {
-        s.innerHTML = `<span class="blue-lobster">${emoji}</span>`;
-    } else {
-        s.textContent = emoji;
-    }
+    s.textContent = emoji;
+if(name === '푸른 가재') {
+    s.classList.add('blue-lobster');
+}
     
     s.title=name;
     if(game.found.includes(name))s.className='found';
