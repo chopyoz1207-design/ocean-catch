@@ -10642,3 +10642,1701 @@ save();
 console.log(
   "🎣 OCEAN CATCH STEP 2 COMPLETE"
 );
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 3 - 1/5
+   지역 시스템 / 지역 선택 / 지역별 출현 어종
+   ========================================================= */
+
+
+/* =========================================================
+   1. 지역 데이터
+   ---------------------------------------------------------
+   아직 지역 전용 신규 물고기는 추가하지 않습니다.
+   기존 물고기 데이터를 지역에 분배합니다.
+
+   STEP 3 - 2/5부터 실제 지역 전용 물고기를 추가합니다.
+   ========================================================= */
+
+const OCEAN_REGIONS = [
+
+  {
+    id: "harbor",
+    name: "항구 해역",
+    shortName: "항구",
+    emoji: "⚓",
+    level: 1,
+
+    description:
+      "낚시꾼이라면 누구나 시작하는 평온한 바다입니다.",
+
+    color:
+      "#249bb3",
+
+    fishRule(fish) {
+
+      const habitat =
+        String(
+          fish.habitat || ""
+        );
+
+      /*
+        기본 지역은
+        일반적인 얕은 바다와 항구 주변 생물을 중심으로 합니다.
+      */
+
+      if (
+        habitat.includes("심해") ||
+        habitat.includes("금단") ||
+        habitat.includes("미지")
+      ) {
+
+        return false;
+
+      }
+
+
+      /*
+        폭풍 해역도 현재는 일반 지역에서 제외합니다.
+      */
+
+      if (
+        habitat.includes("폭풍")
+      ) {
+
+        return false;
+
+      }
+
+
+      /*
+        전설/신화급은 너무 쉽게 접근하지 않도록
+        기존 항구에서는 일부만 허용합니다.
+      */
+
+      if (
+        fish.rarity === "mythic"
+      ) {
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+  },
+
+
+  {
+    id: "coral",
+    name: "산호초 해역",
+    shortName: "산호초",
+    emoji: "🪸",
+    level: 10,
+
+    description:
+      "빛나는 산호와 암초 사이에 희귀한 생명체가 숨어 있습니다.",
+
+    color:
+      "#31c7c0",
+
+    fishRule(fish) {
+
+      const habitat =
+        String(
+          fish.habitat || ""
+        );
+
+
+      /*
+        산호초와 잘 어울리는 서식지를 우선합니다.
+      */
+
+      const coralHabitat =
+        habitat.includes("산호") ||
+        habitat.includes("암초") ||
+        habitat.includes("빛나는") ||
+        habitat.includes("달빛") ||
+        habitat.includes("비밀 정원");
+
+
+      /*
+        희귀 이하 물고기는
+        산호초에서 출현할 수 있습니다.
+      */
+
+      if (
+        coralHabitat &&
+        fish.rarity !== "mythic"
+      ) {
+
+        return true;
+
+      }
+
+
+      /*
+        일반/common 물고기는
+        산호초를 방문해도 일부 발견 가능.
+      */
+
+      if (
+        (
+          fish.rarity === "common" ||
+          fish.rarity === "uncommon"
+        ) &&
+        !habitat.includes("심해")
+      ) {
+
+        return true;
+
+      }
+
+
+      return false;
+
+    }
+
+  },
+
+
+  {
+    id: "deep",
+    name: "심해 해역",
+    shortName: "심해",
+    emoji: "🌑",
+    level: 30,
+
+    description:
+      "빛조차 닿지 않는 깊은 곳. 전설과 신화가 잠들어 있습니다.",
+
+    color:
+      "#7458cf",
+
+    fishRule(fish) {
+
+      const habitat =
+        String(
+          fish.habitat || ""
+        );
+
+
+      const deepHabitat =
+        habitat.includes("심해") ||
+        habitat.includes("외해") ||
+        habitat.includes("금단") ||
+        habitat.includes("미지") ||
+        habitat.includes("폭풍");
+
+
+      /*
+        심해 관련 서식지
+      */
+
+      if (
+        deepHabitat
+      ) {
+
+        return true;
+
+      }
+
+
+      /*
+        고급 이상은 심해에서
+        일정 부분 탐색 가능하게 합니다.
+      */
+
+      if (
+        fish.rarity === "rare" ||
+        fish.rarity === "legendary"
+      ) {
+
+        return true;
+
+      }
+
+
+      return false;
+
+    }
+
+  }
+
+];
+
+
+/* =========================================================
+   2. 게임 저장 데이터에 현재 지역 추가
+   ========================================================= */
+
+function ensureStep6RegionData() {
+
+  ensureStep5GameData();
+
+
+  if (
+    !game.region
+  ) {
+
+    game.region =
+      "harbor";
+
+  }
+
+
+  const exists =
+    OCEAN_REGIONS.some(
+      (region) =>
+        region.id ===
+        game.region
+    );
+
+
+  if (!exists) {
+
+    game.region =
+      "harbor";
+
+  }
+
+}
+
+
+/* =========================================================
+   3. 현재 지역 가져오기
+   ========================================================= */
+
+function getCurrentRegion() {
+
+  ensureStep6RegionData();
+
+
+  return (
+    OCEAN_REGIONS.find(
+      (region) =>
+        region.id ===
+        game.region
+    ) ||
+    OCEAN_REGIONS[0]
+  );
+
+}
+
+
+/* =========================================================
+   4. 지역 해금 여부
+   ========================================================= */
+
+function isRegionUnlocked(
+  region
+) {
+
+  if (!region) {
+
+    return false;
+
+  }
+
+
+  const level =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  return (
+    level >=
+    region.level
+  );
+
+}
+
+
+/* =========================================================
+   5. 현재 지역에서 낚을 수 있는 물고기
+   ========================================================= */
+
+function getRegionFishPool() {
+
+  const region =
+    getCurrentRegion();
+
+
+  if (!region) {
+
+    return [
+      ...FISH_DATA
+    ];
+
+  }
+
+
+  let pool =
+    FISH_DATA.filter(
+      (fish) =>
+        region.fishRule(
+          fish
+        )
+    );
+
+
+  /*
+    만약 어떤 이유로 물고기가 한 마리도
+    남지 않으면 기존 전체 목록으로 복구합니다.
+  */
+
+  if (
+    pool.length === 0
+  ) {
+
+    pool =
+      [
+        ...FISH_DATA
+      ];
+
+  }
+
+
+  return pool;
+
+}
+
+
+/* =========================================================
+   6. 지역별 물고기 가중치
+   ---------------------------------------------------------
+   지역에 맞는 생물에게 약간의 출현 보정을 줍니다.
+   ========================================================= */
+
+function getRegionWeight(
+  fish
+) {
+
+  const region =
+    getCurrentRegion();
+
+
+  if (!fish || !region) {
+
+    return 0;
+
+  }
+
+
+  let multiplier =
+    1;
+
+
+  /*
+    산호초
+  */
+
+  if (
+    region.id ===
+    "coral"
+  ) {
+
+    const habitat =
+      String(
+        fish.habitat || ""
+      );
+
+
+    if (
+      habitat.includes("산호") ||
+      habitat.includes("암초")
+    ) {
+
+      multiplier *=
+        1.8;
+
+    }
+
+
+    if (
+      fish.rarity === "rare"
+    ) {
+
+      multiplier *=
+        1.35;
+
+    }
+
+  }
+
+
+  /*
+    심해
+  */
+
+  if (
+    region.id ===
+    "deep"
+  ) {
+
+    const habitat =
+      String(
+        fish.habitat || ""
+      );
+
+
+    if (
+      habitat.includes("심해") ||
+      habitat.includes("금단") ||
+      habitat.includes("미지")
+    ) {
+
+      multiplier *=
+        2.2;
+
+    }
+
+
+    if (
+      fish.rarity === "legendary"
+    ) {
+
+      multiplier *=
+        1.75;
+
+    }
+
+
+    if (
+      fish.rarity === "mythic"
+    ) {
+
+      multiplier *=
+        2.5;
+
+    }
+
+  }
+
+
+  /*
+    항구
+  */
+
+  if (
+    region.id ===
+    "harbor"
+  ) {
+
+    if (
+      fish.rarity ===
+      "common"
+    ) {
+
+      multiplier *=
+        1.2;
+
+    }
+
+  }
+
+
+  return (
+    getRodAdjustedWeight(
+      fish
+    ) *
+    multiplier
+  );
+
+}
+
+
+/* =========================================================
+   7. 지역에 맞는 새로운 pickFish
+   ---------------------------------------------------------
+   기존 STEP 2 낚싯대/미끼 시스템을 그대로 사용합니다.
+   ========================================================= */
+
+const step3RegionOriginalPickFish =
+  pickFish;
+
+
+pickFish =
+  function () {
+
+    ensureStep6RegionData();
+
+
+    const pool =
+      getRegionFishPool();
+
+
+    const weightedPool =
+      pool.map(
+        (fish) => ({
+
+          fish,
+
+          probability:
+            getRegionWeight(
+              fish
+            )
+
+        })
+      );
+
+
+    const picked =
+      weightedRandom(
+        weightedPool,
+        "probability"
+      );
+
+
+    /*
+      비상 안전장치
+    */
+
+    if (
+      picked?.fish
+    ) {
+
+      return picked.fish;
+
+    }
+
+
+    return (
+      pool[
+        Math.floor(
+          Math.random() *
+          pool.length
+        )
+      ] ||
+      step3RegionOriginalPickFish()
+    );
+
+  };
+
+
+/* =========================================================
+   8. 지역 UI 스타일
+   ---------------------------------------------------------
+   style.css는 지금 건드리지 않습니다.
+   ========================================================= */
+
+function ensureRegionStyles() {
+
+  if (
+    document.getElementById(
+      "step3RegionStyles"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "step3RegionStyles";
+
+
+  style.textContent = `
+
+    .region-button {
+      min-height: 61px;
+      min-width: 140px;
+      padding: 8px 14px;
+      border: 1px solid rgba(124,238,255,.14);
+      border-radius: 15px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(98,231,255,.09),
+          rgba(98,231,255,.04)
+        );
+      color: #e5faff;
+      cursor: pointer;
+      font-weight: 900;
+      text-align: left;
+      transition:
+        transform .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+    }
+
+    .region-button:hover {
+      transform: translateY(-2px);
+      background:
+        rgba(98,231,255,.12);
+      border-color:
+        rgba(124,238,255,.30);
+    }
+
+    .region-button small {
+      display: block;
+      color: #91bed4;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: .7px;
+    }
+
+    .region-button strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      color: #f4fdff;
+    }
+
+    .region-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9997;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(0,8,18,.78);
+      backdrop-filter: blur(9px);
+    }
+
+    .region-modal-card {
+      position: relative;
+      width: min(620px, 94vw);
+      max-height: 88vh;
+      overflow: auto;
+      padding: 24px;
+      border-radius: 25px;
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(98,231,255,.13),
+          transparent 40%
+        ),
+        linear-gradient(
+          155deg,
+          #0b3d5d,
+          #061f34
+        );
+      border: 1px solid rgba(124,238,255,.20);
+      box-shadow:
+        0 35px 90px rgba(0,0,0,.58);
+      color: #e9f8ff;
+    }
+
+    .region-modal-kicker {
+      color: #62e7ff;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .region-modal-title {
+      margin: 5px 0 5px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .region-modal-description {
+      margin: 0 0 18px;
+      color: #91bed4;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .region-modal-close {
+      position: absolute;
+      right: 13px;
+      top: 11px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,.07);
+      color: #dff8ff;
+      font-size: 23px;
+      cursor: pointer;
+    }
+
+    .region-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .region-option {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.045);
+      cursor: pointer;
+      transition:
+        transform .16s ease,
+        background .16s ease,
+        border-color .16s ease;
+    }
+
+    .region-option:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.075);
+      border-color: rgba(124,238,255,.18);
+    }
+
+    .region-option.active {
+      border-color: rgba(98,231,255,.42);
+      background: rgba(98,231,255,.09);
+      box-shadow:
+        inset 0 0 25px rgba(98,231,255,.05);
+    }
+
+    .region-option.locked {
+      opacity: .52;
+      filter: saturate(.65);
+      cursor: default;
+    }
+
+    .region-option-emoji {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      background: rgba(255,255,255,.07);
+      font-size: 27px;
+    }
+
+    .region-option-name {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .region-option-desc {
+      margin-top: 3px;
+      color: #91bed4;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .region-option-level {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,215,104,.09);
+      color: #ffd768;
+      font-size: 10px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .region-current-note {
+      margin-top: 15px;
+      padding: 10px 12px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.045);
+      color: #91bed4;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .region-current-note strong {
+      color: #62e7ff;
+    }
+
+    @media (max-width: 650px) {
+
+      .region-button {
+        min-width: 0;
+        min-height: 52px;
+      }
+
+      .region-option {
+        grid-template-columns:
+          45px 1fr;
+      }
+
+      .region-option-level {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .region-option-emoji {
+        width: 45px;
+        height: 45px;
+        font-size: 23px;
+      }
+
+      .region-modal-card {
+        padding: 19px;
+      }
+
+      .region-modal-title {
+        font-size: 23px;
+      }
+
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+/* =========================================================
+   9. 지역 버튼을 resource-bar에 추가
+   ========================================================= */
+
+function ensureRegionButton() {
+
+  ensureRegionStyles();
+
+
+  if (
+    document.getElementById(
+      "regionButton"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const resourceBar =
+    document.querySelector(
+      ".resource-bar"
+    );
+
+
+  if (!resourceBar) {
+
+    return;
+
+  }
+
+
+  const button =
+    document.createElement(
+      "button"
+    );
+
+
+  button.id =
+    "regionButton";
+
+
+  button.type =
+    "button";
+
+
+  button.className =
+    "region-button";
+
+
+  button.addEventListener(
+    "click",
+    openRegionModal
+  );
+
+
+  /*
+    확률표 앞에 삽입
+  */
+
+  const probabilityButton =
+    document.getElementById(
+      "probabilityButton"
+    );
+
+
+  if (
+    probabilityButton
+  ) {
+
+    resourceBar.insertBefore(
+      button,
+      probabilityButton
+    );
+
+  } else {
+
+    resourceBar.appendChild(
+      button
+    );
+
+  }
+
+
+  updateRegionButton();
+
+}
+
+
+/* =========================================================
+   10. 지역 버튼 내용 갱신
+   ========================================================= */
+
+function updateRegionButton() {
+
+  const button =
+    document.getElementById(
+      "regionButton"
+    );
+
+
+  if (!button) {
+
+    return;
+
+  }
+
+
+  const region =
+    getCurrentRegion();
+
+
+  button.innerHTML = `
+    <small>현재 지역</small>
+    <strong>
+      ${region.emoji}
+      ${escapeHtml(
+        region.name
+      )}
+    </strong>
+  `;
+
+}
+
+
+/* =========================================================
+   11. 지역 모달 생성
+   ========================================================= */
+
+function openRegionModal() {
+
+  ensureStep6RegionData();
+
+  ensureRegionStyles();
+
+
+  let modal =
+    document.getElementById(
+      "regionModalStep3"
+    );
+
+
+  if (!modal) {
+
+    modal =
+      document.createElement(
+        "div"
+      );
+
+
+    modal.id =
+      "regionModalStep3";
+
+
+    modal.className =
+      "region-modal-backdrop";
+
+
+    modal.innerHTML = `
+      <div
+        class="region-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="regionModalTitle"
+      >
+
+        <button
+          type="button"
+          class="region-modal-close"
+          id="regionModalClose"
+          aria-label="지역 창 닫기"
+        >
+          ×
+        </button>
+
+
+        <div class="region-modal-kicker">
+          OCEAN MAP
+        </div>
+
+        <h2
+          id="regionModalTitle"
+          class="region-modal-title"
+        >
+          낚시 지역 선택
+        </h2>
+
+        <p class="region-modal-description">
+          지역에 따라 등장하는 물고기와 희귀 생물의 확률이 달라집니다.
+        </p>
+
+
+        <div
+          class="region-list"
+          id="regionList"
+        ></div>
+
+
+        <div
+          class="region-current-note"
+          id="regionCurrentNote"
+        ></div>
+
+      </div>
+    `;
+
+
+    document.body.appendChild(
+      modal
+    );
+
+
+    document
+      .getElementById(
+        "regionModalClose"
+      )
+      ?.addEventListener(
+        "click",
+        closeRegionModal
+      );
+
+
+    modal.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target ===
+          modal
+        ) {
+
+          closeRegionModal();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  renderRegionModal();
+
+
+  modal.hidden =
+    false;
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+/* =========================================================
+   12. 지역 모달 닫기
+   ========================================================= */
+
+function closeRegionModal() {
+
+  const modal =
+    document.getElementById(
+      "regionModalStep3"
+    );
+
+
+  if (!modal) {
+
+    return;
+
+  }
+
+
+  modal.hidden =
+    true;
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+/* =========================================================
+   13. 지역 목록 렌더링
+   ========================================================= */
+
+function renderRegionModal() {
+
+  const list =
+    document.getElementById(
+      "regionList"
+    );
+
+
+  const note =
+    document.getElementById(
+      "regionCurrentNote"
+    );
+
+
+  if (!list) {
+
+    return;
+
+  }
+
+
+  ensureStep6RegionData();
+
+
+  const current =
+    getCurrentRegion();
+
+
+  list.innerHTML =
+    "";
+
+
+  OCEAN_REGIONS.forEach(
+    (region) => {
+
+      const unlocked =
+        isRegionUnlocked(
+          region
+        );
+
+
+      const active =
+        current.id ===
+        region.id;
+
+
+      const option =
+        document.createElement(
+          "button"
+        );
+
+
+      option.type =
+        "button";
+
+
+      option.className =
+        "region-option";
+
+
+      if (
+        active
+      ) {
+
+        option.classList.add(
+          "active"
+        );
+
+      }
+
+
+      if (
+        !unlocked
+      ) {
+
+        option.classList.add(
+          "locked"
+        );
+
+      }
+
+
+      option.innerHTML = `
+        <div class="region-option-emoji">
+          ${region.emoji}
+        </div>
+
+        <div>
+          <div
+            class="region-option-name"
+          >
+            ${escapeHtml(
+              region.name
+            )}
+            ${
+              active
+                ? " · 현재 지역"
+                : ""
+            }
+          </div>
+
+          <div
+            class="region-option-desc"
+          >
+            ${escapeHtml(
+              region.description
+            )}
+          </div>
+        </div>
+
+        <div class="region-option-level">
+          ${
+            unlocked
+              ? (
+                  active
+                    ? "현재 위치"
+                    : "입장 가능"
+                )
+              : `LV.${region.level} 필요`
+          }
+        </div>
+      `;
+
+
+      if (
+        unlocked &&
+        !active
+      ) {
+
+        option.addEventListener(
+          "click",
+          () => {
+
+            switchRegion(
+              region.id
+            );
+
+          }
+        );
+
+      }
+
+
+      list.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  if (note) {
+
+    note.innerHTML = `
+      현재 낚시 위치:
+      <strong>
+        ${current.emoji}
+        ${escapeHtml(
+          current.name
+        )}
+      </strong>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   14. 지역 변경
+   ========================================================= */
+
+function switchRegion(
+  regionId
+) {
+
+  ensureStep6RegionData();
+
+
+  const region =
+    OCEAN_REGIONS.find(
+      (item) =>
+        item.id ===
+        regionId
+    );
+
+
+  if (!region) {
+
+    return;
+
+  }
+
+
+  if (
+    !isRegionUnlocked(
+      region
+    )
+  ) {
+
+    toast(
+      `🔒 ${region.name}은 LV.${region.level}에서 해금됩니다.`
+    );
+
+    return;
+
+  }
+
+
+  if (
+    game.region ===
+    regionId
+  ) {
+
+    closeRegionModal();
+
+    return;
+
+  }
+
+
+  /*
+    낚시 중 이동 방지
+  */
+
+  if (
+    state !==
+    "idle"
+  ) {
+
+    toast(
+      "🎣 낚시 중에는 지역을 이동할 수 없습니다."
+    );
+
+    return;
+
+  }
+
+
+  game.region =
+    regionId;
+
+
+  /*
+    지역 변경 시 콤보 유지 여부:
+    지역 이동은 새로운 출항으로 취급하여 콤보를 끊습니다.
+  */
+
+  game.combo =
+    0;
+
+
+  save();
+
+
+  updateRegionButton();
+
+
+  updateRegionScene();
+
+
+  renderAll();
+
+
+  renderRegionModal();
+
+
+  toast(
+    `${region.emoji} ${region.name}으로 출항합니다!`
+  );
+
+
+  /*
+    짧은 후 자동 닫기
+  */
+
+  setTimeout(
+    () => {
+
+      closeRegionModal();
+
+    },
+    450
+  );
+
+}
+
+
+/* =========================================================
+   15. 바다 화면 테마 변경
+   ---------------------------------------------------------
+   실제 CSS 파일을 수정하지 않고 클래스만 교체합니다.
+   ========================================================= */
+
+function updateRegionScene() {
+
+  const ocean =
+    el.oceanCard;
+
+
+  if (!ocean) {
+
+    return;
+
+  }
+
+
+  const region =
+    getCurrentRegion();
+
+
+  /*
+    기존 지역 클래스 제거
+  */
+
+  [
+    "region-harbor",
+    "region-coral",
+    "region-deep"
+  ].forEach(
+    (className) => {
+
+      ocean.classList.remove(
+        className
+      );
+
+    }
+  );
+
+
+  ocean.classList.add(
+    `region-${region.id}`
+  );
+
+
+  /*
+    상태 문구
+  */
+
+  if (
+    state ===
+    "idle"
+  ) {
+
+    if (el.status) {
+
+      el.status.textContent =
+        `${region.emoji} ${region.name}의 잔잔한 바다입니다.`;
+
+    }
+
+
+    if (el.message) {
+
+      el.message.textContent =
+        "오늘의 대어는 무엇일까요?";
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   16. 지역별 화면 스타일
+   ========================================================= */
+
+function ensureRegionSceneStyles() {
+
+  if (
+    document.getElementById(
+      "step3RegionSceneStyles"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+
+  style.id =
+    "step3RegionSceneStyles";
+
+
+  style.textContent = `
+
+    .ocean-card {
+      transition:
+        background .45s ease,
+        box-shadow .45s ease,
+        filter .45s ease;
+    }
+
+
+    .ocean-card.region-harbor {
+      background:
+        linear-gradient(
+          #0b4168 0 48%,
+          #096084 56%,
+          #063a60
+        );
+    }
+
+
+    .ocean-card.region-coral {
+      background:
+        linear-gradient(
+          #075d76 0 44%,
+          #087e86 57%,
+          #075568
+        );
+
+      box-shadow:
+        0 22px 50px rgba(0,0,0,.50),
+        0 0 35px rgba(49,199,192,.13),
+        inset 0 1px rgba(141,234,255,.32);
+    }
+
+
+    .ocean-card.region-deep {
+      background:
+        linear-gradient(
+          #091c40 0 42%,
+          #102b58 56%,
+          #061b35
+        );
+
+      box-shadow:
+        0 22px 50px rgba(0,0,0,.62),
+        0 0 40px rgba(116,88,207,.18),
+        inset 0 1px rgba(150,180,255,.26);
+    }
+
+
+    .ocean-card.region-coral
+    .moon {
+      background:
+        #d6ffff;
+      box-shadow:
+        0 0 45px
+        rgba(98,255,233,.48);
+    }
+
+
+    .ocean-card.region-deep
+    .moon {
+      background:
+        #c5d1ff;
+      box-shadow:
+        0 0 48px
+        rgba(140,150,255,.40);
+    }
+
+
+  `;
+
+
+  document.head.appendChild(
+    style
+  );
+
+}
+
+
+/* =========================================================
+   17. 물고기 후보가 현재 지역과 맞는지
+   다른 시스템에서 확인할 수 있도록 공개
+   ========================================================= */
+
+window.oceanCatchRegion =
+  {
+
+    getCurrentRegion,
+
+    getRegionFishPool,
+
+    switchRegion,
+
+    getAllRegions() {
+
+      return [
+        ...OCEAN_REGIONS
+      ];
+
+    }
+
+  };
+
+
+/* =========================================================
+   18. 렌더링 연결
+   ========================================================= */
+
+const step3RegionOldRenderMain =
+  renderMain;
+
+
+renderMain =
+  function () {
+
+    ensureStep6RegionData();
+
+
+    step3RegionOldRenderMain();
+
+
+    updateRegionButton();
+
+    updateRegionScene();
+
+  };
+
+
+/* =========================================================
+   19. 초기화
+   ========================================================= */
+
+ensureStep6RegionData();
+
+ensureRegionStyles();
+
+ensureRegionSceneStyles();
+
+ensureRegionButton();
+
+updateRegionScene();
+
+save();
+
+
+console.log(
+  "🌊 STEP 3 - 1/5: 지역 시스템 적용 완료"
+);
+
+console.log(
+  "현재 지역:",
+  getCurrentRegion().name
+);
