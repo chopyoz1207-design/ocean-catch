@@ -39,16 +39,21 @@ function getFishIcon(emoji, name) {
     }
     return emoji;
 }
-function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{let s=document.createElement('span');
-if(name === '푸른 가재') {
-    s.innerHTML = '<span class="blue-lobster">🦞</span>';
-} else {
-    s.textContent = emoji;
-}
-s.title=name;
-if(game.found.includes(name))s.className='found';
-        el.grid.append(s);
-    });
+function render(){el.score.textContent=game.score.toLocaleString();el.coins.textContent=game.coins.toLocaleString();el.level.textContent=level();let xp=game.score%100;el.xp.style.width=xp+'%';el.xpText.textContent=`다음 레벨까지 ${100-xp} XP`;el.combo.textContent=game.combo;el.badge.hidden=game.combo<2;el.grid.innerHTML='';
+fishData.flatMap(x=>x.items).forEach(([emoji,name])=>{
+    let s=document.createElement('span');
+    
+    // 도감 안에서는 텍스트가 아니라 HTML 구조로 안전하게 주입
+    if(name === '푸른 가재') {
+        s.innerHTML = `<span class="blue-lobster">${emoji}</span>`;
+    } else {
+        s.textContent = emoji;
+    }
+    
+    s.title=name;
+    if(game.found.includes(name))s.className='found';
+    el.grid.append(s);
+});
 el.logs.innerHTML=game.logs.length?'': '<li class="empty-log">첫 번째 낚시를 기다리고 있어요…</li>';game.logs.forEach(x=>{let li=document.createElement('li');li.innerHTML=`<span>${getFishIcon(x.emoji, x.name)} ${x.name}</span><b class="rarity ${x.cls}">${x.r} · +${x.points}</b>`;el.logs.append(li)})}
 function pick(){let n=Math.random()*100,total=0;for(const group of fishData){total+=group.c;if(n<total)return group}}
 function sound(freq=440,d=.07){if(!soundOn||!window.AudioContext)return;let a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.setValueAtTime(.04,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.connect(g).connect(a.destination);o.start();o.stop(a.currentTime+d)}
@@ -110,7 +115,7 @@ function resolve(p){
     state='idle';
     resetSea();
     el.status.textContent=perfect?'PERFECT CAST! 보너스가 적용됐어요.':'좋은 타이밍이에요!';
-    el.message.textContent=`${item[0]} ${item[1]}을(를) 낚았습니다! +${earned}점`;
+    messageElement.innerHTML = `${getFishIcon(emoji, name)} ${name}을(를) 낚았습니다!`;
     el.button.disabled=false;
     el.button.innerHTML='🎣 한 번 더 낚시하기';
     render();
