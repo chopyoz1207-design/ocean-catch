@@ -1,39 +1,10461 @@
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nunito:wght@500;700;800;900&display=swap');
-:root{--ink:#e9f8ff;--muted:#91bed4;--navy:#061c31;--card:rgba(7,39,65,.86);--cyan:#62e7ff;--gold:#ffd768;--coral:#ff7770}*{box-sizing:border-box}body{margin:0;min-width:320px;color:var(--ink);font-family:Nunito,"Malgun Gothic",sans-serif;background:#041a2d radial-gradient(circle at 50% -5%,#176c94 0,transparent 34%),linear-gradient(145deg,#0a395b,#04172a 70%);min-height:100vh}.sky-glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 0%,#45bde038,transparent 35%)}.game-shell{width:min(1080px,94vw);margin:auto;padding:28px 0 46px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.brand{display:flex;gap:12px;align-items:center}.brand>span{font-size:37px;filter:drop-shadow(0 5px 8px #0008)}small,.top-stats span,.score-card>span,.collection-card span{color:var(--muted);font-weight:800;letter-spacing:1.1px;font-size:11px}.brand small{color:var(--cyan)}h1{font-family:"Black Han Sans",sans-serif;font-size:23px;margin:1px 0 0;letter-spacing:-1px}.top-stats{display:flex;align-items:center;gap:18px}.top-stats div{display:grid;text-align:right}.top-stats b{font-size:19px;color:var(--gold)}button{font:inherit}.icon-button{border:0;background:#ffffff17;border-radius:50%;width:35px;height:35px;cursor:pointer}.ocean-card{height:355px;overflow:hidden;position:relative;border-radius:28px;background:linear-gradient(#0b4168 0 48%,#096084 56%,#063a60);box-shadow:0 22px 50px #0008,inset 0 1px #8deaff57}.moon{position:absolute;width:76px;height:76px;border-radius:50%;background:#edffd8;top:31px;right:13%;box-shadow:0 0 40px #e8ffd8aa}.stars{position:absolute;top:40px;left:8%;color:#dfffff;opacity:.75;letter-spacing:9px}.island{font-size:52px;position:absolute;right:5%;bottom:123px;filter:drop-shadow(0 12px 4px #001b2b)}.boat{position:absolute;left:19%;bottom:102px;font-size:74px;transform:scaleX(-1);filter:drop-shadow(0 13px 4px #001d2e)}.water{height:70px;width:140%;position:absolute;left:-20%;border-radius:47%;background:#0491aa;bottom:0;opacity:.8}.water-back{bottom:38px;background:#21b1bd55;animation:wave 5s linear infinite}.water-front{bottom:-37px;animation:wave 7s linear infinite reverse}.ocean-copy{position:absolute;z-index:3;left:50%;top:49%;transform:translate(-50%,-50%);width:90%;text-align:center;text-shadow:0 3px 10px #001527}.ocean-copy p{font-size:14px;color:#c7efff;margin:0 0 7px}.ocean-copy strong{font-size:20px}.fish{position:absolute;z-index:1;font-size:32px;opacity:.67;animation:swim 13s linear infinite}.fish-one{bottom:76px;left:-5%;animation-duration:15s}.fish-two{bottom:32px;left:30%;animation-delay:-8s}.fish-three{bottom:100px;left:78%;animation-delay:-2s}.line{height:0;position:absolute;z-index:4;top:106px;left:25%;width:2px;background:#d9f9ff;transform-origin:top;transition:height .5s}.bobber{position:absolute;z-index:5;top:105px;left:calc(25% - 11px);opacity:0;transition:all .5s}.casting .line{height:150px}.casting .bobber{top:246px;opacity:1}.biting .bobber{animation:bite .25s infinite}.combo{position:absolute;right:22px;top:22px;padding:7px 13px;border-radius:20px;color:#fff7d3;background:#1b142caa;font-weight:900;font-size:14px}.control-panel{background:var(--card);border:1px solid #7ceeff2c;border-radius:0 0 22px 22px;margin:-20px 20px 0;position:relative;z-index:5;padding:17px 24px;text-align:center;backdrop-filter:blur(9px)}.fish-button{border:0;border-radius:14px;padding:14px 32px;background:linear-gradient(135deg,#ff8c67,#ed4f69);box-shadow:0 7px 0 #aa2e4a,0 11px 18px #0006;color:#fff;font-size:18px;font-weight:900;cursor:pointer;transition:.15s}.fish-button:hover{filter:brightness(1.12);transform:translateY(-2px)}.fish-button:active{transform:translateY(5px);box-shadow:0 2px 0 #aa2e4a}.fish-button:disabled{filter:grayscale(.7);cursor:default;transform:none}.hint{margin:11px 0 0;color:var(--muted);font-size:12px;font-weight:700}.timing-area{max-width:420px;margin:0 auto 13px}.timing-title{font-size:13px;margin-bottom:7px}.timing-title b{color:var(--gold)}.meter{height:17px;border:3px solid #d8f8ff;border-radius:15px;background:#153d5a;position:relative;overflow:hidden}.sweet-spot{position:absolute;left:43%;width:18%;height:100%;background:var(--gold);box-shadow:0 0 17px var(--gold)}.needle{position:absolute;left:0;top:-4px;width:4px;height:22px;border-radius:4px;background:white;box-shadow:0 0 5px white}.dashboard{display:grid;grid-template-columns:1fr 1.2fr;gap:16px;margin-top:20px}.dashboard article{background:var(--card);border:1px solid #7ceeff21;border-radius:19px;padding:18px;box-shadow:0 12px 22px #0003}.score-card strong{display:block;font-size:38px;line-height:1.15;color:var(--gold)}.xp-track{margin-top:12px;height:8px;border-radius:6px;background:#133851;overflow:hidden}.xp-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#56e4ff,#e1ff83);transition:width .4s}.score-card small{display:block;margin-top:7px}.collection-card{grid-column:2;grid-row:1 / span 2}.collection-card>div:first-child{display:flex;justify-content:space-between;align-items:end}.collection-card strong{font-size:18px}.collection-card strong b{color:var(--cyan)}.collection-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.collection-grid span{height:48px;border-radius:10px;background:#0b2e49;display:grid;place-items:center;font-size:24px;filter:grayscale(1);opacity:.38}.collection-grid span.found{filter:none;opacity:1;background:#155274}.log-card{grid-column:1 / -1}.section-heading{display:flex;justify-content:space-between;align-items:center;font-weight:900}.section-heading button{border:0;background:transparent;color:var(--muted);font-size:12px;cursor:pointer}ol{list-style:none;margin:11px 0 0;padding:0;display:grid;gap:6px;max-height:155px;overflow:auto}ol li{display:flex;justify-content:space-between;padding:9px 11px;border-radius:9px;background:#ffffff0b;font-size:13px}.empty-log{color:var(--muted);display:block!important;text-align:center}.rarity{font-size:11px;font-weight:900}.trash{color:#afbfc7}.common{color:#80e7ff}.rare{color:#b78bff}.legendary{color:#ffd768}.toast{position:fixed;z-index:10;left:50%;bottom:26px;transform:translate(-50%,100px);opacity:0;padding:12px 19px;border-radius:14px;color:#052031;background:#e6fbff;font-weight:900;box-shadow:0 8px 28px #0008;transition:.3s}.toast.show{transform:translate(-50%,0);opacity:1}@keyframes wave{from{transform:translateX(-3%)}to{transform:translateX(3%)}}@keyframes swim{from{transform:translateX(-15vw)}to{transform:translateX(110vw)}}@keyframes bite{50%{transform:translateY(8px) rotate(-13deg)}}@media(max-width:650px){.game-shell{padding-top:18px}.top-stats{gap:9px}.ocean-card{height:315px}.boat{left:9%;font-size:58px}.dashboard{grid-template-columns:1fr}.collection-card,.log-card{grid-column:auto;grid-row:auto}.collection-card{grid-row:2}.topbar h1{font-size:19px}.moon{right:5%}.control-panel{margin:-17px 8px 0}.ocean-copy strong{font-size:17px}}
-/* --- 공동 개발자 수공품: 버튼 및 UI 인터랙션 극대화 --- */
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 1/6
+
+   전체 디자인 시스템
+   - 색상
+   - 기본 초기화
+   - 배경
+   - 인트로
+   - 로그인 바
+   - 상단 헤더
+   ========================================================= */
+
+
+/* =========================================================
+   1. GOOGLE FONT
+   ========================================================= */
+
+@import url(
+  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nunito:wght@500;700;800;900&display=swap'
+);
+
+
+/* =========================================================
+   2. DESIGN TOKENS
+   ========================================================= */
+
+:root {
+
+  /* 기본 텍스트 */
+  --ink:
+    #e9f8ff;
+
+  --muted:
+    #91bed4;
+
+  --muted-light:
+    #b9e1ef;
+
+
+  /* 바다 */
+  --navy:
+    #061c31;
+
+  --deep:
+    #031321;
+
+  --ocean:
+    #073d61;
+
+  --ocean-light:
+    #096789;
+
+  --ocean-cyan:
+    #21b7cf;
+
+
+  /* 포인트 */
+  --cyan:
+    #62e7ff;
+
+  --cyan-soft:
+    #9cf2ff;
+
+  --gold:
+    #ffd768;
+
+  --gold-bright:
+    #ffe995;
+
+  --coral:
+    #ff7770;
+
+  --coral-dark:
+    #b93d51;
+
+
+  /* 희귀도 */
+  --trash:
+    #aebfc7;
+
+  --common:
+    #80e7ff;
+
+  --uncommon:
+    #62e7b5;
+
+  --rare:
+    #b78bff;
+
+  --legendary:
+    #ffd768;
+
+  --mythic:
+    #ff79da;
+
+
+  /* 카드 */
+  --card:
+    rgba(
+      7,
+      39,
+      65,
+      .90
+    );
+
+  --card-strong:
+    rgba(
+      6,
+      32,
+      55,
+      .96
+    );
+
+  --card-soft:
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+
+  /* 테두리 */
+  --border:
+    rgba(
+      124,
+      238,
+      255,
+      .16
+    );
+
+  --border-strong:
+    rgba(
+      124,
+      238,
+      255,
+      .28
+    );
+
+
+  /* 그림자 */
+  --shadow:
+    0 18px 45px
+    rgba(
+      0,
+      0,
+      0,
+      .34
+    );
+
+  --shadow-deep:
+    0 24px 65px
+    rgba(
+      0,
+      0,
+      0,
+      .48
+    );
+
+
+  /* 반지름 */
+  --radius-sm:
+    10px;
+
+  --radius-md:
+    16px;
+
+  --radius-lg:
+    22px;
+
+  --radius-xl:
+    30px;
+
+
+  /* 레이아웃 */
+  --shell-width:
+    1120px;
+
+}
+
+
+/* =========================================================
+   3. GLOBAL RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing:
+    border-box;
+}
+
+
+html {
+  margin:
+    0;
+
+  padding:
+    0;
+
+  min-height:
+    100%;
+
+  background:
+    var(--deep);
+
+  scroll-behavior:
+    smooth;
+}
+
+
+body {
+  margin:
+    0;
+
+  padding:
+    0;
+
+  min-width:
+    320px;
+
+  min-height:
+    100vh;
+
+  color:
+    var(--ink);
+
+  font-family:
+    "Nunito",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-weight:
+    700;
+
+  background:
+
+    radial-gradient(
+      circle at
+      50% -8%,
+      rgba(
+        31,
+        139,
+        179,
+        .42
+      )
+      0,
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at
+      12% 12%,
+      rgba(
+        62,
+        192,
+        214,
+        .16
+      )
+      0,
+      transparent 28%
+    ),
+
+    linear-gradient(
+      145deg,
+      #0a395b 0%,
+      #051f35 42%,
+      #031522 100%
+    );
+
+  overflow-x:
+    hidden;
+}
+
+
+/* =========================================================
+   4. 기본 요소
+   ========================================================= */
+
+button,
+input {
+  font:
+    inherit;
+}
+
+
 button {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    cursor: pointer;
+  color:
+    inherit;
+
+  border:
+    0;
+
+  outline:
+    none;
 }
 
-button:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.12);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+
+button:focus-visible,
+input:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      98,
+      231,
+      255,
+      .65
+    );
+
+  outline-offset:
+    3px;
 }
 
-button:active {
-    transform: translateY(1px);
-    filter: brightness(0.92);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+
+img {
+  max-width:
+    100%;
+
+  display:
+    block;
 }
 
-/* 모달 내부 입력창 포커스 효과 */
-input[type="text"]:focus {
-    border-color: #61dafb !important;
-    box-shadow: 0 0 8px rgba(97, 218, 251, 0.4);
+
+/* =========================================================
+   5. 접근성용 숨김
+   ========================================================= */
+
+.sr-only {
+  position:
+    absolute;
+
+  width:
+    1px;
+
+  height:
+    1px;
+
+  padding:
+    0;
+
+  margin:
+    -1px;
+
+  overflow:
+    hidden;
+
+  clip:
+    rect(
+      0,
+      0,
+      0,
+      0
+    );
+
+  white-space:
+    nowrap;
+
+  border:
+    0;
 }
-/* --- 레어 캐치 연출 효과 --- */
-@keyframes rare-flash {
-    0% { box-shadow: inset 0 0 0px #ffffff; }
-    50% { box-shadow: inset 0 0 60px #ffdf00; }
-    100% { box-shadow: inset 0 0 0px #ffffff; }
+
+
+/* =========================================================
+   6. 배경 글로우
+   ========================================================= */
+
+.sky-glow {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    radial-gradient(
+      ellipse at
+      20% 0%,
+      rgba(
+        69,
+        189,
+        148,
+        .10
+      ),
+      transparent 36%
+    ),
+
+    radial-gradient(
+      ellipse at
+      80% 10%,
+      rgba(
+        98,
+        231,
+        255,
+        .07
+      ),
+      transparent 30%
+    );
+
+  opacity:
+    1;
 }
+
+
+/* =========================================================
+   7. 게임 전체 폭
+   ========================================================= */
+
+.game-shell {
+
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(
+      var(--shell-width),
+      calc(
+        100vw - 32px
+      )
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    22px 0 70px;
+}
+
+
+/* =========================================================
+   8. AUTH BAR
+   ========================================================= */
+
+.auth-bar {
+
+  position:
+    relative;
+
+  z-index:
+    50;
+
+  width:
+    min(
+      var(--shell-width),
+      calc(
+        100vw - 32px
+      )
+    );
+
+  margin:
+    14px auto 0;
+
+  min-height:
+    44px;
+
+  padding:
+    7px 10px;
+
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  background:
+    rgba(
+      0,
+      17,
+      30,
+      .46
+    );
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .08
+    );
+
+  border-radius:
+    14px;
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+  box-shadow:
+    0 8px 24px
+    rgba(
+      0,
+      0,
+      0,
+      .14
+    );
+}
+
+
+.user-info {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  min-height:
+    32px;
+
+  padding:
+    7px 12px;
+
+  border-radius:
+    999px;
+
+  color:
+    var(--cyan);
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .08
+    );
+
+  border:
+    1px solid
+    rgba(
+      98,
+      231,
+      255,
+      .12
+    );
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+}
+
+
+.auth-button {
+
+  min-height:
+    32px;
+
+  padding:
+    7px 13px;
+
+  border-radius:
+    10px;
+
+  cursor:
+    pointer;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  transition:
+    transform
+    .18s ease,
+
+    filter
+    .18s ease,
+
+    box-shadow
+    .18s ease;
+}
+
+
+.auth-button:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.08
+    );
+}
+
+
+.login-button {
+
+  background:
+    linear-gradient(
+      135deg,
+      #4285f4,
+      #346fd0
+    );
+
+  color:
+    white;
+
+  box-shadow:
+    0 6px 18px
+    rgba(
+      66,
+      133,
+      244,
+      .24
+    );
+}
+
+
+.logout-button {
+
+  background:
+    rgba(
+      98,
+      125,
+      152,
+      .85
+    );
+
+  color:
+    white;
+}
+
+
+/* =========================================================
+   9. TOP BAR
+   ========================================================= */
+
+.topbar {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    16px;
+
+  margin-bottom:
+    18px;
+}
+
+
+.brand {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  min-width:
+    0;
+}
+
+
+.brand-icon {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    46px;
+
+  height:
+    46px;
+
+  flex:
+    0 0 46px;
+
+  border-radius:
+    15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        98,
+        231,
+        255,
+        .16
+      ),
+      rgba(
+        7,
+        50,
+        78,
+        .72
+      )
+    );
+
+  border:
+    1px solid
+    rgba(
+      98,
+      231,
+      255,
+      .13
+    );
+
+  box-shadow:
+    0 8px 25px
+    rgba(
+      0,
+      0,
+      0,
+      .24
+    );
+
+  font-size:
+    25px;
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      rgba(
+        0,
+        0,
+        0,
+        .6
+      )
+    );
+}
+
+
+.brand small {
+
+  display:
+    block;
+
+  color:
+    var(--cyan);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.5px;
+
+  line-height:
+    1;
+}
+
+
+.brand h1 {
+
+  margin:
+    4px 0 0;
+
+  color:
+    #ffffff;
+
+  font-family:
+    "Black Han Sans",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-size:
+    24px;
+
+  font-weight:
+    400;
+
+  letter-spacing:
+    -1px;
+
+  line-height:
+    1.05;
+
+  text-shadow:
+    0 3px 9px
+    rgba(
+      0,
+      0,
+      0,
+      .42
+    );
+}
+
+
+/* =========================================================
+   10. TOP STATS
+   ========================================================= */
+
+.top-stats {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+}
+
+
+.stat-chip {
+
+  display:
+    grid;
+
+  min-width:
+    68px;
+
+  padding:
+    6px 10px;
+
+  text-align:
+    right;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .10
+    );
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+  box-shadow:
+    inset
+    0 1px
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+}
+
+
+.stat-chip span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.2px;
+}
+
+
+.stat-chip b {
+
+  margin-top:
+    1px;
+
+  color:
+    var(--gold);
+
+  font-size:
+    17px;
+
+  line-height:
+    1;
+}
+
+
+.icon-button {
+
+  width:
+    39px;
+
+  height:
+    39px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .07
+    );
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      0,
+      0,
+      0,
+      .16
+    );
+
+  transition:
+    transform
+    .18s ease,
+
+    background
+    .18s ease;
+}
+
+
+.icon-button:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .12
+    );
+}
+
+
+/* =========================================================
+   11. INTRO SCREEN
+   ---------------------------------------------------------
+   기존 CSS에 없어서 화면 왼쪽에 텍스트로 튀어나오던
+   문제를 여기서 해결합니다.
+   ========================================================= */
+
+.intro-screen {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    1000;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    24px;
+
+  background:
+
+    radial-gradient(
+      circle at
+      50% 35%,
+      rgba(
+        24,
+        132,
+        173,
+        .24
+      ),
+      transparent 30%
+    ),
+
+    linear-gradient(
+      160deg,
+      rgba(
+        2,
+        19,
+        32,
+        .96
+      ),
+      rgba(
+        1,
+        10,
+        18,
+        .99
+      )
+    );
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity
+    .45s ease,
+
+    visibility
+    .45s ease;
+}
+
+
+.intro-screen.show {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+}
+
+
+.intro-overlay {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    radial-gradient(
+      circle at
+      50% 60%,
+      rgba(
+        98,
+        231,
+        255,
+        .08
+      ),
+      transparent 28%
+    );
+}
+
+
+.intro-panel {
+
+  position:
+    relative;
+
+  width:
+    min(
+      520px,
+      100%
+    );
+
+  padding:
+    38px 34px 32px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .16
+    );
+
+  border-radius:
+    28px;
+
+  background:
+
+    linear-gradient(
+      160deg,
+      rgba(
+        8,
+        48,
+        75,
+        .95
+      ),
+      rgba(
+        4,
+        29,
+        49,
+        .97
+      )
+    );
+
+  box-shadow:
+    0 30px 90px
+    rgba(
+      0,
+      0,
+      0,
+      .55
+    ),
+
+    inset
+    0 1px
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+
+  backdrop-filter:
+    blur(
+      18px
+    );
+
+  transform:
+    translateY(
+      18px
+    )
+    scale(
+      .98
+    );
+
+  transition:
+    transform
+    .5s cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+}
+
+
+.intro-screen.show
+.intro-panel {
+
+  transform:
+    translateY(
+      0
+    )
+    scale(
+      1
+    );
+}
+
+
+.intro-logo {
+
+  width:
+    76px;
+
+  height:
+    76px;
+
+  margin:
+    0 auto 17px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        98,
+        231,
+        255,
+        .17
+      ),
+      rgba(
+        45,
+        106,
+        129,
+        .20
+      )
+    );
+
+  border:
+    1px solid
+    rgba(
+      98,
+      231,
+      255,
+      .22
+    );
+
+  font-size:
+    41px;
+
+  box-shadow:
+    0 15px 38px
+    rgba(
+      0,
+      0,
+      0,
+      .25
+    );
+
+  animation:
+    introFloat
+    3.5s ease-in-out
+    infinite;
+}
+
+
+.intro-kicker {
+
+  margin:
+    0 0 8px;
+
+  color:
+    var(--cyan);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    2.2px;
+}
+
+
+.intro-panel h1 {
+
+  margin:
+    0;
+
+  color:
+    white;
+
+  font-family:
+    "Black Han Sans",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-size:
+    clamp(
+      34px,
+      6vw,
+      53px
+    );
+
+  letter-spacing:
+    -1.8px;
+
+  line-height:
+    1;
+}
+
+
+.intro-story {
+
+  margin:
+    22px 0 0;
+
+  color:
+    #d5f3ff;
+
+  font-size:
+    15px;
+
+  line-height:
+    1.8;
+
+  font-weight:
+    700;
+}
+
+
+.intro-story.secondary {
+
+  margin-top:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.7;
+}
+
+
+.intro-story strong {
+
+  color:
+    var(--gold);
+
+  font-weight:
+    900;
+}
+
+
+.intro-start-button {
+
+  width:
+    100%;
+
+  min-height:
+    58px;
+
+  margin-top:
+    25px;
+
+  border-radius:
+    16px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #ff8c67,
+      #ed4f69
+    );
+
+  color:
+    white;
+
+  font-size:
+    18px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+
+    0 8px 0
+    #aa2e4a,
+
+    0 14px 30px
+    rgba(
+      170,
+      46,
+      74,
+      .25
+    );
+
+  transition:
+    transform
+    .16s ease,
+
+    filter
+    .16s ease,
+
+    box-shadow
+    .16s ease;
+}
+
+
+.intro-start-button:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.08
+    );
+}
+
+
+.intro-start-button:active {
+
+  transform:
+    translateY(
+      5px
+    );
+
+  box-shadow:
+    0 3px 0
+    #aa2e4a;
+}
+
+
+.intro-note {
+
+  display:
+    block;
+
+  margin-top:
+    18px;
+
+  color:
+    rgba(
+      185,
+      225,
+      239,
+      .63
+    );
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   12. 기본 애니메이션
+   ========================================================= */
+
+@keyframes introFloat {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(
+        0
+      );
+
+  }
+
+  50% {
+
+    transform:
+      translateY(
+        -6px
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   13. REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  *,
+  *::before,
+  *::after {
+
+    animation-duration:
+      .01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    scroll-behavior:
+      auto !important;
+
+    transition-duration:
+      .01ms !important;
+
+  }
+
+}
+
+
+/* =========================================================
+   14. 모바일 1차 대응
+   ========================================================= */
+
+@media (
+  max-width: 650px
+) {
+
+  .game-shell {
+
+    width:
+      min(
+        calc(
+          100vw - 16px
+        ),
+        var(--shell-width)
+      );
+
+    padding:
+      14px 0 45px;
+
+  }
+
+
+  .auth-bar {
+
+    width:
+      calc(
+        100vw - 16px
+      );
+
+    margin-top:
+      8px;
+
+    border-radius:
+      11px;
+
+  }
+
+
+  .topbar {
+
+    align-items:
+      flex-start;
+
+  }
+
+
+  .brand {
+
+    gap:
+      8px;
+
+  }
+
+
+  .brand-icon {
+
+    width:
+      40px;
+
+    height:
+      40px;
+
+    flex-basis:
+      40px;
+
+    font-size:
+      21px;
+
+  }
+
+
+  .brand h1 {
+
+    font-size:
+      19px;
+
+  }
+
+
+  .brand small {
+
+    font-size:
+      8px;
+
+  }
+
+
+  .top-stats {
+
+    gap:
+      5px;
+
+  }
+
+
+  .stat-chip {
+
+    min-width:
+      53px;
+
+    padding:
+      5px 7px;
+
+  }
+
+
+  .stat-chip span {
+
+    font-size:
+      8px;
+
+  }
+
+
+  .stat-chip b {
+
+    font-size:
+      14px;
+
+  }
+
+
+  .icon-button {
+
+    width:
+      35px;
+
+    height:
+      35px;
+
+  }
+
+
+  .intro-panel {
+
+    padding:
+      29px 21px 24px;
+
+    border-radius:
+      22px;
+
+  }
+
+
+  .intro-logo {
+
+    width:
+      66px;
+
+    height:
+      66px;
+
+    font-size:
+      34px;
+
+  }
+
+
+  .intro-story {
+
+    font-size:
+      13px;
+
+  }
+
+
+  .intro-start-button {
+
+    min-height:
+      53px;
+
+    font-size:
+      16px;
+
+  }
+
+}
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 2/6
+
+   바다 장면 / 배 / 낚시꾼 / 물고기 / 파도
+   ========================================================= */
+
+
+/* =========================================================
+   15. OCEAN CARD
+   ========================================================= */
+
+.ocean-card {
+
+  position:
+    relative;
+
+  height:
+    390px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    var(--radius-xl);
+
+  background:
+
+    linear-gradient(
+      180deg,
+      #0d4c74 0%,
+      #0a5478 38%,
+      #08718a 55%,
+      #075a74 56%,
+      #063c5e 100%
+    );
+
+  border:
+    1px solid
+    rgba(
+      141,
+      234,
+      255,
+      .18
+    );
+
+  box-shadow:
+
+    var(--shadow-deep),
+
+    inset
+    0 1px
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  isolation:
+    isolate;
+
+}
+
+
+/*
+  바다 위의 미세한 빛
+*/
+
+.ocean-card::before {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    radial-gradient(
+      ellipse at
+      50% 18%,
+      rgba(
+        193,
+        246,
+        255,
+        .10
+      ),
+      transparent 33%
+    ),
+
+    linear-gradient(
+      180deg,
+      transparent 40%,
+      rgba(
+        0,
+        15,
+        28,
+        .20
+      )
+      100%
+    );
+
+}
+
+
+/*
+  수면 아래 푸른빛
+*/
+
+.ocean-card::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    -10%;
+
+  right:
+    -10%;
+
+  bottom:
+    55px;
+
+  height:
+    120px;
+
+  z-index:
+    0;
+
+  pointer-events:
+    none;
+
+  background:
+
+    radial-gradient(
+      ellipse,
+      rgba(
+        98,
+        231,
+        255,
+        .12
+      ),
+      transparent 65%
+    );
+
+  filter:
+    blur(
+      16px
+    );
+
+}
+
+
+/* =========================================================
+   16. MOON
+   ========================================================= */
+
+.moon {
+
+  position:
+    absolute;
+
+  z-index:
+    1;
+
+  top:
+    34px;
+
+  right:
+    10%;
+
+  width:
+    76px;
+
+  height:
+    76px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle at
+      38% 35%,
+      #ffffff,
+      #eeffd8 58%,
+      #d6ebc5 100%
+    );
+
+  box-shadow:
+
+    0 0 22px
+    rgba(
+      229,
+      255,
+      216,
+      .55
+    ),
+
+    0 0 60px
+    rgba(
+      229,
+      255,
+      216,
+      .24
+    );
+
+  opacity:
+    .96;
+
+}
+
+
+/* 달 표면 */
+.moon::before,
+.moon::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      186,
+      209,
+      172,
+      .18
+    );
+
+}
+
+
+.moon::before {
+
+  width:
+    10px;
+
+  height:
+    10px;
+
+  top:
+    19px;
+
+  left:
+    21px;
+
+}
+
+
+.moon::after {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  top:
+    43px;
+
+  left:
+    44px;
+
+}
+
+
+/* =========================================================
+   17. STARS
+   ========================================================= */
+
+.stars {
+
+  position:
+    absolute;
+
+  top:
+    34px;
+
+  left:
+    7%;
+
+  z-index:
+    1;
+
+  color:
+    rgba(
+      228,
+      252,
+      255,
+      .84
+    );
+
+  font-size:
+    13px;
+
+  letter-spacing:
+    9px;
+
+  white-space:
+    nowrap;
+
+  opacity:
+    .72;
+
+  animation:
+    starsTwinkle
+    4s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes starsTwinkle {
+
+  0%,
+  100% {
+    opacity:
+      .58;
+  }
+
+  50% {
+    opacity:
+      .95;
+  }
+
+}
+
+
+/* =========================================================
+   18. CLOUD LAYER
+   ========================================================= */
+
+.cloud-layer {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    1;
+
+  pointer-events:
+    none;
+
+  overflow:
+    hidden;
+
+}
+
+
+.cloud-layer::before,
+.cloud-layer::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  width:
+    170px;
+
+  height:
+    42px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      224,
+      247,
+      255,
+      .10
+    );
+
+  filter:
+    blur(
+      2px
+    );
+
+}
+
+
+.cloud-layer::before {
+
+  top:
+    72px;
+
+  left:
+    -190px;
+
+  box-shadow:
+
+    38px -12px 0
+    rgba(
+      224,
+      247,
+      255,
+      .08
+    ),
+
+    82px 0 0
+    rgba(
+      224,
+      247,
+      255,
+      .06
+    );
+
+  animation:
+    cloudMove
+    34s linear
+    infinite;
+
+}
+
+
+.cloud-layer::after {
+
+  top:
+    122px;
+
+  left:
+    -250px;
+
+  width:
+    130px;
+
+  height:
+    34px;
+
+  opacity:
+    .65;
+
+  animation:
+    cloudMove
+    43s linear
+    infinite reverse;
+
+}
+
+
+@keyframes cloudMove {
+
+  from {
+    transform:
+      translateX(
+        0
+      );
+  }
+
+  to {
+    transform:
+      translateX(
+        1450px
+      );
+  }
+
+}
+
+
+/* =========================================================
+   19. ISLAND
+   ========================================================= */
+
+.island {
+
+  position:
+    absolute;
+
+  z-index:
+    3;
+
+  right:
+    4%;
+
+  bottom:
+    100px;
+
+  width:
+    155px;
+
+  height:
+    78px;
+
+  border-radius:
+    52% 48% 28% 28% /
+    60% 60% 40% 40%;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      #9bd37c 0%,
+      #69a75f 52%,
+      #47684c 100%
+    );
+
+  box-shadow:
+
+    0 12px 10px
+    rgba(
+      0,
+      23,
+      32,
+      .36
+    );
+
+  transform:
+    rotate(
+      -1deg
+    );
+
+}
+
+
+/*
+  섬의 모래 부분
+*/
+
+.island::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    10%;
+
+  right:
+    10%;
+
+  bottom:
+    -1px;
+
+  height:
+    25px;
+
+  border-radius:
+    50%;
+
+  background:
+    #d5bc78;
+
+  opacity:
+    .92;
+
+}
+
+
+/* =========================================================
+   20. ISLAND ROCK
+   ========================================================= */
+
+.island-rock {
+
+  position:
+    absolute;
+
+  left:
+    12px;
+
+  bottom:
+    10px;
+
+  z-index:
+    3;
+
+  font-size:
+    22px;
+
+  filter:
+    drop-shadow(
+      0 4px 3px
+      rgba(
+        0,
+        0,
+        0,
+        .28
+      )
+    );
+
+}
+
+
+/* =========================================================
+   21. ISLAND TREES
+   ========================================================= */
+
+.island-tree {
+
+  position:
+    absolute;
+
+  z-index:
+    5;
+
+  transform-origin:
+    bottom center;
+
+  filter:
+    drop-shadow(
+      0 9px 4px
+      rgba(
+        0,
+        21,
+        29,
+        .35
+      )
+    );
+
+  animation:
+    treeSway
+    4s ease-in-out
+    infinite;
+
+}
+
+
+.tree-1 {
+
+  right:
+    28px;
+
+  bottom:
+    24px;
+
+  font-size:
+    54px;
+
+}
+
+
+.tree-2 {
+
+  right:
+    73px;
+
+  bottom:
+    25px;
+
+  font-size:
+    42px;
+
+  opacity:
+    .88;
+
+  animation-delay:
+    -1.5s;
+
+}
+
+
+@keyframes treeSway {
+
+  0%,
+  100% {
+    transform:
+      rotate(
+        -1deg
+      );
+  }
+
+  50% {
+    transform:
+      rotate(
+        2deg
+      );
+  }
+
+}
+
+
+/* =========================================================
+   22. BOAT SCENE
+   ========================================================= */
+
+.boat-scene {
+
+  position:
+    absolute;
+
+  z-index:
+    7;
+
+  left:
+    17%;
+
+  bottom:
+    106px;
+
+  width:
+    180px;
+
+  height:
+    115px;
+
+  transform:
+    translateZ(0);
+
+  transition:
+    transform
+    .6s ease;
+
+}
+
+
+.boat {
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  bottom:
+    0;
+
+  z-index:
+    3;
+
+  font-size:
+    78px;
+
+  line-height:
+    1;
+
+  transform:
+    scaleX(
+      -1
+    );
+
+  filter:
+
+    drop-shadow(
+      0 13px 5px
+      rgba(
+        0,
+        18,
+        29,
+        .55
+      )
+    );
+
+  transform-origin:
+    center bottom;
+
+}
+
+
+/* =========================================================
+   23. ANGLER
+   ========================================================= */
+
+.angler {
+
+  position:
+    absolute;
+
+  z-index:
+    5;
+
+  left:
+    51px;
+
+  bottom:
+    51px;
+
+  width:
+    54px;
+
+  height:
+    66px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  transform-origin:
+    50% 100%;
+
+  transition:
+    transform
+    .25s ease;
+
+}
+
+
+/*
+  사람이 배 위에서 살짝 보이도록
+  그림자와 외곽선을 추가
+*/
+
+.angler-shadow {
+
+  display:
+    block;
+
+  font-size:
+    47px;
+
+  line-height:
+    1;
+
+  filter:
+
+    drop-shadow(
+      0 4px 3px
+      rgba(
+        0,
+        0,
+        0,
+        .6
+      )
+    );
+
+}
+
+
+/* 캐스팅 중 */
+.ocean-card.casting
+.angler {
+
+  animation:
+    castBody
+    .65s ease
+    1;
+
+}
+
+
+/* 입질 */
+.ocean-card.biting
+.angler {
+
+  animation:
+    anglerPull
+    .38s ease-in-out
+    infinite alternate;
+
+}
+
+
+/* 강한 물고기 */
+.ocean-card.biting
+.angler {
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(
+        255,
+        215,
+        104,
+        .22
+      )
+    );
+
+}
+
+
+@keyframes castBody {
+
+  0% {
+    transform:
+      rotate(
+        0deg
+      );
+  }
+
+  35% {
+    transform:
+      rotate(
+        -9deg
+      )
+      translateY(
+        -2px
+      );
+  }
+
+  75% {
+    transform:
+      rotate(
+        7deg
+      );
+  }
+
+  100% {
+    transform:
+      rotate(
+        0deg
+      );
+  }
+
+}
+
+
+@keyframes anglerPull {
+
+  from {
+    transform:
+      rotate(
+        -3deg
+      )
+      translateX(
+        -1px
+      );
+  }
+
+  to {
+    transform:
+      rotate(
+        8deg
+      )
+      translateX(
+        4px
+      );
+  }
+
+}
+
+
+/* =========================================================
+   24. AMBIENT FISH LAYER
+   ========================================================= */
+
+.ambient-fish-layer {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    3;
+
+  pointer-events:
+    none;
+
+  overflow:
+    hidden;
+
+}
+
+
+/* =========================================================
+   25. FALLBACK FISH
+   ---------------------------------------------------------
+   기존 HTML에 남아 있는 fish-one / fish-two / fish-three
+   도 예쁘게 보이도록 스타일을 유지합니다.
+   ========================================================= */
+
+.fish {
+
+  position:
+    absolute;
+
+  z-index:
+    3;
+
+  font-size:
+    31px;
+
+  line-height:
+    1;
+
+  opacity:
+    .66;
+
+  pointer-events:
+    none;
+
+  filter:
+    drop-shadow(
+      0 3px 3px
+      rgba(
+        0,
+        19,
+        28,
+        .35
+      )
+    );
+
+  animation:
+    fishSwim
+    15s linear
+    infinite;
+
+}
+
+
+.fish-one {
+
+  bottom:
+    78px;
+
+  left:
+    -8%;
+
+  animation-duration:
+    16s;
+
+}
+
+
+.fish-two {
+
+  bottom:
+    33px;
+
+  left:
+    26%;
+
+  animation-duration:
+    21s;
+
+  animation-delay:
+    -8s;
+
+  opacity:
+    .54;
+
+}
+
+
+.fish-three {
+
+  bottom:
+    112px;
+
+  left:
+    72%;
+
+  animation-duration:
+    18s;
+
+  animation-delay:
+    -3s;
+
+  opacity:
+    .62;
+
+}
+
+
+@keyframes fishSwim {
+
+  from {
+
+    transform:
+      translateX(
+        -15vw
+      )
+      translateY(
+        0
+      );
+
+  }
+
+  50% {
+
+    transform:
+      translateX(
+        48vw
+      )
+      translateY(
+        -7px
+      );
+
+  }
+
+  to {
+
+    transform:
+      translateX(
+        118vw
+      )
+      translateY(
+        2px
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   26. BOAT FLOATING
+   ========================================================= */
+
+.ocean-card:not(.casting)
+.boat-scene {
+
+  animation:
+    boatFloat
+    3.2s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes boatFloat {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(
+        0
+      )
+      rotate(
+        -0.4deg
+      );
+
+  }
+
+  50% {
+
+    transform:
+      translateY(
+        -4px
+      )
+      rotate(
+        0.6deg
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   27. WATER LAYERS
+   ========================================================= */
+
+.water {
+
+  position:
+    absolute;
+
+  left:
+    -15%;
+
+  width:
+    130%;
+
+  border-radius:
+    48%;
+
+  pointer-events:
+    none;
+
+}
+
+
+.water-back {
+
+  z-index:
+    5;
+
+  bottom:
+    33px;
+
+  height:
+    74px;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(
+        36,
+        192,
+        203,
+        .52
+      ),
+      rgba(
+        8,
+        130,
+        157,
+        .84
+      )
+    );
+
+  opacity:
+    .78;
+
+  animation:
+    waveBack
+    5s linear
+    infinite;
+
+}
+
+
+.water-front {
+
+  z-index:
+    8;
+
+  bottom:
+    -38px;
+
+  height:
+    91px;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      #0b9cad,
+      #075c79
+    );
+
+  opacity:
+    .96;
+
+  animation:
+    waveFront
+    7s linear
+    infinite reverse;
+
+}
+
+
+@keyframes waveBack {
+
+  from {
+    transform:
+      translateX(
+        -3%
+      )
+      rotate(
+        0deg
+      );
+  }
+
+  to {
+    transform:
+      translateX(
+        3%
+      )
+      rotate(
+        .3deg
+      );
+  }
+
+}
+
+
+@keyframes waveFront {
+
+  from {
+    transform:
+      translateX(
+        -3%
+      );
+  }
+
+  to {
+    transform:
+      translateX(
+        3%
+      );
+  }
+
+}
+
+
+/* =========================================================
+   28. BUBBLE LAYER
+   ========================================================= */
+
+.bubble-layer {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    6;
+
+  pointer-events:
+    none;
+
+  overflow:
+    hidden;
+
+}
+
+
+.bubble-layer::before,
+.bubble-layer::after {
+
+  content:
+    "•";
+
+  position:
+    absolute;
+
+  bottom:
+    -20px;
+
+  color:
+    rgba(
+      229,
+      252,
+      255,
+      .35
+    );
+
+  font-size:
+    24px;
+
+  animation:
+    bubbleRise
+    7s linear
+    infinite;
+
+}
+
+
+.bubble-layer::before {
+
+  left:
+    47%;
+
+}
+
+
+.bubble-layer::after {
+
+  left:
+    64%;
+
+  font-size:
+    15px;
+
+  animation-delay:
+    -3s;
+
+}
+
+
+@keyframes bubbleRise {
+
+  0% {
+
+    transform:
+      translateY(
+        0
+      )
+      scale(
+        .7
+      );
+
+    opacity:
+      0;
+
+  }
+
+  20% {
+    opacity:
+      .65;
+  }
+
+  100% {
+
+    transform:
+      translateY(
+        -320px
+      )
+      scale(
+        1.25
+      );
+
+    opacity:
+      0;
+
+  }
+
+}
+
+
+/* =========================================================
+   29. FISHING LINE
+   ========================================================= */
+
+.line {
+
+  position:
+    absolute;
+
+  z-index:
+    9;
+
+  top:
+    119px;
+
+  left:
+    calc(
+      17% + 78px
+    );
+
+  width:
+    2px;
+
+  height:
+    0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        240,
+        255,
+        255,
+        .95
+      ),
+      rgba(
+        186,
+        237,
+        247,
+        .76
+      )
+    );
+
+  box-shadow:
+    0 0 4px
+    rgba(
+      215,
+      250,
+      255,
+      .5
+    );
+
+  transform-origin:
+    top center;
+
+  transition:
+    height
+    .5s ease;
+}
+
+
+.ocean-card.casting
+.line {
+
+  height:
+    145px;
+
+}
+
+
+.ocean-card.biting
+.line {
+
+  height:
+    150px;
+
+  animation:
+    lineShake
+    .24s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes lineShake {
+
+  0%,
+  100% {
+    transform:
+      rotate(
+        0deg
+      );
+  }
+
+  50% {
+    transform:
+      rotate(
+        1.7deg
+      );
+  }
+
+}
+
+
+/* =========================================================
+   30. BOBBER
+   ========================================================= */
+
+.bobber {
+
+  position:
+    absolute;
+
+  z-index:
+    10;
+
+  top:
+    113px;
+
+  left:
+    calc(
+      17% + 66px
+    );
+
+  opacity:
+    0;
+
+  transform:
+    scale(
+      .84
+    );
+
+  transition:
+
+    top
+    .5s ease,
+
+    opacity
+    .35s ease,
+
+    transform
+    .35s ease;
+
+  filter:
+    drop-shadow(
+      0 4px 4px
+      rgba(
+        0,
+        0,
+        0,
+        .35
+      )
+    );
+
+}
+
+
+.ocean-card.casting
+.bobber {
+
+  top:
+    254px;
+
+  opacity:
+    1;
+
+  transform:
+    scale(
+      1
+    );
+
+}
+
+
+.ocean-card.biting
+.bobber {
+
+  animation:
+    bobberBite
+    .28s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes bobberBite {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(
+        0
+      )
+      rotate(
+        0deg
+      );
+
+  }
+
+  50% {
+
+    transform:
+      translateY(
+        8px
+      )
+      rotate(
+        -12deg
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   31. OCEAN COPY
+   ========================================================= */
+
+.ocean-copy {
+
+  position:
+    absolute;
+
+  z-index:
+    10;
+
+  left:
+    50%;
+
+  top:
+    52%;
+
+  width:
+    min(
+      660px,
+      90%
+    );
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  text-align:
+    center;
+
+  pointer-events:
+    none;
+
+  text-shadow:
+    0 3px 13px
+    rgba(
+      0,
+      15,
+      26,
+      .82
+    );
+
+}
+
+
+.ocean-copy p {
+
+  margin:
+    0 0 7px;
+
+  color:
+    #c8effa;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+}
+
+
+.ocean-copy strong {
+
+  display:
+    block;
+
+  color:
+    white;
+
+  font-size:
+    21px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -.4px;
+
+}
+
+
+/* =========================================================
+   32. COMBO BADGE
+   ========================================================= */
+
+.combo {
+
+  position:
+    absolute;
+
+  z-index:
+    20;
+
+  top:
+    18px;
+
+  right:
+    18px;
+
+  padding:
+    8px 13px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      215,
+      104,
+      .16
+    );
+
+  border-radius:
+    999px;
+
+  color:
+    #fff7d3;
+
+  background:
+    rgba(
+      24,
+      14,
+      38,
+      .74
+    );
+
+  box-shadow:
+    0 7px 20px
+    rgba(
+      0,
+      0,
+      0,
+      .20
+    );
+
+  backdrop-filter:
+    blur(
+      7px
+    );
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  animation:
+    comboPulse
+    1.8s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes comboPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 7px 20px
+      rgba(
+        0,
+        0,
+        0,
+        .20
+      );
+  }
+
+  50% {
+    box-shadow:
+      0 7px 28px
+      rgba(
+        255,
+        215,
+        104,
+        .20
+      );
+  }
+
+}
+
+
+/* =========================================================
+   33. MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 650px
+) {
+
+  .ocean-card {
+
+    height:
+      340px;
+
+    border-radius:
+      22px;
+
+  }
+
+
+  .moon {
+
+    width:
+      62px;
+
+    height:
+      62px;
+
+    right:
+      6%;
+
+    top:
+      26px;
+
+  }
+
+
+  .stars {
+
+    left:
+      6%;
+
+    top:
+      31px;
+
+    font-size:
+      10px;
+
+    letter-spacing:
+      6px;
+
+  }
+
+
+  .island {
+
+    right:
+      -2%;
+
+    bottom:
+      93px;
+
+    transform:
+      scale(
+        .80
+      );
+
+    transform-origin:
+      right bottom;
+
+  }
+
+
+  .boat-scene {
+
+    left:
+      8%;
+
+    bottom:
+      99px;
+
+    transform:
+      scale(
+        .80
+      );
+
+    transform-origin:
+      left bottom;
+
+  }
+
+
+  .ocean-card:not(.casting)
+  .boat-scene {
+
+    animation:
+      boatFloatMobile
+      3.2s ease-in-out
+      infinite;
+
+  }
+
+
+  .line {
+
+    left:
+      calc(
+        8% + 62px
+      );
+
+    top:
+      104px;
+
+  }
+
+
+  .bobber {
+
+    left:
+      calc(
+        8% + 50px
+      );
+
+    top:
+      100px;
+
+  }
+
+
+  .ocean-card.casting
+  .bobber {
+
+    top:
+      234px;
+
+  }
+
+
+  .ocean-copy {
+
+    top:
+      50%;
+
+    width:
+      92%;
+
+  }
+
+
+  .ocean-copy p {
+
+    font-size:
+      12px;
+
+  }
+
+
+  .ocean-copy strong {
+
+    font-size:
+      17px;
+
+  }
+
+
+  .combo {
+
+    top:
+      13px;
+
+    right:
+      13px;
+
+    padding:
+      7px 10px;
+
+    font-size:
+      12px;
+
+  }
+
+}
+
+
+@keyframes boatFloatMobile {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(
+        0
+      )
+      scale(
+        .80
+      )
+      rotate(
+        -.4deg
+      );
+
+  }
+
+  50% {
+
+    transform:
+      translateY(
+        -3px
+      )
+      scale(
+        .80
+      )
+      rotate(
+        .7deg
+      );
+
+  }
+
+}
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 3/6
+
+   낚시 조작부 / 타이밍 게이지 / XP / 도감 / 기록
+   ========================================================= */
+
+
+/* =========================================================
+   34. CONTROL PANEL
+   ========================================================= */
+
+.control-panel {
+
+  position:
+    relative;
+
+  z-index:
+    30;
+
+  margin:
+    -22px 22px 0;
+
+  padding:
+    20px 24px 18px;
+
+  text-align:
+    center;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .17
+    );
+
+  border-radius:
+    0 0
+    23px 23px;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(
+        8,
+        45,
+        73,
+        .96
+      ),
+      rgba(
+        5,
+        30,
+        51,
+        .96
+      )
+    );
+
+  box-shadow:
+    0 13px 30px
+    rgba(
+      0,
+      0,
+      0,
+      .28
+    );
+
+  backdrop-filter:
+    blur(
+      12px
+    );
+
+}
+
+
+/* =========================================================
+   35. TIMING AREA
+   ========================================================= */
+
+.timing-area {
+
+  width:
+    min(
+      520px,
+      100%
+    );
+
+  margin:
+    0 auto 14px;
+
+}
+
+
+.timing-title {
+
+  margin-bottom:
+    8px;
+
+  color:
+    #dff8ff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    -.1px;
+
+}
+
+
+.timing-title b {
+
+  color:
+    var(--gold-bright);
+
+}
+
+
+.timing-hint {
+
+  margin-top:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+/* =========================================================
+   36. TIMING METER
+   ========================================================= */
+
+.meter {
+
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    21px;
+
+  overflow:
+    hidden;
+
+  border:
+    2px solid
+    rgba(
+      220,
+      248,
+      255,
+      .90
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #4f2d3a,
+      #123d56 24%,
+      #123d56 76%,
+      #4f2d3a
+    );
+
+  box-shadow:
+
+    inset
+    0 2px
+    7px
+    rgba(
+      0,
+      0,
+      0,
+      .45
+    ),
+
+    0 0 0
+    rgba(
+      255,
+      215,
+      104,
+      0
+    );
+
+}
+
+
+.meter-danger {
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  bottom:
+    0;
+
+  pointer-events:
+    none;
+
+}
+
+
+.meter-danger-left {
+
+  left:
+    0;
+
+  width:
+    20%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(
+        255,
+        90,
+        90,
+        .24
+      ),
+      transparent
+    );
+
+}
+
+
+.meter-danger-right {
+
+  right:
+    0;
+
+  width:
+    20%;
+
+  background:
+    linear-gradient(
+      -90deg,
+      rgba(
+        255,
+        90,
+        90,
+        .24
+      ),
+      transparent
+    );
+
+}
+
+
+/* =========================================================
+   37. SWEET SPOT
+   ========================================================= */
+
+.sweet-spot {
+
+  position:
+    absolute;
+
+  top:
+    0;
+
+  bottom:
+    0;
+
+  left:
+    43%;
+
+  width:
+    18%;
+
+  border-left:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .45
+    );
+
+  border-right:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .45
+    );
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(
+        255,
+        235,
+        141,
+        .98
+      ),
+      rgba(
+        255,
+        197,
+        67,
+        .85
+      )
+    );
+
+  box-shadow:
+    0 0 20px
+    rgba(
+      255,
+      215,
+      104,
+      .52
+    );
+
+  transition:
+    left
+    .2s ease,
+
+    width
+    .2s ease;
+
+}
+
+
+.biting .sweet-spot {
+
+  animation:
+    sweetPulse
+    .8s ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sweetPulse {
+
+  0%,
+  100% {
+
+    box-shadow:
+      0 0 14px
+      rgba(
+        255,
+        215,
+        104,
+        .38
+      );
+
+  }
+
+  50% {
+
+    box-shadow:
+      0 0 28px
+      rgba(
+        255,
+        215,
+        104,
+        .82
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   38. NEEDLE
+   ========================================================= */
+
+.needle {
+
+  position:
+    absolute;
+
+  top:
+    -5px;
+
+  left:
+    0;
+
+  width:
+    4px;
+
+  height:
+    27px;
+
+  border-radius:
+    999px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+
+    0 0 5px
+    rgba(
+      255,
+      255,
+      255,
+      .95
+    ),
+
+    0 0 13px
+    rgba(
+      98,
+      231,
+      255,
+      .78
+    );
+
+  transition:
+    background
+    .1s ease;
+
+}
+
+
+/* =========================================================
+   39. FISH BUTTON
+   ========================================================= */
+
+.fish-button {
+
+  position:
+    relative;
+
+  min-width:
+    225px;
+
+  min-height:
+    53px;
+
+  padding:
+    13px 28px;
+
+  border:
+    0;
+
+  border-radius:
+    15px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #ff8c67,
+      #ed4f69
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+
+    0 7px 0
+    #aa2e4a,
+
+    0 12px 22px
+    rgba(
+      0,
+      0,
+      0,
+      .28
+    );
+
+  font-size:
+    17px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+
+  transition:
+
+    transform
+    .15s ease,
+
+    filter
+    .15s ease,
+
+    box-shadow
+    .15s ease;
+
+}
+
+
+.fish-button:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.08
+    );
+
+  box-shadow:
+
+    0 8px 0
+    #aa2e4a,
+
+    0 15px 26px
+    rgba(
+      0,
+      0,
+      0,
+      .34
+    );
+
+}
+
+
+.fish-button:active {
+
+  transform:
+    translateY(
+      5px
+    );
+
+  box-shadow:
+
+    0 2px 0
+    #aa2e4a,
+
+    0 7px 12px
+    rgba(
+      0,
+      0,
+      0,
+      .22
+    );
+
+}
+
+
+.fish-button:disabled {
+
+  filter:
+    grayscale(
+      .62
+    )
+    brightness(
+      .72
+    );
+
+  cursor:
+    default;
+
+  transform:
+    none;
+
+  box-shadow:
+
+    0 5px 0
+    #623344,
+
+    0 9px 15px
+    rgba(
+      0,
+      0,
+      0,
+      .18
+    );
+
+}
+
+
+/* 버튼 아이콘 */
+.fish-button span {
+
+  display:
+    inline-block;
+
+  margin-right:
+    4px;
+
+}
+
+
+/* =========================================================
+   40. CONTROL HINT
+   ========================================================= */
+
+.hint {
+
+  margin:
+    11px 0 0;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+}
+
+
+/* =========================================================
+   41. RESOURCE BAR
+   ========================================================= */
+
+.resource-bar {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr auto auto;
+
+  gap:
+    10px;
+
+  margin-top:
+    15px;
+
+}
+
+
+.resource-card {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  min-width:
+    0;
+
+  min-height:
+    61px;
+
+  padding:
+    10px 13px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(
+      7,
+      39,
+      65,
+      .78
+    );
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.resource-icon {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    37px;
+
+  height:
+    37px;
+
+  flex:
+    0 0 37px;
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .09
+    );
+
+  font-size:
+    20px;
+
+}
+
+
+.resource-card small {
+
+  display:
+    block;
+
+  color:
+    var(--muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.resource-card strong {
+
+  display:
+    block;
+
+  margin-top:
+    3px;
+
+  overflow:
+    hidden;
+
+  color:
+    #e9faff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+/* =========================================================
+   42. ACTION BUTTON
+   ========================================================= */
+
+.secondary-action {
+
+  min-height:
+    61px;
+
+  padding:
+    0 16px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .14
+    );
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .065
+    );
+
+  color:
+    #e5faff;
+
+  cursor:
+    pointer;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  transition:
+
+    transform
+    .18s ease,
+
+    background
+    .18s ease,
+
+    border-color
+    .18s ease;
+}
+
+
+.secondary-action:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    rgba(
+      124,
+      238,
+      255,
+      .30
+    );
+
+  background:
+    rgba(
+      124,
+      238,
+      255,
+      .09
+    );
+
+}
+
+
+/* =========================================================
+   43. DASHBOARD
+   ========================================================= */
+
+.dashboard {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr
+    1.35fr;
+
+  gap:
+    16px;
+
+  margin-top:
+    17px;
+
+}
+
+
+.dashboard article {
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  min-width:
+    0;
+
+  padding:
+    19px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    19px;
+
+  background:
+    var(--card);
+
+  box-shadow:
+    0 12px 24px
+    rgba(
+      0,
+      0,
+      0,
+      .20
+    );
+
+  backdrop-filter:
+    blur(
+      8px
+    );
+
+}
+
+
+.dashboard article::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  right:
+    -45px;
+
+  top:
+    -65px;
+
+  width:
+    130px;
+
+  height:
+    130px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        98,
+        231,
+        255,
+        .08
+      ),
+      transparent 70%
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+/* =========================================================
+   44. SCORE CARD
+   ========================================================= */
+
+.score-card > span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.1px;
+
+}
+
+
+.score-card strong {
+
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  color:
+    var(--gold);
+
+  font-size:
+    43px;
+
+  line-height:
+    1.08;
+
+  letter-spacing:
+    -1px;
+
+  text-shadow:
+    0 3px 12px
+    rgba(
+      255,
+      215,
+      104,
+      .13
+    );
+
+}
+
+
+/* =========================================================
+   45. XP HEADER
+   ========================================================= */
+
+.xp-header {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-top:
+    15px;
+
+}
+
+
+.xp-header span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+.xp-header b {
+
+  color:
+    var(--cyan-soft);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+}
+
+
+/* =========================================================
+   46. XP TRACK
+   ========================================================= */
+
+.xp-track {
+
+  position:
+    relative;
+
+  height:
+    10px;
+
+  margin-top:
+    7px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    #133851;
+
+  box-shadow:
+    inset 0 2px 5px
+    rgba(
+      0,
+      0,
+      0,
+      .35
+    );
+
+}
+
+
+.xp-track i {
+
+  display:
+    block;
+
+  width:
+    0;
+
+  height:
+    100%;
+
+  border-radius:
+    inherit;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #56e4ff,
+      #93f2d0,
+      #e1ff83
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(
+      98,
+      231,
+      255,
+      .26
+    );
+
+  transition:
+    width
+    .45s cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+
+}
+
+
+/* =========================================================
+   47. XP TEXT
+   ========================================================= */
+
+.score-card > small {
+
+  display:
+    block;
+
+  margin-top:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+}
+
+
+/* =========================================================
+   48. COLLECTION CARD
+   ========================================================= */
+
+.collection-card {
+
+  grid-column:
+    2;
+
+  grid-row:
+    1 / span 2;
+
+}
+
+
+.collection-heading {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap:
+    10px;
+
+}
+
+
+.collection-heading > div {
+
+  min-width:
+    0;
+
+}
+
+
+.collection-heading span {
+
+  display:
+    block;
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1px;
+
+}
+
+
+.collection-heading strong {
+
+  display:
+    block;
+
+  margin-top:
+    3px;
+
+  color:
+    #ecfbff;
+
+  font-size:
+    19px;
+
+  font-weight:
+    900;
+
+}
+
+
+.collection-heading strong b {
+
+  color:
+    var(--cyan);
+
+}
+
+
+.text-button {
+
+  flex:
+    0 0 auto;
+
+  padding:
+    6px 9px;
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .065
+    );
+
+  color:
+    var(--cyan-soft);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+
+  transition:
+    background
+    .18s ease;
+}
+
+
+.text-button:hover {
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .11
+    );
+
+}
+
+
+/* =========================================================
+   49. COLLECTION PROGRESS
+   ========================================================= */
+
+.collection-progress {
+
+  width:
+    100%;
+
+  height:
+    7px;
+
+  margin-top:
+    11px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  background:
+    #11344c;
+
+}
+
+
+.collection-progress i {
+
+  display:
+    block;
+
+  width:
+    0;
+
+  height:
+    100%;
+
+  border-radius:
+    inherit;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #62e7ff,
+      #b3f6ff
+    );
+
+  transition:
+    width
+    .45s ease;
+
+}
+
+
+/* =========================================================
+   50. COLLECTION GRID
+   ========================================================= */
+
+.collection-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap:
+    8px;
+
+  max-height:
+    318px;
+
+  margin-top:
+    13px;
+
+  padding-right:
+    2px;
+
+  overflow-y:
+    auto;
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(
+      98,
+      231,
+      255,
+      .30
+    )
+    transparent;
+
+}
+
+
+/* 스크롤바 */
+.collection-grid::-webkit-scrollbar {
+
+  width:
+    6px;
+
+}
+
+
+.collection-grid::-webkit-scrollbar-track {
+
+  background:
+    transparent;
+
+}
+
+
+.collection-grid::-webkit-scrollbar-thumb {
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .24
+    );
+
+}
+
+
+/* =========================================================
+   51. COLLECTION ITEM
+   ========================================================= */
+
+.collection-item {
+
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  min-height:
+    70px;
+
+  padding:
+    8px 5px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  align-items:
+    center;
+
+  gap:
+    4px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:
+    11px;
+
+  background:
+    #0b2e49;
+
+  color:
+    var(--muted);
+
+  cursor:
+    pointer;
+
+  transition:
+
+    transform
+    .16s ease,
+
+    background
+    .16s ease,
+
+    border-color
+    .16s ease,
+
+    filter
+    .16s ease;
+}
+
+
+.collection-item:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    rgba(
+      98,
+      231,
+      255,
+      .20
+    );
+
+  background:
+    #103d5c;
+
+}
+
+
+.collection-item.locked {
+
+  filter:
+    grayscale(
+      .95
+    );
+
+  opacity:
+    .54;
+
+}
+
+
+.collection-item.found {
+
+  opacity:
+    1;
+
+  filter:
+    none;
+
+  background:
+    #155274;
+
+}
+
+
+.collection-icon {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  min-height:
+    31px;
+
+  font-size:
+    25px;
+
+  line-height:
+    1;
+
+}
+
+
+.collection-name {
+
+  width:
+    100%;
+
+  overflow:
+    hidden;
+
+  color:
+    rgba(
+      233,
+      248,
+      255,
+      .87
+    );
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1.15;
+
+  text-align:
+    center;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+/* 미발견 ? */
+.collection-item.locked
+.collection-icon {
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .62
+    );
+
+  font-size:
+    22px;
+
+}
+
+
+.collection-item.locked
+.collection-name {
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .52
+    );
+
+}
+
+
+/* =========================================================
+   52. LOG CARD
+   ========================================================= */
+
+.log-card {
+
+  grid-column:
+    1 / -1;
+
+}
+
+
+.section-heading {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  font-weight:
+    900;
+
+}
+
+
+.section-heading > span {
+
+  color:
+    #e9f8ff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+}
+
+
+.section-heading button {
+
+  padding:
+    5px 7px;
+
+  border-radius:
+    7px;
+
+  background:
+    transparent;
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+}
+
+
+.section-heading button:hover {
+
+  color:
+    var(--coral);
+
+  background:
+    rgba(
+      255,
+      119,
+      112,
+      .07
+    );
+
+}
+
+
+/* =========================================================
+   53. LOG LIST
+   ========================================================= */
+
+.log-card ol {
+
+  list-style:
+    none;
+
+  display:
+    grid;
+
+  gap:
+    6px;
+
+  margin:
+    11px 0 0;
+
+  padding:
+    0;
+
+  max-height:
+    185px;
+
+  overflow-y:
+    auto;
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(
+      98,
+      231,
+      255,
+      .25
+    )
+    transparent;
+
+}
+
+
+.log-card ol::-webkit-scrollbar {
+
+  width:
+    6px;
+
+}
+
+
+.log-card ol::-webkit-scrollbar-thumb {
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .22
+    );
+
+}
+
+
+.log-card ol li {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  min-width:
+    0;
+
+  padding:
+    9px 11px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+  font-size:
+    12px;
+
+}
+
+
+.log-catch-info {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  min-width:
+    0;
+
+}
+
+
+.log-fish-name {
+
+  overflow:
+    hidden;
+
+  color:
+    #dbf6ff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.log-size {
+
+  flex:
+    0 0 auto;
+
+  color:
+    rgba(
+      185,
+      225,
+      239,
+      .64
+    );
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+}
+
+
+.rarity {
+
+  flex:
+    0 0 auto;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+.trash {
+  color:
+    var(--trash);
+}
+
+
+.common {
+  color:
+    var(--common);
+}
+
+
+.uncommon {
+  color:
+    var(--uncommon);
+}
+
+
+.rare {
+  color:
+    var(--rare);
+}
+
+
+.legendary {
+  color:
+    var(--legendary);
+}
+
+
+.mythic {
+  color:
+    var(--mythic);
+}
+
+
+.empty-log {
+
+  display:
+    block !important;
+
+  color:
+    var(--muted);
+
+  text-align:
+    center;
+
+}
+
+
+/* =========================================================
+   54. 모바일
+   ========================================================= */
+
+@media (
+  max-width: 820px
+) {
+
+  .resource-bar {
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .secondary-action {
+
+    min-height:
+      50px;
+
+  }
+
+
+  .dashboard {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .collection-card,
+  .log-card {
+
+    grid-column:
+      auto;
+
+    grid-row:
+      auto;
+
+  }
+
+
+  .collection-card {
+
+    grid-row:
+      auto;
+
+  }
+
+}
+
+
+@media (
+  max-width: 650px
+) {
+
+  .control-panel {
+
+    margin:
+      -17px 8px 0;
+
+    padding:
+      15px 14px 16px;
+
+    border-radius:
+      0 0
+      18px 18px;
+
+  }
+
+
+  .fish-button {
+
+    width:
+      100%;
+
+    min-height:
+      50px;
+
+  }
+
+
+  .resource-bar {
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:
+      7px;
+
+  }
+
+
+  .resource-card {
+
+    min-height:
+      52px;
+
+    padding:
+      8px 9px;
+
+  }
+
+
+  .resource-icon {
+
+    width:
+      32px;
+
+    height:
+      32px;
+
+    flex-basis:
+      32px;
+
+    font-size:
+      17px;
+
+  }
+
+
+  .resource-card strong {
+
+    font-size:
+      11px;
+
+  }
+
+
+  .secondary-action {
+
+    min-height:
+      48px;
+
+    padding:
+      0 8px;
+
+    font-size:
+      11px;
+
+  }
+
+
+  .dashboard article {
+
+    padding:
+      15px;
+
+    border-radius:
+      16px;
+
+  }
+
+
+  .score-card strong {
+
+    font-size:
+      36px;
+
+  }
+
+
+  .collection-grid {
+
+    max-height:
+      360px;
+
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+
+  }
+
+
+  .collection-item {
+
+    min-height:
+      66px;
+
+  }
+
+
+  .log-card ol li {
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap:
+      5px;
+
+  }
+
+}
+
+
+@media (
+  max-width: 390px
+) {
+
+  .resource-bar {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .collection-grid {
+
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+
+  }
+
+}
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 4/6
+
+   모달 / 캐치 연출 / 희귀도 / 랭킹
+   ========================================================= */
+
+
+/* =========================================================
+   55. GLOBAL TOAST
+   ========================================================= */
+
+.toast {
+
+  position:
+    fixed;
+
+  z-index:
+    2000;
+
+  left:
+    50%;
+
+  bottom:
+    26px;
+
+  max-width:
+    min(
+      92vw,
+      520px
+    );
+
+  padding:
+    12px 18px;
+
+  border:
+    1px solid
+    rgba(
+      98,
+      231,
+      255,
+      .18
+    );
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(
+      226,
+      249,
+      255,
+      .96
+    );
+
+  color:
+    #052031;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  text-align:
+    center;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      0,
+      0,
+      0,
+      .35
+    );
+
+  transform:
+    translate(
+      -50%,
+      100px
+    );
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transition:
+
+    transform
+    .28s cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    ),
+
+    opacity
+    .28s ease;
+
+}
+
+
+.toast.show {
+
+  transform:
+    translate(
+      -50%,
+      0
+    );
+
+  opacity:
+    1;
+
+}
+
+
+/* =========================================================
+   56. MODAL BACKDROP
+   ---------------------------------------------------------
+   HTML의 hidden 속성과 함께 사용합니다.
+   ========================================================= */
+
+.modal-backdrop {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    1500;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    18px;
+
+  overflow-y:
+    auto;
+
+  background:
+    rgba(
+      0,
+      7,
+      15,
+      .78
+    );
+
+  backdrop-filter:
+    blur(
+      9px
+    );
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transition:
+
+    opacity
+    .18s ease,
+
+    visibility
+    .18s ease;
+
+}
+
+
+/*
+  JS에서 show 클래스를 붙이면 표시
+*/
+
+.modal-backdrop.show {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+
+}
+
+
+/*
+  HTML의 hidden 속성이 true면 반드시 숨김
+*/
+
+.modal-backdrop[hidden] {
+
+  display:
+    none;
+
+}
+
+
+/* =========================================================
+   57. MODAL CARD
+   ========================================================= */
+
+.modal-card {
+
+  position:
+    relative;
+
+  width:
+    min(
+      580px,
+      100%
+    );
+
+  max-height:
+    min(
+      88vh,
+      760px
+    );
+
+  overflow:
+    auto;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .18
+    );
+
+  border-radius:
+    24px;
+
+  background:
+
+    linear-gradient(
+      155deg,
+      rgba(
+        9,
+        48,
+        75,
+        .98
+      ),
+      rgba(
+        4,
+        26,
+        45,
+        .99
+      )
+    );
+
+  box-shadow:
+
+    0 30px 90px
+    rgba(
+      0,
+      0,
+      0,
+      .58
+    ),
+
+    inset
+    0 1px
+    rgba(
+      255,
+      255,
+      255,
+      .05
+    );
+
+  transform:
+    translateY(
+      14px
+    )
+    scale(
+      .97
+    );
+
+  transition:
+    transform
+    .2s cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(
+      98,
+      231,
+      255,
+      .24
+    )
+    transparent;
+
+}
+
+
+.modal-backdrop.show
+.modal-card {
+
+  transform:
+    translateY(
+      0
+    )
+    scale(
+      1
+    );
+
+}
+
+
+.modal-card::-webkit-scrollbar {
+
+  width:
+    7px;
+
+}
+
+
+.modal-card::-webkit-scrollbar-thumb {
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .24
+    );
+
+}
+
+
+/* =========================================================
+   58. MODAL CLOSE BUTTON
+   ========================================================= */
+
+.modal-close {
+
+  position:
+    absolute;
+
+  top:
+    12px;
+
+  right:
+    12px;
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+
+  color:
+    rgba(
+      239,
+      251,
+      255,
+      .88
+    );
+
+  cursor:
+    pointer;
+
+  font-size:
+    14px;
+
+  font-weight:
+    900;
+
+  transition:
+
+    transform
+    .15s ease,
+
+    background
+    .15s ease,
+
+    color
+    .15s ease;
+
+}
+
+
+.modal-close:hover {
+
+  transform:
+    rotate(
+      8deg
+    )
+    scale(
+      1.04
+    );
+
+  background:
+    rgba(
+      255,
+      119,
+      112,
+      .14
+    );
+
+  color:
+    #ffffff;
+
+}
+
+
+/* =========================================================
+   59. MODAL COMMON TYPOGRAPHY
+   ========================================================= */
+
+.modal-kicker {
+
+  color:
+    var(--cyan);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.8px;
+
+}
+
+
+.modal-card h2 {
+
+  margin:
+    5px 0 0;
+
+  color:
+    #ffffff;
+
+  font-family:
+    "Black Han Sans",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-size:
+    28px;
+
+  font-weight:
+    400;
+
+  letter-spacing:
+    -.8px;
+
+}
+
+
+.modal-description {
+
+  margin:
+    14px 0 0;
+
+  color:
+    var(--muted-light);
+
+  font-size:
+    12px;
+
+  line-height:
+    1.7;
+
+  font-weight:
+    700;
+
+}
+
+
+/* =========================================================
+   60. CATCH RESULT MODAL
+   ========================================================= */
+
+.catch-result-modal {
+
+  width:
+    min(
+      460px,
+      100%
+    );
+
+  text-align:
+    center;
+
+}
+
+
+.modal-rarity {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  min-height:
+    28px;
+
+  padding:
+    5px 11px;
+
+  margin-top:
+    4px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      183,
+      139,
+      255,
+      .11
+    );
+
+  color:
+    var(--rare);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    .8px;
+
+}
+
+
+.modal-fish-icon {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    108px;
+
+  height:
+    108px;
+
+  margin:
+    16px auto 8px;
+
+  border:
+    1px solid
+    rgba(
+      98,
+      231,
+      255,
+      .14
+    );
+
+  border-radius:
+    28px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        98,
+        231,
+        255,
+        .14
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        .025
+      )
+    );
+
+  font-size:
+    64px;
+
+  box-shadow:
+    0 12px 35px
+    rgba(
+      0,
+      0,
+      0,
+      .22
+    );
+
+}
+
+
+.catch-result-modal h2 {
+
+  margin-top:
+    6px;
+
+  font-size:
+    30px;
+
+}
+
+
+/* =========================================================
+   61. CATCH STAT GRID
+   ========================================================= */
+
+.catch-stat-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:
+    9px;
+
+  margin-top:
+    18px;
+
+}
+
+
+.catch-stat-grid > div {
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .045
+    );
+
+}
+
+
+.catch-stat-grid span {
+
+  display:
+    block;
+
+  color:
+    var(--muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+}
+
+
+.catch-stat-grid strong {
+
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    15px;
+
+  font-weight:
+    900;
+
+}
+
+
+#resultXp {
+
+  color:
+    var(--cyan);
+
+}
+
+
+#resultGold {
+
+  color:
+    var(--gold);
+
+}
+
+
+/* =========================================================
+   62. PRIMARY ACTION
+   ========================================================= */
+
+.primary-action {
+
+  width:
+    100%;
+
+  min-height:
+    48px;
+
+  margin-top:
+    18px;
+
+  padding:
+    11px 16px;
+
+  border-radius:
+    13px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #54dff8,
+      #398fca
+    );
+
+  color:
+    #032033;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      69,
+      193,
+      229,
+      .18
+    );
+
+  cursor:
+    pointer;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  transition:
+
+    transform
+    .16s ease,
+
+    filter
+    .16s ease;
+
+}
+
+
+.primary-action:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.08
+    );
+
+}
+
+
+/* =========================================================
+   63. FISH DETAIL MODAL
+   ========================================================= */
+
+.fish-detail-modal {
+
+  width:
+    min(
+      520px,
+      100%
+    );
+
+}
+
+
+.detail-rarity {
+
+  margin-top:
+    13px;
+
+  color:
+    var(--rare);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+}
+
+
+.fish-detail-modal h2 {
+
+  margin-top:
+    4px;
+
+}
+
+
+/* =========================================================
+   64. DETAIL INFO GRID
+   ========================================================= */
+
+.detail-info-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:
+    8px;
+
+  margin-top:
+    18px;
+
+}
+
+
+.detail-info-grid > div {
+
+  min-width:
+    0;
+
+  padding:
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .04
+    );
+
+}
+
+
+.detail-info-grid span {
+
+  display:
+    block;
+
+  color:
+    var(--muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+}
+
+
+.detail-info-grid strong {
+
+  display:
+    block;
+
+  margin-top:
+    5px;
+
+  overflow:
+    hidden;
+
+  color:
+    #ecfbff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  text-overflow:
+    ellipsis;
+
+}
+
+
+/* =========================================================
+   65. COLLECTION MODAL
+   ========================================================= */
+
+.collection-modal {
+
+  width:
+    min(
+      820px,
+      100%
+    );
+
+}
+
+
+.collection-modal-status {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-top:
+    13px;
+
+  padding:
+    11px 13px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .09
+    );
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+}
+
+
+.collection-modal-status strong {
+
+  color:
+    var(--cyan);
+
+  font-size:
+    16px;
+
+}
+
+
+.collection-modal-status span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+.collection-modal-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      7,
+      1fr
+    );
+
+  gap:
+    8px;
+
+  margin-top:
+    14px;
+
+}
+
+
+.collection-modal-grid
+.collection-item {
+
+  min-height:
+    82px;
+
+}
+
+
+/* =========================================================
+   66. SHOP MODAL
+   ========================================================= */
+
+.shop-modal {
+
+  width:
+    min(
+      720px,
+      100%
+    );
+
+}
+
+
+/* =========================================================
+   67. SHOP TABS
+   ========================================================= */
+
+.shop-tabs {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:
+    7px;
+
+  margin-top:
+    17px;
+
+  padding:
+    5px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .14
+    );
+
+}
+
+
+.shop-tab {
+
+  min-height:
+    39px;
+
+  border-radius:
+    9px;
+
+  background:
+    transparent;
+
+  color:
+    var(--muted);
+
+  cursor:
+    pointer;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  transition:
+
+    color
+    .16s ease,
+
+    background
+    .16s ease;
+
+}
+
+
+.shop-tab:hover {
+
+  color:
+    #ffffff;
+
+}
+
+
+.shop-tab.active {
+
+  color:
+    #052031;
+
+  background:
+    var(--cyan);
+
+}
+
+
+/* =========================================================
+   68. SHOP CONTENT
+   ========================================================= */
+
+.shop-content {
+
+  display:
+    grid;
+
+  gap:
+    9px;
+
+  margin-top:
+    14px;
+
+}
+
+
+.shop-empty {
+
+  padding:
+    30px 15px;
+
+  border:
+    1px dashed
+    rgba(
+      124,
+      238,
+      255,
+      .16
+    );
+
+  border-radius:
+    13px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    12px;
+
+  text-align:
+    center;
+
+}
+
+
+/*
+  STEP 2에서 script.js가 실제 상품을 만들면
+  .shop-item 형태로 사용할 수 있습니다.
+*/
+
+.shop-item {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    auto 1fr auto;
+
+  gap:
+    12px;
+
+  align-items:
+    center;
+
+  padding:
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .10
+    );
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+}
+
+
+.shop-item-icon {
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  width:
+    50px;
+
+  height:
+    50px;
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .08
+    );
+
+  font-size:
+    28px;
+
+}
+
+
+.shop-item-title {
+
+  color:
+    #ffffff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+}
+
+
+.shop-item-description {
+
+  margin-top:
+    4px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.shop-item-price {
+
+  margin-top:
+    4px;
+
+  color:
+    var(--gold);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+.shop-buy-button {
+
+  min-height:
+    38px;
+
+  padding:
+    8px 12px;
+
+  border-radius:
+    10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #54dff8,
+      #3287bb
+    );
+
+  color:
+    #052031;
+
+  cursor:
+    pointer;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+/* =========================================================
+   69. PROBABILITY MODAL
+   ========================================================= */
+
+.probability-modal {
+
+  width:
+    min(
+      520px,
+      100%
+    );
+
+}
+
+
+.probability-table {
+
+  display:
+    grid;
+
+  gap:
+    7px;
+
+  margin-top:
+    17px;
+
+}
+
+
+.probability-row {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  min-height:
+    46px;
+
+  padding:
+    8px 12px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .055
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .04
+    );
+
+}
+
+
+.probability-row > span {
+
+  color:
+    #e6f9ff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+}
+
+
+.probability-row small {
+
+  margin-left:
+    7px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+}
+
+
+.probability-row strong {
+
+  color:
+    var(--gold);
+
+  font-size:
+    13px;
+
+}
+
+
+.probability-empty {
+
+  padding:
+    25px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+  text-align:
+    center;
+
+}
+
+
+.probability-note {
+
+  margin-top:
+    15px;
+
+  padding:
+    10px 12px;
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .035
+    );
+
+  color:
+    rgba(
+      185,
+      225,
+      239,
+      .72
+    );
+
+  font-size:
+    9px;
+
+  line-height:
+    1.6;
+
+}
+
+
+/* =========================================================
+   70. NICKNAME MODAL
+   ========================================================= */
+
+.nickname-modal {
+
+  width:
+    min(
+      430px,
+      100%
+    );
+
+}
+
+
+#nicknameInput {
+
+  width:
+    100%;
+
+  min-height:
+    47px;
+
+  margin-top:
+    16px;
+
+  padding:
+    11px 13px;
+
+  border:
+    1px solid
+    rgba(
+      124,
+      238,
+      255,
+      .13
+    );
+
+  border-radius:
+    11px;
+
+  outline:
+    none;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .17
+    );
+
+  color:
+    #ffffff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+  text-align:
+    center;
+
+  transition:
+    border-color
+    .18s ease,
+
+    box-shadow
+    .18s ease;
+
+}
+
+
+#nicknameInput::placeholder {
+
+  color:
+    rgba(
+      185,
+      225,
+      239,
+      .46
+    );
+
+}
+
+
+#nicknameInput:focus {
+
+  border-color:
+    rgba(
+      98,
+      231,
+      255,
+      .55
+    );
+
+  box-shadow:
+    0 0 0
+    3px
+    rgba(
+      98,
+      231,
+      255,
+      .08
+    );
+
+}
+
+
+.modal-actions {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    8px;
+
+  margin-top:
+    11px;
+
+}
+
+
+.modal-actions .secondary-action,
+.modal-actions .primary-action {
+
+  min-height:
+    45px;
+
+  margin:
+    0;
+
+}
+
+
+/* =========================================================
+   71. LEADERBOARD
+   ========================================================= */
+
+.leaderboard-box {
+
+  margin-top:
+    17px;
+
+  padding:
+    19px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    19px;
+
+  background:
+    var(--card);
+
+  box-shadow:
+    0 12px 25px
+    rgba(
+      0,
+      0,
+      0,
+      .20
+    );
+
+}
+
+
+.leaderboard-heading {
+
+  align-items:
+    flex-start;
+
+}
+
+
+.leaderboard-heading small {
+
+  display:
+    block;
+
+  color:
+    var(--cyan);
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.7px;
+
+}
+
+
+.leaderboard-heading h2 {
+
+  margin:
+    3px 0 0;
+
+  color:
+    #ffffff;
+
+  font-family:
+    "Black Han Sans",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-size:
+    22px;
+
+  font-weight:
+    400;
+
+}
+
+
+.leaderboard-badge {
+
+  flex:
+    0 0 auto;
+
+  padding:
+    7px 10px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      215,
+      104,
+      .09
+    );
+
+  color:
+    var(--gold);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+}
+
+
+/* =========================================================
+   72. LEADERBOARD SUBMIT
+   ========================================================= */
+
+.leaderboard-submit {
+
+  width:
+    100%;
+
+  min-height:
+    46px;
+
+  margin-top:
+    14px;
+
+  border-radius:
+    11px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #ff7770,
+      #e84d5c
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      238,
+      82,
+      83,
+      .17
+    );
+
+  cursor:
+    pointer;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  transition:
+    transform
+    .16s ease,
+
+    filter
+    .16s ease;
+
+}
+
+
+.leaderboard-submit:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  filter:
+    brightness(
+      1.07
+    );
+
+}
+
+
+/* =========================================================
+   73. LEADERBOARD LIST
+   ---------------------------------------------------------
+   TOP 10이 스크롤 없이 한 화면에 들어갈 수 있도록
+   각 행을 작게 설계합니다.
+   ========================================================= */
+
+.leaderboard-list {
+
+  display:
+    grid;
+
+  gap:
+    5px;
+
+  width:
+    100%;
+
+  max-width:
+    700px;
+
+  margin:
+    12px auto 0;
+
+  padding:
+    0;
+
+  list-style:
+    none;
+
+}
+
+
+.leaderboard-list li {
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  min-height:
+    34px;
+
+  padding:
+    6px 10px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .045
+    );
+
+  border-radius:
+    8px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .038
+    );
+
+  color:
+    #e8f8ff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+}
+
+
+.leaderboard-list li:first-child {
+
+  border-color:
+    rgba(
+      255,
+      215,
+      104,
+      .19
+    );
+
+  background:
+    rgba(
+      255,
+      215,
+      104,
+      .055
+    );
+
+}
+
+
+.leaderboard-list strong {
+
+  color:
+    var(--gold);
+
+  font-size:
+    11px;
+
+}
+
+
+/* =========================================================
+   74. RARE CATCH OVERLAY
+   ========================================================= */
+
+.catch-celebration {
+
+  position:
+    absolute;
+
+  z-index:
+    40;
+
+  left:
+    50%;
+
+  top:
+    50%;
+
+  width:
+    min(
+      86%,
+      470px
+    );
+
+  padding:
+    20px 18px;
+
+  transform:
+    translate(
+      -50%,
+      -42%
+    )
+    scale(
+      .90
+    );
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  text-align:
+    center;
+
+  border-radius:
+    22px;
+
+  background:
+    rgba(
+      3,
+      18,
+      31,
+      .78
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      .10
+    );
+
+  box-shadow:
+    0 25px 70px
+    rgba(
+      0,
+      0,
+      0,
+      .45
+    );
+
+  backdrop-filter:
+    blur(
+      8px
+    );
+
+  transition:
+
+    opacity
+    .20s ease,
+
+    visibility
+    .20s ease,
+
+    transform
+    .25s
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+
+}
+
+
+.catch-celebration.show {
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    )
+    scale(
+      1
+    );
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+}
+
+
+.catch-rarity-label {
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    2px;
+
+}
+
+
+.catch-title {
+
+  margin-top:
+    4px;
+
+  color:
+    #ffffff;
+
+  font-family:
+    "Black Han Sans",
+    "Malgun Gothic",
+    sans-serif;
+
+  font-size:
+    31px;
+
+  font-weight:
+    400;
+
+  letter-spacing:
+    -.8px;
+
+}
+
+
+.catch-spec {
+
+  margin-top:
+    6px;
+
+  color:
+    rgba(
+      226,
+      249,
+      255,
+      .82
+    );
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+}
+
+
+/* =========================================================
+   75. RARITY CATCH STYLES
+   ========================================================= */
+
+.trash-catch {
+
+  border-color:
+    rgba(
+      174,
+      191,
+      199,
+      .22
+    );
+
+}
+
+
+.trash-catch
+.catch-rarity-label {
+
+  color:
+    var(--trash);
+
+}
+
+
+.common-catch {
+
+  border-color:
+    rgba(
+      128,
+      231,
+      255,
+      .22
+    );
+
+}
+
+
+.common-catch
+.catch-rarity-label {
+
+  color:
+    var(--common);
+
+}
+
+
+.uncommon-catch {
+
+  border-color:
+    rgba(
+      98,
+      231,
+      181,
+      .28
+    );
+
+}
+
+
+.uncommon-catch
+.catch-rarity-label {
+
+  color:
+    var(--uncommon);
+
+}
+
+
+.rare-catch {
+
+  border-color:
+    rgba(
+      183,
+      139,
+      255,
+      .46
+    );
+
+  box-shadow:
+    0 25px 70px
+    rgba(
+      0,
+      0,
+      0,
+      .45
+    ),
+
+    0 0 55px
+    rgba(
+      183,
+      139,
+      255,
+      .24
+    );
+
+}
+
+
+.rare-catch
+.catch-rarity-label {
+
+  color:
+    var(--rare);
+
+}
+
+
+.legendary-catch {
+
+  border-color:
+    rgba(
+      255,
+      215,
+      104,
+      .54
+    );
+
+  box-shadow:
+
+    0 25px 70px
+    rgba(
+      0,
+      0,
+      0,
+      .48
+    ),
+
+    0 0 70px
+    rgba(
+      255,
+      215,
+      104,
+      .34
+    );
+
+  animation:
+    legendaryGlow
+    .8s ease-in-out
+    infinite alternate;
+
+}
+
+
+.legendary-catch
+.catch-rarity-label {
+
+  color:
+    var(--legendary);
+
+}
+
+
+.mythic-catch {
+
+  border-color:
+    rgba(
+      255,
+      121,
+      218,
+      .66
+    );
+
+  box-shadow:
+
+    0 25px 80px
+    rgba(
+      0,
+      0,
+      0,
+      .55
+    ),
+
+    0 0 100px
+    rgba(
+      255,
+      121,
+      218,
+      .38
+    );
+
+  animation:
+    mythicPulse
+    .72s ease-in-out
+    infinite alternate;
+
+}
+
+
+.mythic-catch
+.catch-rarity-label {
+
+  color:
+    var(--mythic);
+
+}
+
+
+@keyframes legendaryGlow {
+
+  from {
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1
+      );
+
+  }
+
+  to {
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1.015
+      );
+
+  }
+
+}
+
+
+@keyframes mythicPulse {
+
+  from {
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1
+      );
+
+    filter:
+      brightness(
+        1
+      );
+
+  }
+
+  to {
+
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1.025
+      );
+
+    filter:
+      brightness(
+        1.13
+      );
+
+  }
+
+}
+
+
+/* =========================================================
+   76. OCEAN RARE FLASH
+   ========================================================= */
 
 .rare-flash {
-    animation: rare-flash 1s ease-in-out;
+
+  animation:
+    rareFlash
+    1s ease-in-out
+    1;
+
 }
-.blue-lobster {
-    display: contents;
-    filter: hue-rotate(195deg) saturate(3) brightness(1.1);
+
+
+@keyframes rareFlash {
+
+  0% {
+
+    box-shadow:
+      var(--shadow-deep),
+      inset
+      0 1px
+      rgba(
+        255,
+        255,
+        255,
+        .08
+      );
+
+  }
+
+  50% {
+
+    box-shadow:
+
+      var(--shadow-deep),
+
+      inset
+      0 0 70px
+      rgba(
+        255,
+        215,
+        104,
+        .32
+      ),
+
+      0 0 80px
+      rgba(
+        255,
+        215,
+        104,
+        .17
+      );
+
+  }
+
+  100% {
+
+    box-shadow:
+      var(--shadow-deep),
+      inset
+      0 1px
+      rgba(
+        255,
+        255,
+        255,
+        .08
+      );
+
+  }
+
 }
+
+
+/* =========================================================
+   77. 모바일 모달
+   ========================================================= */
+
+@media (
+  max-width: 650px
+) {
+
+  .modal-backdrop {
+
+    padding:
+      10px;
+
+    align-items:
+      end;
+
+  }
+
+
+  .modal-card {
+
+    width:
+      100%;
+
+    max-height:
+      92vh;
+
+    padding:
+      22px 17px 18px;
+
+    border-radius:
+      21px
+      21px
+      16px
+      16px;
+
+  }
+
+
+  .modal-card h2 {
+
+    font-size:
+      24px;
+
+  }
+
+
+  .modal-fish-icon {
+
+    width:
+      88px;
+
+    height:
+      88px;
+
+    font-size:
+      52px;
+
+  }
+
+
+  .catch-title {
+
+    font-size:
+      26px;
+
+  }
+
+
+  .detail-info-grid {
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+  }
+
+
+  .collection-modal-grid {
+
+    grid-template-columns:
+      repeat(
+        4,
+        1fr
+      );
+
+  }
+
+
+  .collection-modal-grid
+  .collection-item {
+
+    min-height:
+      68px;
+
+  }
+
+
+  .shop-item {
+
+    grid-template-columns:
+      auto 1fr;
+
+  }
+
+
+  .shop-item
+  .shop-buy-button {
+
+    grid-column:
+      1 / -1;
+
+    width:
+      100%;
+
+  }
+
+
+  .leaderboard-box {
+
+    padding:
+      15px;
+
+  }
+
+
+  .leaderboard-heading h2 {
+
+    font-size:
+      19px;
+
+  }
+
+
+  .catch-stat-grid {
+
+    gap:
+      7px;
+
+  }
+
+}
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 5/6
+
+   세부 인터랙션 / 반응형 / 희귀 효과 / 모바일 최적화
+   ========================================================= */
+
+
+/* =========================================================
+   78. GLOBAL BUTTON INTERACTION
+   ========================================================= */
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled):active {
+  filter:
+    brightness(.94);
+}
+
+
+/* =========================================================
+   79. TOUCH FRIENDLY
+   ========================================================= */
+
+@media (pointer: coarse) {
+
+  .fish-button {
+    min-height:
+      56px;
+  }
+
+  .secondary-action {
+    min-height:
+      52px;
+  }
+
+  .collection-item {
+    min-height:
+      72px;
+  }
+
+  .icon-button {
+    width:
+      42px;
+
+    height:
+      42px;
+  }
+
+}
+
+
+/* =========================================================
+   80. LARGE SCREEN OCEAN
+   ========================================================= */
+
+@media (min-width: 1100px) {
+
+  .ocean-card {
+    height:
+      420px;
+  }
+
+  .boat-scene {
+    left:
+      18%;
+    bottom:
+      112px;
+  }
+
+  .ocean-copy strong {
+    font-size:
+      23px;
+  }
+
+}
+
+
+/* =========================================================
+   81. SMALL MOBILE HEADER
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .topbar {
+    flex-direction:
+      row;
+
+    align-items:
+      center;
+  }
+
+  .top-stats {
+    flex-shrink:
+      0;
+  }
+
+  .brand h1 {
+    font-size:
+      18px;
+  }
+
+  .stat-chip {
+    min-width:
+      48px;
+  }
+
+  .stat-chip span {
+    letter-spacing:
+      .7px;
+  }
+
+}
+
+
+/* =========================================================
+   82. VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .game-shell {
+    width:
+      calc(
+        100vw - 12px
+      );
+  }
+
+  .auth-bar {
+    width:
+      calc(
+        100vw - 12px
+      );
+  }
+
+  .brand-icon {
+    width:
+      36px;
+
+    height:
+      36px;
+
+    flex-basis:
+      36px;
+
+    font-size:
+      19px;
+  }
+
+  .brand h1 {
+    font-size:
+      17px;
+  }
+
+  .top-stats {
+    gap:
+      3px;
+  }
+
+  .stat-chip {
+    min-width:
+      44px;
+
+    padding:
+      5px 6px;
+  }
+
+  .stat-chip b {
+    font-size:
+      13px;
+  }
+
+  .icon-button {
+    width:
+      33px;
+
+    height:
+      33px;
+  }
+
+}
+
+
+/* =========================================================
+   83. COLLECTION RESPONSIVE
+   ========================================================= */
+
+@media (min-width: 821px) {
+
+  .collection-grid {
+    grid-template-columns:
+      repeat(
+        5,
+        1fr
+      );
+  }
+
+}
+
+
+@media (min-width: 1000px) {
+
+  .collection-grid {
+    grid-template-columns:
+      repeat(
+        6,
+        1fr
+      );
+  }
+
+}
+
+
+/* =========================================================
+   84. COLLECTION CARD HOVER
+   ========================================================= */
+
+.collection-item.found:hover {
+
+  background:
+    linear-gradient(
+      145deg,
+      #195e81,
+      #124765
+    );
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      0,
+      0,
+      0,
+      .20
+    );
+}
+
+
+/* =========================================================
+   85. RARITY BORDER EFFECTS
+   ========================================================= */
+
+.collection-item[data-rarity="rare"] {
+  border-color:
+    rgba(
+      183,
+      139,
+      255,
+      .22
+    );
+}
+
+.collection-item[data-rarity="legendary"] {
+  border-color:
+    rgba(
+      255,
+      215,
+      104,
+      .24
+    );
+}
+
+.collection-item[data-rarity="mythic"] {
+  border-color:
+    rgba(
+      255,
+      121,
+      218,
+      .26
+    );
+}
+
+
+/* =========================================================
+   86. MYTHIC UNKNOWN STATE
+   ========================================================= */
+
+.collection-item.locked
+.collection-icon {
+
+  text-shadow:
+    0 0 10px
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+}
+
+
+.collection-item.locked:hover
+.collection-icon {
+
+  animation:
+    questionPulse
+    .8s ease-in-out
+    infinite;
+}
+
+
+@keyframes questionPulse {
+
+  0%,
+  100% {
+    transform:
+      scale(1);
+  }
+
+  50% {
+    transform:
+      scale(1.12);
+  }
+
+}
+
+
+/* =========================================================
+   87. NEW DISCOVERY EFFECT
+   ========================================================= */
+
+.collection-item.new-discovery {
+
+  animation:
+    newDiscovery
+    .9s ease-in-out
+    1;
+}
+
+
+@keyframes newDiscovery {
+
+  0% {
+    transform:
+      scale(
+        .92
+      );
+
+    box-shadow:
+      0 0 0
+      rgba(
+        98,
+        231,
+        255,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      scale(
+        1.06
+      );
+
+    box-shadow:
+      0 0 30px
+      rgba(
+        98,
+        231,
+        255,
+        .38
+      );
+  }
+
+  100% {
+    transform:
+      scale(
+        1
+      );
+
+    box-shadow:
+      0 0 0
+      rgba(
+        98,
+        231,
+        255,
+        0
+      );
+  }
+
+}
+
+
+/* =========================================================
+   88. LARGE CATCH
+   ========================================================= */
+
+.catch-celebration.big-catch {
+
+  animation:
+    bigCatch
+    .8s ease
+    1;
+}
+
+
+@keyframes bigCatch {
+
+  0% {
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        .78
+      );
+  }
+
+  55% {
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1.07
+      );
+  }
+
+  100% {
+    transform:
+      translate(
+        -50%,
+        -50%
+      )
+      scale(
+        1
+      );
+  }
+
+}
+
+
+/* =========================================================
+   89. COMBO HIGH SCORE
+   ========================================================= */
+
+.combo.high-combo {
+
+  border-color:
+    rgba(
+      255,
+      215,
+      104,
+      .42
+    );
+
+  background:
+    rgba(
+      46,
+      26,
+      15,
+      .78
+    );
+
+  color:
+    var(--gold-bright);
+
+}
+
+
+/* =========================================================
+   90. LEVEL UP EFFECT
+   ========================================================= */
+
+.level-up-flash {
+
+  animation:
+    levelUpFlash
+    1s ease
+    1;
+}
+
+
+@keyframes levelUpFlash {
+
+  0% {
+    filter:
+      brightness(
+        1
+      );
+  }
+
+  20% {
+    filter:
+      brightness(
+        1.35
+      );
+  }
+
+  42% {
+    filter:
+      brightness(
+        1
+      );
+  }
+
+  60% {
+    filter:
+      brightness(
+        1.25
+      );
+  }
+
+  100% {
+    filter:
+      brightness(
+        1
+      );
+  }
+
+}
+
+
+/* =========================================================
+   91. GOLD / XP CHANGE
+   ========================================================= */
+
+.resource-pop {
+
+  position:
+    absolute;
+
+  z-index:
+    100;
+
+  pointer-events:
+    none;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  animation:
+    resourceFloat
+    1.15s ease
+    forwards;
+}
+
+
+.resource-pop.xp {
+  color:
+    var(--cyan);
+}
+
+
+.resource-pop.gold {
+  color:
+    var(--gold);
+}
+
+
+@keyframes resourceFloat {
+
+  0% {
+    opacity:
+      0;
+
+    transform:
+      translateY(
+        8px
+      )
+      scale(
+        .92
+      );
+  }
+
+  18% {
+    opacity:
+      1;
+
+    transform:
+      translateY(
+        0
+      )
+      scale(
+        1
+      );
+  }
+
+  100% {
+    opacity:
+      0;
+
+    transform:
+      translateY(
+        -30px
+      )
+      scale(
+        1.05
+      );
+  }
+
+}
+
+
+/* =========================================================
+   92. FOCUS / KEYBOARD
+   ========================================================= */
+
+.collection-item:focus-visible,
+.shop-tab:focus-visible,
+.secondary-action:focus-visible,
+.primary-action:focus-visible,
+.modal-close:focus-visible,
+.text-button:focus-visible,
+.leaderboard-submit:focus-visible {
+  outline:
+    3px solid
+    rgba(
+      98,
+      231,
+      255,
+      .56
+    );
+
+  outline-offset:
+    2px;
+}
+
+
+/* =========================================================
+   93. SCROLLBAR GLOBAL
+   ========================================================= */
+
+* {
+  scrollbar-width:
+    thin;
+
+  scrollbar-color:
+    rgba(
+      98,
+      231,
+      255,
+      .24
+    )
+    transparent;
+}
+
+
+*::-webkit-scrollbar {
+  width:
+    7px;
+
+  height:
+    7px;
+}
+
+
+*::-webkit-scrollbar-track {
+  background:
+    transparent;
+}
+
+
+*::-webkit-scrollbar-thumb {
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .24
+    );
+}
+
+
+*::-webkit-scrollbar-thumb:hover {
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .38
+    );
+}
+
+
+/* =========================================================
+   94. DISABLED ELEMENTS
+   ========================================================= */
+
+button:disabled {
+  user-select:
+    none;
+}
+
+
+/* =========================================================
+   95. MODAL MOBILE POLISH
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .modal-card h2 {
+    font-size:
+      22px;
+  }
+
+  .modal-description {
+    font-size:
+      11px;
+  }
+
+  .detail-info-grid {
+    gap:
+      6px;
+  }
+
+  .detail-info-grid > div {
+    padding:
+      10px;
+  }
+
+  .detail-info-grid strong {
+    font-size:
+      11px;
+  }
+
+  .probability-row {
+    min-height:
+      43px;
+
+    padding:
+      7px 10px;
+  }
+
+  .probability-row > span {
+    font-size:
+      11px;
+  }
+
+  .leaderboard-list li {
+    font-size:
+      10px;
+
+    min-height:
+      32px;
+  }
+
+}
+
+
+/* =========================================================
+   96. SAFE TEXT WRAPPING
+   ========================================================= */
+
+.modal-description,
+.shop-item-description,
+.probability-note,
+.intro-story {
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* =========================================================
+   97. PERFORMANCE HINTS
+   ========================================================= */
+
+.ocean-card,
+.water,
+.boat-scene,
+.ambient-fish-layer,
+.catch-celebration,
+.modal-card {
+  will-change:
+    transform;
+}
+
+
+/* =========================================================
+   98. FINAL BODY SAFE AREA
+   ========================================================= */
+
+body {
+
+  padding-bottom:
+    env(
+      safe-area-inset-bottom,
+      0
+    );
+
+}
+
+
+.game-shell {
+
+  padding-bottom:
+    max(
+      70px,
+      env(
+        safe-area-inset-bottom,
+        0px
+      )
+    );
+
+}
+
+
+/* =========================================================
+   99. PRINT SAFETY
+   ========================================================= */
+
+@media print {
+
+  .auth-bar,
+  .sky-glow,
+  .modal-backdrop,
+  .toast,
+  .leaderboard-submit {
+    display:
+      none !important;
+  }
+
+  body {
+    background:
+      white;
+
+    color:
+      black;
+  }
+
+}
+
+
+/* =========================================================
+   100. CSS 5/6 COMPLETE
+   ========================================================= */
+/* =========================================================
+   OCEAN CATCH 2.0
+   STYLE.CSS
+   STEP 1 - 6/6
+
+   최종 폴리싱 / 동적 물고기 / 희귀도 / 모바일 마무리
+   ========================================================= */
+
+
+/* =========================================================
+   101. DYNAMIC AMBIENT FISH
+   ---------------------------------------------------------
+   STEP 2 이후 JavaScript가 동적으로 생성하는
+   바다 속 물고기에도 바로 적용할 수 있는 기본 스타일
+   ========================================================= */
+
+.ambient-fish {
+
+  position:
+    absolute;
+
+  display:
+    block;
+
+  z-index:
+    3;
+
+  pointer-events:
+    none;
+
+  line-height:
+    1;
+
+  filter:
+    drop-shadow(
+      0 3px 3px
+      rgba(
+        0,
+        20,
+        30,
+        .35
+      )
+    );
+
+  will-change:
+    transform;
+
+}
+
+
+/* 물고기 방향 */
+.ambient-fish.flip {
+  transform:
+    scaleX(-1);
+}
+
+
+/* 물고기 거품 */
+.ambient-fish-bubble {
+
+  position:
+    absolute;
+
+  width:
+    5px;
+
+  height:
+    5px;
+
+  border:
+    1px solid
+    rgba(
+      232,
+      252,
+      255,
+      .45
+    );
+
+  border-radius:
+    50%;
+
+  pointer-events:
+    none;
+
+}
+
+
+/* =========================================================
+   102. WATER CAUSTICS
+   ---------------------------------------------------------
+   바다 표면에 햇빛/달빛이 흔들리는 느낌
+   ========================================================= */
+
+.ocean-card .water-caustic {
+
+  position:
+    absolute;
+
+  z-index:
+    2;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  top:
+    43%;
+
+  height:
+    24%;
+
+  pointer-events:
+    none;
+
+  opacity:
+    .32;
+
+  background:
+
+    repeating-linear-gradient(
+      168deg,
+      transparent 0 18px,
+      rgba(
+        174,
+        248,
+        255,
+        .09
+      ) 19px 21px,
+      transparent 22px 38px
+    );
+
+  mix-blend-mode:
+    screen;
+
+  animation:
+    waterCausticMove
+    8s linear
+    infinite;
+
+}
+
+
+@keyframes waterCausticMove {
+
+  from {
+    transform:
+      translateX(
+        -2%
+      );
+  }
+
+  to {
+    transform:
+      translateX(
+        2%
+      );
+  }
+
+}
+
+
+/* =========================================================
+   103. CATCHING STATE
+   ========================================================= */
+
+.ocean-card.casting {
+
+  box-shadow:
+
+    var(--shadow-deep),
+
+    inset
+    0 0 45px
+    rgba(
+      98,
+      231,
+      255,
+      .06
+    );
+
+}
+
+
+.ocean-card.biting {
+
+  box-shadow:
+
+    var(--shadow-deep),
+
+    inset
+    0 0 58px
+    rgba(
+      255,
+      215,
+      104,
+      .08
+    );
+
+}
+
+
+/* =========================================================
+   104. PERFECT FEEDBACK
+   ========================================================= */
+
+.ocean-card.perfect-catch {
+
+  animation:
+    perfectScreenFlash
+    .55s ease
+    1;
+
+}
+
+
+@keyframes perfectScreenFlash {
+
+  0% {
+    filter:
+      brightness(
+        1
+      );
+  }
+
+  30% {
+    filter:
+      brightness(
+        1.18
+      );
+  }
+
+  100% {
+    filter:
+      brightness(
+        1
+      );
+  }
+
+}
+
+
+/* =========================================================
+   105. LEGENDARY / MYTHIC FULL SCREEN FEEL
+   ========================================================= */
+
+.ocean-card.legendary-catch {
+
+  animation:
+    legendaryOcean
+    1s ease
+    1;
+
+}
+
+
+@keyframes legendaryOcean {
+
+  0% {
+    filter:
+      brightness(
+        1
+      )
+      saturate(
+        1
+      );
+  }
+
+  35% {
+    filter:
+      brightness(
+        1.18
+      )
+      saturate(
+        1.18
+      );
+  }
+
+  100% {
+    filter:
+      brightness(
+        1
+      )
+      saturate(
+        1
+      );
+  }
+
+}
+
+
+.ocean-card.mythic-catch {
+
+  animation:
+    mythicOcean
+    1.25s ease
+    1;
+
+}
+
+
+@keyframes mythicOcean {
+
+  0% {
+    filter:
+      brightness(
+        1
+      )
+      saturate(
+        1
+      );
+  }
+
+  20% {
+    filter:
+      brightness(
+        1.22
+      )
+      saturate(
+        1.3
+      );
+  }
+
+  48% {
+    filter:
+      brightness(
+        1.08
+      )
+      saturate(
+        1.1
+      );
+  }
+
+  72% {
+    filter:
+      brightness(
+        1.17
+      )
+      saturate(
+        1.2
+      );
+  }
+
+  100% {
+    filter:
+      brightness(
+        1
+      )
+      saturate(
+        1
+      );
+  }
+
+}
+
+
+/* =========================================================
+   106. RESULT MODAL RARITY POLISH
+   ========================================================= */
+
+#catchResultModal .modal-rarity {
+
+  transition:
+    color
+    .2s ease,
+
+    background
+    .2s ease;
+}
+
+
+#catchResultModal:has(
+  .mythic-catch
+) .modal-rarity {
+
+  color:
+    var(--mythic);
+
+  background:
+    rgba(
+      255,
+      121,
+      218,
+      .11
+    );
+
+}
+
+
+/* =========================================================
+   107. COINS / XP EMPHASIS
+   ========================================================= */
+
+#coins {
+
+  text-shadow:
+    0 0 10px
+    rgba(
+      255,
+      215,
+      104,
+      .10
+    );
+
+}
+
+
+#xpValue {
+
+  text-shadow:
+    0 0 10px
+    rgba(
+      98,
+      231,
+      255,
+      .10
+    );
+
+}
+
+
+/* =========================================================
+   108. FISHING LINE REALISM
+   ========================================================= */
+
+.line {
+
+  opacity:
+    .90;
+
+  transform-origin:
+    top center;
+
+}
+
+
+.ocean-card.biting
+.line {
+
+  opacity:
+    1;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #c9f8ff
+    );
+
+}
+
+
+/* =========================================================
+   109. BOBBER SHADOW
+   ========================================================= */
+
+.bobber::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    28px;
+
+  width:
+    17px;
+
+  height:
+    6px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .23
+    );
+
+  filter:
+    blur(
+      2px
+    );
+
+  transform:
+    translateX(
+      -50%
+    );
+
+  opacity:
+    .65;
+
+}
+
+
+/* =========================================================
+   110. COLLECTION RARITY GLOW
+   ========================================================= */
+
+.collection-item.found[data-rarity="rare"] {
+
+  box-shadow:
+    inset
+    0 0 18px
+    rgba(
+      183,
+      139,
+      255,
+      .07
+    );
+
+}
+
+
+.collection-item.found[data-rarity="legendary"] {
+
+  box-shadow:
+    inset
+    0 0 20px
+    rgba(
+      255,
+      215,
+      104,
+      .09
+    );
+
+}
+
+
+.collection-item.found[data-rarity="mythic"] {
+
+  box-shadow:
+    inset
+    0 0 22px
+    rgba(
+      255,
+      121,
+      218,
+      .11
+    );
+
+}
+
+
+/* =========================================================
+   111. UNKNOWN MYTHIC
+   ========================================================= */
+
+.collection-item.mythic-unknown {
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        78,
+        35,
+        78,
+        .55
+      ),
+      rgba(
+        30,
+        26,
+        52,
+        .72
+      )
+    );
+
+  border-color:
+    rgba(
+      255,
+      121,
+      218,
+      .14
+    );
+
+}
+
+
+.collection-item.mythic-unknown
+.collection-icon {
+
+  color:
+    var(--mythic);
+
+  text-shadow:
+    0 0 13px
+    rgba(
+      255,
+      121,
+      218,
+      .24
+    );
+
+}
+
+
+/* =========================================================
+   112. SHOP CARD FINAL
+   ========================================================= */
+
+.shop-item {
+
+  transition:
+    transform
+    .16s ease,
+
+    border-color
+    .16s ease,
+
+    background
+    .16s ease;
+}
+
+
+.shop-item:hover {
+
+  transform:
+    translateY(
+      -2px
+    );
+
+  border-color:
+    rgba(
+      98,
+      231,
+      255,
+      .22
+    );
+
+  background:
+    rgba(
+      98,
+      231,
+      255,
+      .045
+    );
+
+}
+
+
+.shop-buy-button {
+
+  transition:
+    transform
+    .16s ease,
+
+    filter
+    .16s ease;
+}
+
+
+.shop-buy-button:hover {
+
+  transform:
+    translateY(
+      -1px
+    );
+
+  filter:
+    brightness(
+      1.08
+    );
+
+}
+
+
+.shop-buy-button:disabled {
+
+  filter:
+    grayscale(
+      .8
+    );
+
+  opacity:
+    .55;
+
+  cursor:
+    default;
+
+}
+
+
+/* =========================================================
+   113. PROBABILITY ROW VISUAL
+   ========================================================= */
+
+.probability-row:nth-child(1) strong {
+  color:
+    var(--trash);
+}
+
+
+.probability-row:nth-child(2) strong {
+  color:
+    var(--common);
+}
+
+
+.probability-row:nth-child(3) strong {
+  color:
+    var(--uncommon);
+}
+
+
+.probability-row:nth-child(4) strong {
+  color:
+    var(--rare);
+}
+
+
+.probability-row:nth-child(5) strong {
+  color:
+    var(--legendary);
+}
+
+
+.probability-row:nth-child(6) strong {
+  color:
+    var(--mythic);
+}
+
+
+/* =========================================================
+   114. LEADERBOARD TOP 3
+   ========================================================= */
+
+.leaderboard-list li:nth-child(1) {
+
+  box-shadow:
+    inset
+    3px 0
+    var(--gold);
+
+}
+
+
+.leaderboard-list li:nth-child(2) {
+
+  box-shadow:
+    inset
+    3px 0
+    #c9d6df;
+
+}
+
+
+.leaderboard-list li:nth-child(3) {
+
+  box-shadow:
+    inset
+    3px 0
+    #c98b5e;
+
+}
+
+
+/* =========================================================
+   115. LOG RARITY VISUAL
+   ========================================================= */
+
+.log-card li:has(
+  .rarity.legendary
+) {
+
+  background:
+    rgba(
+      255,
+      215,
+      104,
+      .045
+    );
+
+}
+
+
+.log-card li:has(
+  .rarity.mythic
+) {
+
+  background:
+    rgba(
+      255,
+      121,
+      218,
+      .055
+    );
+
+}
+
+
+/* =========================================================
+   116. DESKTOP SPACING
+   ========================================================= */
+
+@media (min-width: 821px) {
+
+  .leaderboard-box {
+
+    padding-left:
+      22px;
+
+    padding-right:
+      22px;
+
+  }
+
+
+  .log-card {
+
+    min-height:
+      110px;
+
+  }
+
+}
+
+
+/* =========================================================
+   117. MOBILE OCEAN REFINEMENT
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .ocean-card {
+
+    min-height:
+      330px;
+
+  }
+
+
+  .fish {
+
+    font-size:
+      27px;
+
+  }
+
+
+  .fish-three {
+
+    bottom:
+      96px;
+
+  }
+
+
+  .water-back {
+
+    bottom:
+      31px;
+
+  }
+
+
+  .water-front {
+
+    bottom:
+      -42px;
+
+  }
+
+
+  .catch-celebration {
+
+    width:
+      90%;
+
+    padding:
+      17px 13px;
+
+  }
+
+
+  .catch-rarity-label {
+
+    font-size:
+      9px;
+
+  }
+
+
+  .catch-title {
+
+    font-size:
+      25px;
+
+  }
+
+}
+
+
+/* =========================================================
+   118. ULTRA SMALL SCREEN
+   ========================================================= */
+
+@media (max-width: 340px) {
+
+  .topbar {
+
+    gap:
+      6px;
+
+  }
+
+
+  .brand small {
+
+    letter-spacing:
+      1px;
+
+  }
+
+
+  .brand h1 {
+
+    font-size:
+      16px;
+
+  }
+
+
+  .stat-chip {
+
+    min-width:
+      41px;
+
+    padding:
+      4px;
+
+  }
+
+
+  .stat-chip span {
+
+    font-size:
+      7px;
+
+  }
+
+
+  .stat-chip b {
+
+    font-size:
+      12px;
+
+  }
+
+
+  .ocean-card {
+
+    height:
+      315px;
+
+  }
+
+
+  .collection-grid {
+
+    gap:
+      6px;
+
+  }
+
+}
+
+
+/* =========================================================
+   119. FINAL SAFE OVERRIDES
+   ---------------------------------------------------------
+   기존 style.css에서 남아있을 수 있는
+   중복 규칙보다 이 파일의 마지막 규칙을 우선 적용합니다.
+   ========================================================= */
+
+.collection-grid button {
+
+  margin:
+    0;
+
+  font-family:
+    inherit;
+
+}
+
+
+.modal-card button {
+
+  font-family:
+    inherit;
+
+}
+
+
+.leaderboard-list {
+
+  max-height:
+    none;
+
+  overflow:
+    visible;
+
+}
+
+
+/* =========================================================
+   120. CSS STEP 1 COMPLETE
+   ========================================================= */
