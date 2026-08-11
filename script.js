@@ -11708,14 +11708,15 @@ function openRegionModal() {
     );
 
 
-    document
-      .getElementById(
-        "regionModalClose"
-      )
-      ?.addEventListener(
-        "click",
-        closeRegionModal
-      );
+    const closeButton = modal.querySelector(".region-modal-close");
+
+if (closeButton) {
+  closeButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    closeRegionModal();
+  });
+}
 
 
     modal.addEventListener(
