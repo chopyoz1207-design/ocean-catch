@@ -9816,3 +9816,829 @@ updateNextLevelRewardPreview();
 console.log(
   "STEP 2 - 4/5: 레벨 보상 UI 적용 완료"
 );
+/* =========================================================
+   OCEAN CATCH 2.0
+   STEP 2 - 5/5
+   레벨 마일스톤 / 특별 보상 / 칭호
+   ========================================================= */
+
+
+/* =========================================================
+   1. 특별 마일스톤 데이터
+   ========================================================= */
+
+const STEP2_MILESTONE_REWARDS = {
+
+  25: {
+    level: 25,
+    title: "성장의 첫 파도",
+    description:
+      "희귀 미끼 3개를 획득합니다.",
+    rewards: [
+      {
+        type: "bait",
+        id: "rare",
+        amount: 3,
+        icon: "💜",
+        text: "희귀 미끼 ×3"
+      }
+    ]
+  },
+
+  50: {
+    level: 50,
+    title: "숙련된 낚시꾼",
+    description:
+      "전설 미끼 2개를 획득합니다.",
+    rewards: [
+      {
+        type: "bait",
+        id: "legendary",
+        amount: 2,
+        icon: "👑",
+        text: "전설 미끼 ×2"
+      }
+    ]
+  },
+
+  75: {
+    level: 75,
+    title: "심해의 베테랑",
+    description:
+      "특별 성장 지원금 5,000 G를 획득합니다.",
+    rewards: [
+      {
+        type: "gold",
+        amount: 5000,
+        icon: "🪙",
+        text: "+5,000 G"
+      }
+    ]
+  },
+
+  100: {
+    level: 100,
+    title: "심해의 개척자",
+    description:
+      "신화 미끼와 특별 칭호를 획득합니다.",
+    rewards: [
+      {
+        type: "bait",
+        id: "mythic",
+        amount: 1,
+        icon: "🔱",
+        text: "신화 미끼 ×1"
+      },
+      {
+        type: "title",
+        id: "abyss_pioneer",
+        icon: "🏆",
+        text: "칭호: 심해의 개척자"
+      }
+    ]
+  }
+
+};
+
+
+/* =========================================================
+   2. 게임 데이터 보정
+   ========================================================= */
+
+function ensureStep5GameData() {
+
+  ensureStep3GameData();
+
+
+  if (
+    !Array.isArray(
+      game.milestonesClaimed
+    )
+  ) {
+
+    game.milestonesClaimed = [];
+
+  }
+
+
+  if (
+    !Array.isArray(
+      game.titles
+    )
+  ) {
+
+    game.titles = [];
+
+  }
+
+
+  /*
+    기본 칭호
+  */
+
+  if (
+    !game.activeTitle
+  ) {
+
+    game.activeTitle =
+      "";
+
+  }
+
+}
+
+
+ensureStep5GameData();
+
+
+/* =========================================================
+   3. 마일스톤 보상 지급
+   ========================================================= */
+
+function giveMilestoneReward(
+  milestone
+) {
+
+  if (!milestone) {
+    return [];
+  }
+
+
+  const received =
+    [];
+
+
+  milestone.rewards.forEach(
+    (reward) => {
+
+      /* -------------------------
+         골드
+         ------------------------- */
+
+      if (
+        reward.type ===
+        "gold"
+      ) {
+
+        game.coins +=
+          reward.amount;
+
+
+        received.push(
+          reward
+        );
+
+
+        return;
+
+      }
+
+
+      /* -------------------------
+         미끼
+         ------------------------- */
+
+      if (
+        reward.type ===
+        "bait"
+      ) {
+
+        ensureStep3GameData();
+
+
+        game.baits[
+          reward.id
+        ] =
+          getBaitAmount(
+            reward.id
+          ) +
+          reward.amount;
+
+
+        received.push(
+          reward
+        );
+
+
+        return;
+
+      }
+
+
+      /* -------------------------
+         칭호
+         ------------------------- */
+
+      if (
+        reward.type ===
+        "title"
+      ) {
+
+        if (
+          !game.titles.includes(
+            reward.id
+          )
+        ) {
+
+          game.titles.push(
+            reward.id
+          );
+
+        }
+
+
+        /*
+          100레벨 달성 칭호를
+          자동 장착
+        */
+
+        game.activeTitle =
+          reward.id;
+
+
+        received.push(
+          reward
+        );
+
+      }
+
+    }
+  );
+
+
+  return received;
+
+}
+
+
+/* =========================================================
+   4. 마일스톤 팝업
+   ========================================================= */
+
+function showMilestoneRewardPopup(
+  milestone,
+  received
+) {
+
+  if (
+    !milestone ||
+    !received ||
+    !received.length
+  ) {
+
+    return;
+
+  }
+
+
+  const modal =
+    ensureLevelRewardModal();
+
+
+  const title =
+    document.getElementById(
+      "levelRewardTitle"
+    );
+
+
+  const content =
+    document.getElementById(
+      "levelRewardContent"
+    );
+
+
+  if (!title || !content) {
+
+    return;
+
+  }
+
+
+  title.textContent =
+    `LV.${milestone.level} 특별 달성!`;
+
+
+  content.innerHTML = `
+
+    <div
+      class="level-reward-item"
+      style="
+        border-color: rgba(98,231,255,.28);
+        background: rgba(98,231,255,.06);
+      "
+    >
+
+      <div
+        class="level-reward-level"
+        style="color: #62e7ff;"
+      >
+        MILESTONE
+      </div>
+
+      <div
+        style="
+          margin-top: 5px;
+          color: #ffffff;
+          font-size: 19px;
+          font-weight: 900;
+        "
+      >
+        ${escapeHtml(
+          milestone.title
+        )}
+      </div>
+
+      <div
+        style="
+          margin-top: 5px;
+          color: #91bed4;
+          font-size: 12px;
+          font-weight: 700;
+        "
+      >
+        ${escapeHtml(
+          milestone.description
+        )}
+      </div>
+
+    </div>
+
+    ${received
+      .map(
+        (reward) => `
+          <div
+            class="level-reward-item"
+          >
+
+            <div
+              style="
+                color: #ffd768;
+                font-size: 22px;
+                font-weight: 900;
+              "
+            >
+              ${reward.icon}
+              ${escapeHtml(
+                reward.text
+              )}
+            </div>
+
+          </div>
+        `
+      )
+      .join("")}
+
+  `;
+
+
+  modal.classList.add(
+    "show"
+  );
+
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  try {
+
+    sound(
+      1120,
+      0.22,
+      "sine",
+      0.08
+    );
+
+  } catch (
+    error
+  ) {
+
+    console.debug(
+      "마일스톤 효과음 생략:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   5. 도달한 마일스톤 검사
+   ========================================================= */
+
+function claimMilestones() {
+
+  ensureStep5GameData();
+
+
+  const currentLevel =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  const newlyClaimed =
+    [];
+
+
+  Object.keys(
+    STEP2_MILESTONE_REWARDS
+  )
+    .map(
+      Number
+    )
+    .sort(
+      (a, b) =>
+        a - b
+    )
+    .forEach(
+      (level) => {
+
+        /*
+          아직 해당 레벨에 도달하지 않았다면 무시
+        */
+
+        if (
+          currentLevel <
+          level
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+          이미 받았다면 무시
+        */
+
+        if (
+          game.milestonesClaimed.includes(
+            level
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        const milestone =
+          STEP2_MILESTONE_REWARDS[
+            level
+          ];
+
+
+        const received =
+          giveMilestoneReward(
+            milestone
+          );
+
+
+        game.milestonesClaimed.push(
+          level
+        );
+
+
+        newlyClaimed.push({
+          milestone,
+          received
+        });
+
+      }
+    );
+
+
+  if (
+    !newlyClaimed.length
+  ) {
+
+    return false;
+
+  }
+
+
+  save();
+
+
+  /*
+    여러 개가 누적되어 있다면
+    순서대로 팝업을 보여줍니다.
+  */
+
+  newlyClaimed.forEach(
+    (entry, index) => {
+
+      setTimeout(
+        () => {
+
+          showMilestoneRewardPopup(
+            entry.milestone,
+            entry.received
+          );
+
+        },
+        250 +
+        index * 1300
+      );
+
+    }
+  );
+
+
+  return true;
+
+}
+
+
+/* =========================================================
+   6. 다음 특별 마일스톤 표시
+   ========================================================= */
+
+function getNextMilestone() {
+
+  ensureStep5GameData();
+
+
+  const currentLevel =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  const levels =
+    Object.keys(
+      STEP2_MILESTONE_REWARDS
+    )
+      .map(
+        Number
+      )
+      .sort(
+        (a, b) =>
+          a - b
+      );
+
+
+  const nextLevel =
+    levels.find(
+      (level) =>
+        level >
+        currentLevel
+    );
+
+
+  if (!nextLevel) {
+
+    return null;
+
+  }
+
+
+  return (
+    STEP2_MILESTONE_REWARDS[
+      nextLevel
+    ] || null
+  );
+
+}
+
+
+/* =========================================================
+   7. 현재 성장 정보 표시
+   ========================================================= */
+
+function updateMilestonePreview() {
+
+  const scoreCard =
+    el.score?.closest(
+      ".score-card"
+    );
+
+
+  if (!scoreCard) {
+
+    return;
+
+  }
+
+
+  let preview =
+    scoreCard.querySelector(
+      ".milestone-preview"
+    );
+
+
+  if (!preview) {
+
+    preview =
+      document.createElement(
+        "div"
+      );
+
+
+    preview.className =
+      "milestone-preview";
+
+
+    preview.style.cssText = `
+      margin-top: 8px;
+      padding: 9px 11px;
+      border-radius: 10px;
+      background: rgba(98,231,255,.05);
+      border: 1px solid rgba(98,231,255,.10);
+      color: #91bed4;
+      font-size: 11px;
+      font-weight: 800;
+    `;
+
+
+    const previous =
+      scoreCard.querySelector(
+        ".level-reward-preview"
+      );
+
+
+    if (previous) {
+
+      previous.after(
+        preview
+      );
+
+    } else {
+
+      scoreCard.appendChild(
+        preview
+      );
+
+    }
+
+  }
+
+
+  const next =
+    getNextMilestone();
+
+
+  if (!next) {
+
+    preview.innerHTML = `
+      🏆 모든 주요 성장 마일스톤 달성!
+    `;
+
+    return;
+
+  }
+
+
+  const currentLevel =
+    getLevelFromScore(
+      game.score
+    );
+
+
+  const remaining =
+    Math.max(
+      0,
+      next.level -
+      currentLevel
+    );
+
+
+  preview.innerHTML = `
+    ⭐ 다음 특별 보상:
+    <strong
+      style="color:#62e7ff;"
+    >
+      LV.${next.level}
+    </strong>
+    ·
+    <strong
+      style="color:#ffd768;"
+    >
+      ${escapeHtml(
+        next.title
+      )}
+    </strong>
+    · ${remaining}레벨 남음
+  `;
+
+}
+
+
+/* =========================================================
+   8. renderMain에 마일스톤 연결
+   ========================================================= */
+
+const step5OldRenderMain =
+  renderMain;
+
+
+renderMain =
+  function () {
+
+    ensureStep5GameData();
+
+
+    step5OldRenderMain();
+
+
+    /*
+      일반 레벨 보상 표시
+    */
+
+    updateNextLevelRewardPreview();
+
+
+    /*
+      특별 마일스톤 표시
+    */
+
+    updateMilestonePreview();
+
+
+    /*
+      새 마일스톤 확인
+    */
+
+    claimMilestones();
+
+  };
+
+
+/* =========================================================
+   9. 저장 데이터에 현재 장비 / 칭호 상태 반영
+   ========================================================= */
+
+function getGrowthSummary() {
+
+  ensureStep5GameData();
+
+
+  const rod =
+    getCurrentRod();
+
+
+  const bait =
+    getCurrentBait();
+
+
+  return {
+
+    level:
+      getLevelFromScore(
+        game.score
+      ),
+
+    rod:
+      rod.name,
+
+    bait:
+      bait.name,
+
+    titles:
+      [
+        ...game.titles
+      ],
+
+    activeTitle:
+      game.activeTitle || "",
+
+    milestones:
+      [
+        ...game.milestonesClaimed
+      ]
+
+  };
+
+}
+
+
+/* =========================================================
+   10. 성장 상태 디버그
+   ========================================================= */
+
+console.log(
+  "STEP 2 - 5/5 성장 시스템:",
+  getGrowthSummary()
+);
+
+
+/* =========================================================
+   11. 초기 실행
+   ========================================================= */
+
+ensureStep5GameData();
+
+updateMilestonePreview();
+
+claimMilestones();
+
+save();
+
+
+console.log(
+  "🎣 OCEAN CATCH STEP 2 COMPLETE"
+);
